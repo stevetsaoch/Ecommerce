@@ -1,3 +1,6 @@
+# test result
+htmlcov/
+.coverage
 # mysql info
 mysql_info.py
 # vscode settings
