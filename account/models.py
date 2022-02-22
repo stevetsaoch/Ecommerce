@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
 )
 from django_countries.fields import CountryField
 from django.utils.translation import gettext_lazy as _
+from django.core.mail import send_mail
 
 # Create your models here.
 
