@@ -1,8 +1,8 @@
 # test result
 htmlcov/
 .coverage
-# mysql info
-mysql_info.py
+# private info
+private_info.py
 # vscode settings
 .vscode/
 # Byte-compiled / optimized / DLL files
