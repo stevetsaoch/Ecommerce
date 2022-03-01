@@ -1,8 +1,5 @@
-{% extends 'store/base.html' %}
-{% load static %}
-
-{% block title %}Bookstore{% endblock title %}
-
+{% extends 'base.html' %}
+{% block title %}Store - Low Prices in Books & more{% endblock title %}
 {% block content %}
 <main>
     <div class="container">
@@ -21,9 +18,10 @@
             <div class="container">
                 <div class="pb-3 h5">All Books</div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-
+                    {% if not products %}
+                    <div class="col-12"> There are current not product active.</div>
+                    {% else %}
                     {% for product in products %}
-
                     <div class="col">
                         <div class="card shadow-sm">
                             <img class="img-fluid" alt="Responsive image" src="{{ product.image.url }}">
@@ -38,13 +36,11 @@
                             </div>
                         </div>
                     </div>
-
                     {% endfor %}
-
                 </div>
+                {% endif %}
             </div>
         </div>
-
-
+    </div>
 </main>
 {% endblock content %}
