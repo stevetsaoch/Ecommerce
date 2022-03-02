@@ -10,9 +10,24 @@ from account.models import UserBase, Address
 from .forms import RegistrationForm, UserEditForm
 from django.template.loader import render_to_string
 from .token import account_activation_token
+from orders.views import user_orders
+from orders.models import Order
 
 # Create your views here.
 
+@login_required
+def user_orders(request):
+    user_id = request.user.id
+    orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
+    return render(request, "account/dashboard/user_orders.html", {"orders": orders})
+
+@login_required
+def dashboard(request):
+    user_id = request.user.id
+    orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
+    return render(request,
+                  'account/dashboard/dashboard.html',
+                  {'orders': orders})
 
 def account_register(request):
     # if request.user.is_authenticated:
@@ -40,7 +55,9 @@ def account_register(request):
                 },
             )
             user.email_user(subject=subject, message=message)
-            return HttpResponse("registered succesfully and activation sent")
+            return render(request, 'account/registration/register_email_confirm.html', context={
+                'form': registerForm
+            })
 
     else:
         registerForm = RegistrationForm()
@@ -71,7 +88,7 @@ def edit_details(request):
             user_form.save()
     else:
         user_form = UserEditForm(instance=request.user)
-    return render(request, "account/user/edit_details.html", context={"user_form": user_form})
+    return render(request, "account/dashboard/edit_details.html", context={"user_form": user_form})
 
 
 @login_required
@@ -83,13 +100,7 @@ def delete_user(request):
     return redirect("account:delete_confirmation")
 
 
-@login_required
-def dashboard(request):
-    return render(request, "account/user/dashboard.html")
-
-
 # Addresses
-
 
 @login_required
 def view_address(request):
