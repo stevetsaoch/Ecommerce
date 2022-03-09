@@ -1,6 +1,8 @@
+from re import L
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
-from .models import UserBase
+from .models import UserBase, Address
+from django_countries import widgets, countries
 
 
 class RegistrationForm(forms.ModelForm):
@@ -58,6 +60,27 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = UserBase
+        fields = (
+            "profile_img",
+            "email",
+            "user_name",
+            "first_name",
+            "last_name",
+            "about",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["user_name"].required = True
+        self.fields["email"].required = True
+
+    profile_img = forms.ImageField(
+        label="Upload your profile picture!",
+        allow_empty_file=True,
+    )
+
     email = forms.EmailField(
         label="Account email (can not be changed)",
         max_length=200,
@@ -66,20 +89,7 @@ class UserEditForm(forms.ModelForm):
         ),
     )
     user_name = forms.CharField(
-        label="Firstname",
-        min_length=4,
-        max_length=50,
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control mb-3",
-                "placeholder": "Firstname",
-                "id": "form-firstname",
-                "readonly": "readonly",
-            }
-        ),
-    )
-    user_name = forms.CharField(
-        label="Firstname",
+        label="Username",
         min_length=4,
         max_length=50,
         widget=forms.TextInput(
@@ -92,30 +102,131 @@ class UserEditForm(forms.ModelForm):
         ),
     )
     first_name = forms.CharField(
-        label="Username",
+        label="First name",
         min_length=4,
         max_length=50,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control mb-3",
-                "placeholder": "Firstname",
-                "id": "form-lastname",
+                "placeholder": "First name",
+                "id": "form-firstname",
             }
         ),
     )
 
+    last_name = forms.CharField(
+        label="Last name",
+        min_length=4,
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "Last name",
+                "id": "form-firstname",
+            }
+        ),
+    )
+
+    about = forms.CharField(
+        label="About you",
+        max_length=500,
+        widget=forms.Textarea(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "Something about you",
+                "id": "form-firstname",
+            }
+        ),
+    )
+
+
+class AddressEditForm(forms.ModelForm):
     class Meta:
-        model = UserBase
+        model = Address
         fields = (
-            "email",
-            "user_name",
-            "first_name",
+            "customer",
+            "phone",
+            "country",
+            "town_city",
+            "postcode",
+            "address_line",
+            "address_line2",
         )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["user_name"].required = True
-        self.fields["email"].required = True
+    phone = forms.CharField(
+        label="Phone",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "Phone number",
+                "id": "form-firstname",
+            }
+        ),
+    )
+
+    country = forms.ChoiceField(
+        label="Country",
+        widget=widgets.CountrySelectWidget(
+            attrs={
+                "class": "form-control mb-3",
+                "id": "form-firstname",
+            }
+        ),
+        choices=countries,
+    )
+
+    town_city = forms.CharField(
+        label="Town & City",
+        min_length=4,
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "Town & City",
+                "id": "form-firstname",
+            }
+        ),
+    )
+
+    postcode = forms.CharField(
+        label="Postcode",
+        min_length=4,
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "Postcode",
+                "id": "form-firstname",
+            }
+        ),
+    )
+
+    address_line = forms.CharField(
+        label="Address line 1",
+        min_length=4,
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "Address line 1",
+                "id": "form-firstname",
+            }
+        ),
+    )
+
+    address_line2 = forms.CharField(
+        label="Address line 2",
+        min_length=4,
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "Address line 2",
+                "id": "form-firstname",
+            }
+        ),
+    )
 
 
 class PwdResetForm(PasswordResetForm):

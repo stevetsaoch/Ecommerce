@@ -16,18 +16,34 @@
                         <p class="text-muted">includes tax</p>
                     </div>
                     <div class="">
+                        {% with qty=product.inventory %}
+                        {% if qty == 0 %}
+                        <span>Out of stock!</span>
+                        {% else %}
                         <label for="select">Qty</label>
-                        <select id="select" class="h6 store-select-dropdown" >
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                        <select id="select" class="h6 store-select-dropdown">
+                            {% if qty > 5 %}
+                            {% for value in range_5 %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                            {% else %}
+                            {% for value in range %}
+                            <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        {% endwith %}
                         </select>
                     </div>
                 </div>
                 <hr>
+                {% if product.inventory == 0 %}
+                <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500" disabled>Add to
+                    basket</button>
+                {% else %}
                 <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500">Add to
                     basket</button>
+                {% endif %}
                 <button type="button" id="add-button" value="{{product.id}}" class="btn btn-light fw500">Add to
                     Favorites</button>
             </div>

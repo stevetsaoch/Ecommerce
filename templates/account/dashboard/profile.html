@@ -1,0 +1,84 @@
+{% extends 'account/sub_base.html' %}
+{% load static %}
+
+
+{% block sub_content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <div class="col-md-3">
+        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+            <img class="rounded-circle mt-5" width="150px"
+                src={{ profile.profile_img.url}} >
+            <span class="font-weight-bold">{{profile.last_name}} {{ profile.first_name }}</span>
+            <span class="text-black-50">{{profile.email}}</span>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="p-3 py-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="text-right">Profile</h4>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>First Name:</b></label></div>
+                <span>{{profile.first_name}}</span>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>Last Name:</b></label></div>
+                <span>{{profile.last_name}}</span>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>Phone:</b></label></div>
+                <span>{{address.phone}}</span>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>Country:</b></label></div>
+                <span>{{address.country}}</span>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>Town & City:</b></label></div>
+                <span>{{address.town_city}}</span>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>Post code:</b></label></div>
+                <span>{{address.postcode}}</span>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>Address Line 1:</b></label></div>
+                <span>{{address.address_line}}</span>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>Address Line 2:</b></label></div>
+                <span>{{address.address_line2}}</span>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <label class="labels"><b>About:</b></label></div>
+                <span>{{profile.about}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="{% url 'account:edit_details'%}" class="text-reset text-decoration-none" role="button"
+    style="max-width: 540px;">
+    <button type="submit" role="button" class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">Edit
+        profile</button>
+</a>
+{% else %}
+<script>
+    window.location.href = '{% url "account:login" %}';
+</script>
+{% endif %}
+
+{% endblock sub_content %}

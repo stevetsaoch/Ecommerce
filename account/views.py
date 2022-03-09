@@ -1,19 +1,23 @@
 from distutils.log import error
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout
-from django.shortcuts import redirect, render, render
+from django.shortcuts import redirect, render
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.decorators import login_required
 from account.models import UserBase, Address
-from .forms import RegistrationForm, UserEditForm
+from .forms import RegistrationForm, UserEditForm, AddressEditForm
 from django.template.loader import render_to_string
 from .token import account_activation_token
 from orders.views import user_orders
 from orders.models import Order
+from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
+from django import forms
 
 # Create your views here.
+
 
 @login_required
 def user_orders(request):
@@ -21,13 +25,37 @@ def user_orders(request):
     orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
     return render(request, "account/dashboard/user_orders.html", {"orders": orders})
 
+
 @login_required
 def dashboard(request):
     user_id = request.user.id
     orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
-    return render(request,
-                  'account/dashboard/dashboard.html',
-                  {'orders': orders})
+    return render(request, "account/dashboard/dashboard.html", {"orders": orders})
+
+
+@login_required
+def profile(request):
+    profile = UserBase.objects.get(id=request.user.id)
+    try:
+        address = Address.objects.get(customer_id=request.user.id)
+    except ObjectDoesNotExist:
+        return render(
+            request,
+            "account/dashboard/profile.html",
+            context={
+                "profile": profile,
+            },
+        )
+
+    return render(
+        request,
+        "account/dashboard/profile.html",
+        context={
+            "profile": profile,
+            "address": address,
+        },
+    )
+
 
 def account_register(request):
     # if request.user.is_authenticated:
@@ -55,9 +83,7 @@ def account_register(request):
                 },
             )
             user.email_user(subject=subject, message=message)
-            return render(request, 'account/registration/register_email_confirm.html', context={
-                'form': registerForm
-            })
+            return render(request, "account/registration/register_email_confirm.html", context={"form": registerForm})
 
     else:
         registerForm = RegistrationForm()
@@ -83,12 +109,37 @@ def account_activate(request, uidb64, token):
 @login_required
 def edit_details(request):
     if request.method == "POST":
-        user_form = UserEditForm(instance=request.user, data=request.POST)
-        if user_form.is_valid():
+        user_data = formdata_extract(UserEditForm(), request)
+        address_data = formdata_extract(AddressEditForm(), request)
+
+        # binding profile image to user_form
+        user_form = UserEditForm(data=user_data, files=request.FILES, instance=request.user)
+
+        # get address instance for current user
+        try:
+            address_instance = Address.objects.get(customer_id=request.user.id)
+        
+        # add address if there is no address for current user
+        except ObjectDoesNotExist:
+            address_data['customer'] = request.user.id
+            address_form = AddressEditForm(data=address_data)
+        else:
+            address_form = AddressEditForm(instance=address_instance, data=address_data)
+
+        # data validation and save
+        if user_form.is_valid() & address_form.is_valid():
+            # save user change
             user_form.save()
+
+            # construc address data
+            address_form.save()
+            return HttpResponseRedirect(reverse("account:profile"))
     else:
-        user_form = UserEditForm(instance=request.user)
-    return render(request, "account/dashboard/edit_details.html", context={"user_form": user_form})
+        user_form = UserEditForm(instance=request.user, use_required_attribute=False)
+        address_form = AddressEditForm(instance=request.user, use_required_attribute=False)
+    return render(
+        request, "account/dashboard/edit_details.html", context={"user_form": user_form, "address_form": address_form}
+    )
 
 
 @login_required
@@ -101,6 +152,7 @@ def delete_user(request):
 
 
 # Addresses
+
 
 @login_required
 def view_address(request):
@@ -161,3 +213,18 @@ def delivery_address(request):
     session = request.session
     if "purchase" not in request.session:
         messages.success(request, "Please choice a delivery option.")
+
+
+##
+def formdata_extract(form, request_data):
+    dict = {}
+    fields = form.Meta.fields
+    for field in fields:
+        if isinstance(form.fields[field], forms.ImageField) or isinstance(form.fields[field], forms.FileField):
+            pass
+        else:
+            if field == 'customer':
+                dict[field] = ''
+            else:
+                dict[field] = request_data.POST[field]
+    return dict

@@ -1,9 +1,12 @@
+import black
 from django.db import models
 import uuid
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django_countries.fields import CountryField
 from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
+from django.conf import settings
+from django_countries.fields import CountryField
 
 # Create your models here.
 
@@ -38,21 +41,18 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     user_name = models.CharField(max_length=150, unique=True)
     first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
     about = models.TextField(_("about"), max_length=500, blank=True)
-    # Delivery details
-    country = CountryField()
-    address_line_1 = models.CharField(max_length=150, blank=True)
-    address_line_2 = models.CharField(max_length=150, blank=True)
-    town_city = models.CharField(max_length=150, blank=True)
     # User Status
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    profile_img = models.ImageField(upload_to='images/user_img', default='images/user_img/profile_default.jpg')
     objects = CustomAccountManager()
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["user_name"]
+    USERNAME_FIELD = "user_name"
+    REQUIRED_FIELDS = ["email"]
 
     class Meta:
         verbose_name = "Accounts"
@@ -60,10 +60,10 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message):
         send_mail(
-            subject,
-            message,
-            "l@1.com",
-            [self.email],
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[self.email],
             fail_silently=False,
         )
 
@@ -77,14 +77,17 @@ class Address(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    customer = models.ForeignKey(UserBase, verbose_name=_("Customer"), on_delete=models.CASCADE, related_name='account_id')
+    customer = models.ForeignKey(
+        UserBase, verbose_name=_("Customer"), on_delete=models.CASCADE, related_name="account_id"
+    )
     full_name = models.CharField(_("Full Name"), max_length=150)
     phone = models.CharField(_("Phone Number"), max_length=50)
+    town_city = models.CharField(_("Town/City/State"), max_length=150)
+    country = CountryField(_("country"), default='TW')
     postcode = models.CharField(_("Postcode"), max_length=50)
     address_line = models.CharField(_("Address Line 1"), max_length=255)
     address_line2 = models.CharField(_("Address Line 2"), max_length=255)
-    town_city = models.CharField(_("Town/City/State"), max_length=150)
-    delivery_instructions = models.CharField(_("Delivery Instructions"), max_length=255)
+    delivery_instructions = models.CharField(_("Delivery Instructions"), max_length=255, blank=True)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
     default = models.BooleanField(_("Default"), default=False)
@@ -95,5 +98,3 @@ class Address(models.Model):
 
     def __str__(self):
         return "Address"
-
-

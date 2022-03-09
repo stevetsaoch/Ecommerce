@@ -49,15 +49,10 @@
             <div class="card mb-3 border-0">
                 <div class="row g-0">
                     <div class="col-md-2 d-none d-md-block">
-                        {% for image in item.product.product_image.all %}
-                        {% if image.is_feature %}
-                        <img class="img-fluid" alt="Responsive image" src="{{ image.image.url }}"
-                            alt="{{ image.image.alt_text }}">
-                        {% endif %}
-                        {% endfor %}
+                        <img class="img-fluid" style="width:90px" src="{{item.product.image.url}}" />
                     </div>
                     <div class="col-md-10">
-                        <div class="card-body p-3">
+                        <div class="card-body p-1">
                             <a class="text-decoration-none" href="{{ item.product.get_absolute_url }}">
                                 <p class="card-text small">{{item.product|title}}</p>
                             </a>
@@ -68,6 +63,7 @@
             {% endfor %}
         </div>
     </div>
+    <hr />
     {% endfor %}
 </div>
 

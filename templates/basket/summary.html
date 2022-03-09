@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load product_filter %}
 
 {% block title %}
 Basket summary
 {% endblock title %}
+
+{% block stylesheet %}
+{% static 'store/css/store.css' %}
+{% endblock %}
 
 {% block content %}
 
@@ -75,16 +80,39 @@ Basket summary
                             <a class="text-decoration-none text-reset" href="{{item.product.get_absolute_url}}">
                                 <p class="card-text pb-3">{{product.title}}</p>
                             </a>
-                            <label for="select">Qty</label>
-                            <select id="select{{product.id}}" style="width:50px;height:31px;">
-                                <option value="" selected disabled hidden>{{item.qty}}</option>
-                                <option value="">1</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4</option>
-                            </select>
+                            {% with pid=product.id %}
+                                {% if product.inventory == 0 %}
+                                <label for="select">Out of Stock!</label>
+                                
+                                {% elif product.inventory > 5 %}
+                                
+                                <label for="select">Qty</label>
+                                <select id="select{{product.id}}" style="width:50px;height:31px;">
+                                    {% for value in range_dict|getbykey:pid %}
+                                    <option value="" selected disabled hidden>{{item.qty}}</option>
+                                    <option value="{{value}}">{{value}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                {% else %}
+
+                                <label for="select">Qty</label>
+                                <select id="select{{product.id}}" style="width:50px;height:31px;">
+                                    {% for value in range_dict|getbykey:pid %}
+                                    <option value="" selected disabled hidden>{{item.qty}}</option>
+                                    <option value="{{value}}">{{value}}</option>
+                                    {% endfor %}
+                                </select>
+                            {% endif %}
+                            {% endwith %}
+                            {% if product.inventory == 0 %}
                             <a type="button" id="update-button" data-index="{{product.id}}"
-                                class="update-button text-decoration-none small ps-3">Update</a>
+                            class="isDisabled text-decoration-none small ps-3">Update</a>
+                            {% else %}
+                            <a type="button" id="update-button" data-index="{{product.id}}"
+                            class="update-button text-decoration-none small ps-3">Update</a>
+                            {% endif %}
+
                             <a type="button" id="delete-button" data-index="{{product.id}}"
                                 class="delete-button text-decoration-none small">Delete</a>
                         </div>

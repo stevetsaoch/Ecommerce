@@ -75,8 +75,12 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "store.context_processors.categories",
+                "store.context_processors.range_dict",
                 "basket.context_processors.basket",
             ],
+            'libraries':{
+                'product_filter': 'store.templatetags.product_filter',
+            }
         },
     },
 ]
@@ -124,23 +128,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+# static setting
 STATIC_URL = "static/"
-
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# media
 MEDIA_URL = "/media/"
-
 MEDIA_ROOT = BASE_DIR / "media/"
 
+# other setting
 AUTH_USER_MODEL = "account.UserBase"
 LOGIN_REDIRECT_URL = "/account/dashboard"
 LOGIN_URL = "/account/login/"
+BASKET_SESSION_ID = "basket"
 
 # Email setting
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-BASKET_SESSION_ID = "basket"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'stevetaso123@gmail.com'
+EMAIL_HOST_PASSWORD = PrivateInfo.gmail()
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = 'testmail@gmail.com'
+

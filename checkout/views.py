@@ -9,6 +9,8 @@ from account.models import Address
 from orders.models import Order, OrderItem
 from paypalcheckoutsdk.orders import OrdersGetRequest
 from checkout.paypal import PayPalClient
+from django.core.exceptions import ObjectDoesNotExist
+
 # Create your views here.
 
 
@@ -49,21 +51,26 @@ def delivery_address(request):
         messages.success(request, "Please select delivery option")
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
-    addresses = Address.objects.filter(customer=request.user).order_by("-default")
+    try:
+        address = Address.objects.get(customer_id=request.user.id)
 
-    if "address" not in request.session:
-        session["address"] = {"address_id": str(addresses[0].id)}
+    except ObjectDoesNotExist:
+        return render(request, "checkout/delivery_address.html")
+
     else:
-        session["address"]["address_id"] = str(addresses[0].id)
-        session.modified = True
+        if "address" not in request.session:
+            session["address"] = {"address_id": str(address)}
+        else:
+            session["address"]["address_id"] = str(address)
+            session.modified = True
 
-    return render(
-        request,
-        "checkout/delivery_address.html",
-        context={
-            "addresses": addresses,
-        },
-    )
+        return render(
+            request,
+            "checkout/delivery_address.html",
+            context={
+                "address": address,
+            },
+        )
 
 
 @login_required
@@ -74,6 +81,7 @@ def payment_selection(request):
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
     return render(request, "checkout/payment_selection.html", context={})
+
 
 ###
 # paypal
@@ -113,10 +121,9 @@ def payment_complete(request):
 
     return JsonResponse("Payment complete!", safe=False)
 
+
 @login_required
 def payment_successful(request):
     basket = Basket(request)
     basket.clear()
-    return render(request, 'checkout/payment_successful.html', {
-
-    })
+    return render(request, "checkout/payment_successful.html", {})
