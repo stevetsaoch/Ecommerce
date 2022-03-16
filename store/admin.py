@@ -1,6 +1,6 @@
 from atexit import register
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, Author, Image
 # Register your models here.
 
 
@@ -9,10 +9,18 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
 
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ['full_name']
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ['id']
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'slug',
+    list_display = ['title', 'slug',
                     'price', 'in_stock', 'created', 'updated']
     list_filter = ['in_stock', 'is_active']
     list_editable = ['price', 'in_stock']
