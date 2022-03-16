@@ -11,10 +11,15 @@ def product_all(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, in_stock=True)
+    qty = product.inventory
+    if qty > 0 and qty < 5:
+        _range = range(1, product.inventory + 1)
+    elif qty > 5:
+        _range = range(1, 6)
     return render(
         request,
         "store/single.html",
-        context={"product": product, "range": range(1, product.inventory + 1), "range_5": range(1, 6)},
+        context={"product": product, "range": _range},
     )
 
 

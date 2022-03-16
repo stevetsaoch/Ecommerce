@@ -6,8 +6,8 @@ def categories(request):
     return {"categories": Category.objects.all()}
 
 
-def range_dict(request):
-    # contrust qty range for each product
+def basket_range_dict(request):
+    # contrust qty range for each product in basket
     basket = Basket(request)
     product_ids = basket.basket.keys()
     products = Product.objects.filter(id__in=product_ids)
@@ -18,4 +18,5 @@ def range_dict(request):
             range_dict[str(product.id)] = range(1, 6)
         else:
             range_dict[str(product.id)] = range(1, product.inventory + 1)
-    return {"range_dict": range_dict}
+    return {"basket_range_dict": range_dict}
+

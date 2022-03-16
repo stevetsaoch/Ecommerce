@@ -145,6 +145,7 @@ class AddressEditForm(forms.ModelForm):
         model = Address
         fields = (
             "customer",
+            "full_name",
             "phone",
             "country",
             "town_city",
@@ -152,6 +153,19 @@ class AddressEditForm(forms.ModelForm):
             "address_line",
             "address_line2",
         )
+    
+    full_name = forms.CharField(
+        label="Full name",
+        min_length=4,
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "First name",
+                "id": "form-firstname",
+            }
+        ),
+    )
 
     phone = forms.CharField(
         label="Phone",

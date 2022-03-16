@@ -1,0 +1,117 @@
+{% extends "account/sub_base.html" %}
+{% load product_filter %}
+{% block title %}Wish List{% endblock %}
+
+{% block sub_content %}
+
+<div class="col-12">
+    <h1 class="h2">Your Wish List</h1>
+</div>
+<div class="col-12 d-flex justify-content-between">
+    <div>Manage your <b>Wish List</b></div>
+</div>
+<hr />
+<div class="container-fluid">
+    {% if user_wishlist.product.all|length == 0 %}
+    <div class="col-12">Your wish list is empty
+        <a href="{% url 'store:store_home' %}">
+            Shop
+        </a>
+    </div>
+    {% else %}
+    {% for product in user_wishlist.product.all %}
+    <div class="product-item" data-index="{{product.id}}">
+        <div class="row g-3">
+            <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
+                <div class=" d-grid gap-2">
+                    <div>
+                        <span class="h3" style="text-align:center">Price: £{{ product.price }}</span>
+                    </div>
+                    {% if product.inventory == 0 %}
+                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500" disabled>Add
+                        to
+                        basket</button>
+                    {% else %}
+                    <button type="button" id="add-button-wishlist" value="{{product.id}}" class="btn btn-success fw500">Add
+                        to
+                        basket</button>
+                    {% endif %}
+                    <button type="button" id="delete-button" value="{{product.id}}" class="btn btn-success fw500"
+                        data-index="{{product.id}}">
+                        Delete
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-7 col-lg-8 p-0">
+                <div class="card mb-3 border-0">
+                    <div class="row g-0">
+                        <div class="col-md-2 d-none d-md-block">
+                            <img class="img-fluid" style="width:90px" src="{{product.image.url}}" />
+                            <div style="text-align:center">Writing by: </div>
+                            <div style="text-align:center">{{product.author}}</div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="card-body p3">
+                                <a class="text-decoration-none" href="{{ product.get_absolute_url }}">
+                                    <p class="card-text" style="text-align:left; padding:0rem 0rem;">{{product|title}}</p>
+                                </a>
+                            </div>
+                            <div class="card-body" style="padding:0.1rem 1rem;">
+                                <p style="text-align:left">{{ product.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<script>
+    $(document).on('click', '#add-button', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "basket:basket_add" %}',
+            data: {
+                productid: $('#add-button').val(),
+                productqty: 1,
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                action: 'post'
+            },
+            success: function (json) {
+                document.getElementById('basket-qty').innerHTML = json.qty
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+
+    })
+
+    $(document).on('click', '#delete-button', function (e) {
+        e.preventDefault();
+        var prodid = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "wishlist:wishlist_delete" %}',
+            data: {
+                productid: $(this).data('index'),
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                action: 'post'
+            },
+            success: function (json) {
+                $('.product-item[data-index="' + prodid + '"]').remove()
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+
+    })
+</script>
+
+{% endblock %}

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "orders",
     "account",
     "checkout",
+    "wishlist",
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "store.context_processors.categories",
-                "store.context_processors.range_dict",
+                "store.context_processors.basket_range_dict",
                 "basket.context_processors.basket",
             ],
             'libraries':{

@@ -108,22 +108,24 @@ def account_activate(request, uidb64, token):
 
 @login_required
 def edit_details(request):
+    print(request.META["HTTP_REFERER"])
     if request.method == "POST":
         user_data = formdata_extract(UserEditForm(), request)
-        address_data = formdata_extract(AddressEditForm(), request)
 
         # binding profile image to user_form
         user_form = UserEditForm(data=user_data, files=request.FILES, instance=request.user)
-
+        address_data = formdata_extract(AddressEditForm(), request)
+        address_data["full_name"] = user_data["first_name"] + " " + user_data["last_name"]
         # get address instance for current user
         try:
             address_instance = Address.objects.get(customer_id=request.user.id)
-        
+
         # add address if there is no address for current user
         except ObjectDoesNotExist:
-            address_data['customer'] = request.user.id
+            address_data["customer"] = request.user.id
             address_form = AddressEditForm(data=address_data)
         else:
+            address_data["customer"] = request.user.id
             address_form = AddressEditForm(instance=address_instance, data=address_data)
 
         # data validation and save
@@ -131,9 +133,13 @@ def edit_details(request):
             # save user change
             user_form.save()
 
-            # construc address data
+            # save address change
             address_form.save()
-            return HttpResponseRedirect(reverse("account:profile"))
+            
+            if "delivery_address" in request.META["HTTP_REFERER"]:
+                return HttpResponseRedirect(request.META["HTTP_REFERER"])
+            else:
+                return HttpResponseRedirect(reverse("account:profile"))
     else:
         user_form = UserEditForm(instance=request.user, use_required_attribute=False)
         address_form = AddressEditForm(instance=request.user, use_required_attribute=False)
@@ -155,59 +161,6 @@ def delete_user(request):
 
 
 @login_required
-def view_address(request):
-    addresses = Address.objects.filter(customer=request.user)
-    return render(request, "account/dashboard/addresses.html", {"addresses": addresses})
-
-
-@login_required
-def add_address(request):
-    if request.method == "POST":
-        address_form = UserAddressForm(data=request.POST)
-        if address_form.is_valid():
-            address_form = address_form.save(commit=False)
-            address_form.customer = request.user
-            address_form.save()
-            return HttpResponseRedirect(reverse("account:addresses"))
-    else:
-        address_form = UserAddressForm()
-    return render(request, "account/dashboard/edit_addresses.html", {"form": address_form})
-
-
-@login_required
-def edit_address(request, id):
-    if request.method == "POST":
-        address = Address.objects.get(pk=id, customer=request.user)
-        address_form = UserAddressForm(instance=address, data=request.POST)
-        if address_form.is_valid():
-            address_form.save()
-            return HttpResponseRedirect(reverse("account:addresses"))
-    else:
-        address = Address.objects.get(pk=id, customer=request.user)
-        address_form = UserAddressForm(instance=address)
-    return render(request, "account/dashboard/edit_addresses.html", {"form": address_form})
-
-
-@login_required
-def delete_address(request, id):
-    address = Address.objects.filter(pk=id, customer=request.user).delete()
-    return redirect("account:addresses")
-
-
-@login_required
-def set_default(request, id):
-    Address.objects.filter(customer=request.user, default=True).update(default=False)
-    Address.objects.filter(pk=id, customer=request.user).update(default=True)
-
-    previous_url = request.META.get("HTTP_REFERER")
-
-    if "delivery_address" in previous_url:
-        return redirect("checkout:delivery_address")
-
-    return redirect("account:addresses")
-
-
-@login_required
 def delivery_address(request):
 
     session = request.session
@@ -223,8 +176,8 @@ def formdata_extract(form, request_data):
         if isinstance(form.fields[field], forms.ImageField) or isinstance(form.fields[field], forms.FileField):
             pass
         else:
-            if field == 'customer':
-                dict[field] = ''
+            if field == "customer" or field == "full_name":
+                dict[field] = ""
             else:
                 dict[field] = request_data.POST[field]
     return dict

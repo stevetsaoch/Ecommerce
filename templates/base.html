@@ -83,8 +83,11 @@
                                                     {% if user.is_authenticated %}
                                                     <a href="{% url "account:dashboard" %}"
                                                         class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Dashboard</a>
-                                                    <a href="#"
+                                                    <a href="{% url 'account:user_orders' %}"
                                                         class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Orders</a>
+                                                    <a href="{% url 'wishlist:user_wishlist' %}"
+                                                        class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Wish List</a>
+
                                                     <a href="{% url "account:logout" %}"
                                                         class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Logout</a>
                                                     {% else %}

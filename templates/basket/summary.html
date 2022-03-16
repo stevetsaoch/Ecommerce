@@ -88,7 +88,7 @@ Basket summary
                                 
                                 <label for="select">Qty</label>
                                 <select id="select{{product.id}}" style="width:50px;height:31px;">
-                                    {% for value in range_dict|getbykey:pid %}
+                                    {% for value in basket_range_dict|getbykey:pid %}
                                     <option value="" selected disabled hidden>{{item.qty}}</option>
                                     <option value="{{value}}">{{value}}</option>
                                     {% endfor %}
@@ -98,7 +98,7 @@ Basket summary
 
                                 <label for="select">Qty</label>
                                 <select id="select{{product.id}}" style="width:50px;height:31px;">
-                                    {% for value in range_dict|getbykey:pid %}
+                                    {% for value in basket_range_dict|getbykey:pid %}
                                     <option value="" selected disabled hidden>{{item.qty}}</option>
                                     <option value="{{value}}">{{value}}</option>
                                     {% endfor %}
