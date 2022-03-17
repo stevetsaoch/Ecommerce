@@ -18,10 +18,10 @@
             <div class="container">
                 <div class="pb-3 h5">All Books</div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-                    {% if not products %}
+                    {% if not product_page %}
                     <div class="col-12"> There are current not product active.</div>
                     {% else %}
-                    {% for product in products %}
+                    {% for product in product_page %}
                     <div class="col">
                         <div class="card shadow-sm">
                             <a href="{{product.get_absolute_url}}">
@@ -30,7 +30,7 @@
                             <div class="card-body">
                                 <p class="card-text">
                                     <a class="text-dark text-decoration-none"
-                                        href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                                    href="{{ product.get_absolute_url }}">{{ product.title }}</a>
                                 </p>
                                 {% for author in product.author.all %}
                                 <div class="d-flex justify-content-between align-items-center">
@@ -43,6 +43,8 @@
                     {% endfor %}
                 </div>
                 {% endif %}
+                <hr>
+                {% include "store/index_pagination.html" %}
             </div>
         </div>
     </div>
