@@ -24,15 +24,19 @@
                     {% for product in products %}
                     <div class="col">
                         <div class="card shadow-sm">
-                            <img class="img-fluid" alt="Responsive image" src="{{ product.image.url }}">
+                            <a href="{{product.get_absolute_url}}">
+                                <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
+                            </a>
                             <div class="card-body">
                                 <p class="card-text">
                                     <a class="text-dark text-decoration-none"
                                         href="{{ product.get_absolute_url }}">{{ product.title }}</a>
                                 </p>
+                                {% for author in product.author.all %}
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">9min read</small>
+                                    <small class="text-muted">{{ author.full_name }}</small>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

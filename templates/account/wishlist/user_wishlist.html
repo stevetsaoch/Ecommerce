@@ -46,9 +46,11 @@
                 <div class="card mb-3 border-0">
                     <div class="row g-0">
                         <div class="col-md-2 d-none d-md-block">
-                            <img class="img-fluid" style="width:90px" src="{{product.image.url}}" />
+                            <img class="img-fluid" style="width:90px" src="{{product.image.image.url}}" />
                             <div style="text-align:center">Writing by: </div>
-                            <div style="text-align:center">{{product.author}}</div>
+                            {% for author in product.author.all %}
+                            <div style="text-align:center">{{ author.full_name }}</div>
+                            {% endfor %}
                         </div>
                         <div class="col-md-10">
                             <div class="card-body p3">

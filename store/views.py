@@ -12,6 +12,7 @@ def product_all(request):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, in_stock=True)
     qty = product.inventory
+    _range = range(0,1)
     if qty > 0 and qty < 5:
         _range = range(1, product.inventory + 1)
     elif qty > 5:

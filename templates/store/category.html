@@ -28,7 +28,9 @@
                 {% for product in products %}
                 <div class="col">
                     <div class="card border-0">
-                        <img class="img-fluid" alt="Responsive image" src="{{ product.image.url }}">
+                        <a href="{{ product.get_absolute_url }}">
+                            <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
+                        </a>
                         <div class="card-body px-0">
                             <p class="card-text">
                                 <a class="text-dark text-decoration-none"
