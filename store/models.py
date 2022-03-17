@@ -50,6 +50,7 @@ class Product(models.Model):
     inventory = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    click_counter = models.IntegerField(default=0)
     objects = models.Manager()
     products = ProductManager()
 

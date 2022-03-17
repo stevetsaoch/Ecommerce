@@ -13,17 +13,47 @@
             COVID-19 - <u>Click here for our latest updates</u> on our stores, website and contact centre. Thank you for
             your patience and support.
         </div>
-
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="pb-3 h5">Popular Books</div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+                    {% for product in popular_product_page %}
+                    <div class="col">
+                        <div class="card shadow-sm" id="click-count" data-index="{{product.get_absolute_url}}">
+                            <a href="{{product.get_absolute_url}}">
+                                <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
+                            </a>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <a class="text-dark text-decoration-none"
+                                        href="{{ product.get_absolute_url }}">{{ product.title }}
+                                    </a>
+                                </p>
+                                {% for author in product.author.all %}
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">{{ author.full_name }}</small>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <hr>
+                {% include "store/index_popular_product_pagination.html" %}
+            </div>
+        </div>
+        <hr>
         <div class="album py-5 bg-light">
             <div class="container">
                 <div class="pb-3 h5">All Books</div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-                    {% if not product_page %}
+                    {% if not all_product_page %}
                     <div class="col-12"> There are current not product active.</div>
                     {% else %}
-                    {% for product in product_page %}
+                    {% for product in all_product_page %}
                     <div class="col">
-                        <div class="card shadow-sm">
+                        <div class="card shadow-sm" id="click-count" data-index="{{product.get_absolute_url}}">
                             <a href="{{product.get_absolute_url}}">
                                 <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
                             </a>
@@ -45,9 +75,32 @@
                 </div>
                 {% endif %}
                 <hr>
-                {% include "store/index_pagination.html" %}
+                {% include "store/index_all_product_pagination.html" %}
             </div>
         </div>
     </div>
 </main>
+
+<script>
+    $(document).on('click', '#click-count', function (e) {
+        e.preventDefault();
+        var product_count_url = $(this).data('index') + '/product_count';
+        var product_url = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: product_count_url,
+            data: {
+                click: '1',
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                action: 'post'
+            },
+            success: function () {
+                window.location.href = product_url;
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+    })
+</script>
 {% endblock content %}
