@@ -4,21 +4,16 @@
 {% endblock %}
 {% block content %}
 
-
-<div class="container">
-    <div class="col-12">
-        <h1 class="h2">{{ category.name|title}}</h1>
-    </div>
-    <div class="col-12 d-flex justify-content-between">
-        <div><b>Popular</b> products purchased</div>
-    </div>
-    <hr />
-</div>
-<div class="container">
-    <div class="row">
+<main>
+    <div class="container">
+        <div class="col-12">
+            <h1 class="h2">{{ category.name|title}}</h1>
+        </div>
+        <div class="col-12 d-flex justify-content-between">
+            <div><b>Popular</b> products purchased</div>
+        </div>
+        <hr />
         <div class="album">
-            <div class="pb-3">
-            </div>
             {% if not products %}
             <div class="col-12"> There are current not products active.
                 <a href="{% url 'store:store_home' %}">Home</a>
@@ -34,19 +29,19 @@
                         <div class="card-body px-0">
                             <p class="card-text">
                                 <a class="text-dark text-decoration-none"
-                                    href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                                    href="{{ product.get_absolute_url }}">{{ product.title }}
+                                </a>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">£{{product.price}}</small>
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
-                {% endif %}
+                {% endfor %}
             </div>
+            {% endif %}
         </div>
     </div>
-</div>
-
+</main>
 {% endblock %}
