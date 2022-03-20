@@ -20,7 +20,7 @@ def product_all(request):
 
     finally:
         # get popular product
-        popular_products = Product.objects.all().order_by("-click_counter")[:10]
+        popular_products = Product.objects.all().order_by("-click_counter")[:5]
         popular_page_num = request.GET.get("page", 1)
         popular_paginator = Paginator(popular_products, 5)
 

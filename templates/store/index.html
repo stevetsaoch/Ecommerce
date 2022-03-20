@@ -15,7 +15,7 @@
         </div>
         <div class="album py-5 bg-light">
             <div class="container">
-                <div class="pb-3 h5">Popular Books</div>
+                <div class="pb-3 h5">Top 5 popular Books</div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
                     {% for product in popular_product_page %}
                     <div class="col">
@@ -39,8 +39,6 @@
                     </div>
                     {% endfor %}
                 </div>
-                <hr>
-                {% include "store/index_popular_product_pagination.html" %}
             </div>
         </div>
         <hr>
@@ -82,10 +80,8 @@
 </main>
 
 <script>
-    $(document).on('click', '#click-count', function (e) {
-        e.preventDefault();
+    $(document).on('click', '#click-count', function () {
         var product_count_url = $(this).data('index') + '/product_count';
-        var product_url = $(this).data('index');
         $.ajax({
             type: 'POST',
             url: product_count_url,
@@ -95,7 +91,6 @@
                 action: 'post'
             },
             success: function () {
-                window.location.href = product_url;
             },
             error: function (xhr, errmsg, err) {
 

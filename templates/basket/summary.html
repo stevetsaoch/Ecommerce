@@ -7,7 +7,7 @@ Basket summary
 {% endblock title %}
 
 {% block stylesheet %}
-{% static 'store/css/store.css' %}
+{% static 'basket/css/basket.css' %}
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@ Basket summary
     </div>
     <hr />
 </div>
-<div class="container" style="max-width: 1000px">
+<div class="container">
     <div class="row g-3">
         {% if basket|length == 0 %}
         <div class="col-12">Your basket is empty
@@ -30,41 +30,22 @@ Basket summary
             </a>
         </div>
         {% else %}
-        <div class="col-12 bg-light p-3 d-flex justify-content-between">
-            <div class="d-flex d-flex-inline">
-                <div class="pe-3">Order Id</div>
-            </div>
-            <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
-                <div class="d-grid gap-2 ">
-                    <a role="button" href="{% url 'checkout:deliverychoices' %}" class="btn btn-success fw-bold"
-                        type="button">Checkout Securely</a>
-                    <button class="btn btn-light" type="button">Save for later</button>
-                </div>
-            </div>
-            <div class="text-end">
-
-                <div class="">Sub Total: <span class="fw-bold">£</span>
-                    <div id="subtotal" class="d-inline-flex fw-bold">{{basket.get_total_price}}</div>
-                </div>
-
-                <div class="pt-2">Total to pay: <span class="fw-bold h5">£</span>
-                    <div id="total-to-pay" class="d-inline-flex fw-bold h5">{{basket.get_total_price}}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-7 col-lg-8 p-0">
+        <div class="">
             {% for item in basket %}
             {% with product=item.product %}
-            <div class="card mb-3 border-0 product-item" data-index="{{product.id}}">
+            <div class="card mb-3 border-0 product-item grid-column" data-index="{{product.id}}">
                 <div class="row g-0">
                     <div class="col-md-2 d-none d-md-block">
-                        <img class="img-fluid mx-auto d-block" alt="Responsive image" src="{{ product.image.image.url }}" />
+                        <img class="img-fluid mx-auto d-block" alt="Responsive image"
+                            src="{{ product.image.image.url }}" />
                     </div>
-                    <div class="col-md-10 ps-md-3">
-                        <div class="card-body p-1">
+                    <div class="col-md-10 ps-md-3 grid-row">
+                        <div class="" style="margin-left: 2.5rem;">
                             <a class="text-decoration-none text-reset" href="{{item.product.get_absolute_url}}">
-                                <p class="card-text pb-3">{{product.title}}</p>
+                                <p id="override">{{product.title}}</p>
                             </a>
+                        </div>
+                        <div style="margin-left: 2.5rem;">
                             {% with pid=product.id %}
                             {% if product.inventory == 0 %}
                             <label for="select">Out of Stock!</label>
@@ -101,11 +82,58 @@ Basket summary
                             <a type="button" id="delete-button" data-index="{{product.id}}"
                                 class="delete-button text-decoration-none small">Delete</a>
                         </div>
+                        <p class="" style="margin-left: 8.5rem; margin-top: 1rem">
+                             SubTotal:
+                        </p>
                     </div>
+                </div>
+                <div class="grid-row">
+                    <div class="text-decoration-none text-reset">
+                    </div>
+                    <div style="margin-left: 2.5rem;">
+                    </div>
+                    <p style="margin-top: 1rem" >
+                        <span class="fw-bold">£</span>
+                        <span class="product-total" data-index="{{ product.id }}"> {{ item.total_price }} </span>
+                    </p>
                 </div>
             </div>
             {% endwith %}
             {% endfor %}
+        </div>
+        <div class="col-12 bg-light p-3 grid-column">
+            <div style="margin-left: auto; width: 6em">
+                <div class="pt-2">
+                    Subtotal(before-tax):
+                </div>
+                <div class="pt-2">
+                    Total to pay:
+                </div>
+            </div>
+            <div style="margin-right: auto;">
+                <div id="subtotal" class="pt-2 fw-bold h5">
+                    <span class="fw-bold h5">£</span>
+                    <span id="subtotal-price"> {{basket.get_subtotal_price_before_tax}} </span>
+                </div>
+                <div id="total-to-pay" class="pt-2 fw-bold h5">
+                    <span class="fw-bold h5">£</span>
+                    <span id="total-to-pay-price"> {{basket.get_subtotal_price_after_tax}} </span>
+                </div>
+            </div>
+            <div class="" style="margin-right: auto;margin-left: auto;">
+                <div style="margin-right: auto;margin-left: auto;">
+                    <a role="button" href="{% url 'checkout:deliverychoices' %}" class="btn btn-success fw-bold"
+                        type="button">
+                        Checkout Securely
+                    </a>
+                </div>
+                <div style="text-align:center">
+                    <a role="button" href="{% url 'checkout:deliverychoices' %}" class="btn btn-light fw-bold"
+                        type="button">
+                        Save for later
+                    </a>
+                </div>
+            </div>
         </div>
         {% endif %}
     </div>
@@ -116,7 +144,6 @@ Basket summary
     $(document).on('click', '.delete-button', function (e) {
         e.preventDefault();
         var prodid = $(this).data('index');
-        console.log($('#select option:selected').text())
         $.ajax({
             type: 'POST',
             url: '{% url "basket:basket_delete" %}',
@@ -127,9 +154,9 @@ Basket summary
             },
             success: function (json) {
                 $('.product-item[data-index="' + prodid + '"]').remove()
-                document.getElementById("basket-qty").innerHTML = json.qty
-                document.getElementById("subtotal").innerHTML = json.subtotal
-                document.getElementById("total-to-pay").innerHTML = json.subtotal
+                $('#basket-qty').html(json.qty)
+                $('#subtotal-price').html(json.basket_total_before_tax)
+                $('#total-to-pay-price').html(json.basket_total_after_tax)
             },
             error: function (xhr, errmsg, err) {
 
@@ -141,7 +168,6 @@ Basket summary
     $(document).on('click', '.update-button', function (e) {
         e.preventDefault();
         var prodid = $(this).data('index');
-        console.log($('#select option:selected').text())
         $.ajax({
             type: 'POST',
             url: '{% url "basket:basket_update" %}',
@@ -152,9 +178,10 @@ Basket summary
                 action: 'post'
             },
             success: function (json) {
-                document.getElementById("basket-qty").innerHTML = json.qty
-                document.getElementById("subtotal").innerHTML = json.subtotal
-                document.getElementById("total-to-pay").innerHTML = json.subtotal
+                $('.product-total[data-index="' + prodid + '"]').html(json.product_total)
+                $('#basket-qty').html(json.qty)
+                $('#subtotal-price').html(json.basket_total_before_tax)
+                $('#total-to-pay-price').html(json.basket_total_after_tax)
             },
             error: function (xhr, errmsg, err) {
 

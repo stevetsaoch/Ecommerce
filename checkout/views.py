@@ -7,6 +7,7 @@ from .models import DeliveryOptions
 from basket.basket import Basket
 from account.models import Address
 from orders.models import Order, OrderItem
+from store.models import Product
 from paypalcheckoutsdk.orders import OrdersGetRequest
 from checkout.paypal import PayPalClient
 from django.core.exceptions import ObjectDoesNotExist
@@ -75,12 +76,12 @@ def delivery_address(request):
 
 @login_required
 def payment_selection(request):
-    session = request.session
-    if "address" not in request.session:
-        messages.success(request, "Please select address optino")
-        return HttpResponseRedirect(request.META["HTTP_REFERER"])
-
-    return render(request, "checkout/payment_selection.html", context={})
+    try:
+        address = Address.objects.get(customer_id=request.user.id)
+    except ObjectDoesNotExist:
+        return render(request, "checkout/delivery_address.html")
+    else:
+        return render(request, "checkout/payment_selection.html", context={"address": address})
 
 
 ###
@@ -125,5 +126,12 @@ def payment_complete(request):
 @login_required
 def payment_successful(request):
     basket = Basket(request)
+    # update inventory
+    product_ids = basket.basket.keys()
+    products = Product.objects.filter(id__in=product_ids)
+    for product in products:
+        product.inventory -= basket.basket[str(product.id)]["qty"]
+        product.save()
+
     basket.clear()
     return render(request, "checkout/payment_successful.html", {})

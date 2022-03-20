@@ -32,7 +32,7 @@ Delivery Options
             <div class="d-flex bd-highlight ms-0">
                 <div class="p-2 flex-grow-1 bd-highlight">Sub Total:</div>
                 <div class="p-2 bd-highlight"><span class="fw-bold h5">£</span><span id="sub_total"
-                        class="fw-bold h5">{{basket.get_subtotal_price}}</span></div>
+                        class="fw-bold h5">{{basket.get_subtotal_price_after_tax}}</span></div>
             </div>
             <div class="d-flex bd-highlight">
                 <div class="p-2 flex-grow-1 bd-highlight">Delivery Cost:</div>
@@ -65,10 +65,17 @@ Delivery Options
                                 {{option.delivery_timeframe}}</p>
                         </div>
                     </div>
+                    {% if option.id == request.session.purchase.delivery_id %}
+                    <div class="col-md-1 ps-md-1">
+                        <input class="align-middle h-100" type="radio" name="deliveryOption" id="{{option.id}}"
+                            value="{{option.id}}" checked>
+                    </div>
+                    {% else %}
                     <div class="col-md-1 ps-md-1">
                         <input class="align-middle h-100" type="radio" name="deliveryOption" id="{{option.id}}"
                             value="{{option.id}}">
                     </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -78,24 +85,24 @@ Delivery Options
 </div>
 
 <script>
-    $('input[type=radio][name=deliveryOption]').on('change', function(e) {
-      e.preventDefault();
-      $.ajax({
-        type: "POST",
-        url: '{% url "checkout:basket_update_delivery" %}',
-        data: {
-          deliveryoption: $(this).val(),
-          csrfmiddlewaretoken: "{{csrf_token}}",
-          action: "post",
-        },
-        success: function (json) {
-          document.getElementById("total").innerHTML = json.total;
-          document.getElementById("delivery_price").innerHTML = json.delivery_price;
-        },
-        error: function (xhr, errmsg, err) {},
-      });
-      
+    $('input[type=radio][name=deliveryOption]').on('change', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: '{% url "checkout:basket_update_delivery" %}',
+            data: {
+                deliveryoption: $(this).val(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: "post",
+            },
+            success: function (json) {
+                document.getElementById("total").innerHTML = json.total;
+                document.getElementById("delivery_price").innerHTML = json.delivery_price;
+            },
+            error: function (xhr, errmsg, err) {},
+        });
+
     });
-  </script>
+</script>
 
 {% endblock %}

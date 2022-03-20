@@ -34,8 +34,13 @@ def basket_delete(request):
         basket.delete(product=product_id)
 
         basketqty = basket.__len__()
-        baskettotal = basket.get_total_price()
-        response = JsonResponse({"qty": basketqty, "subtotal": baskettotal})
+        baske_total_before_tax = basket.get_subtotal_price_before_tax()
+        baskek_total_after_tax = basket.get_subtotal_price_after_tax()
+        response = JsonResponse({
+            "qty": basketqty, 
+            "basket_total_before_tax": baske_total_before_tax,
+            "basket_total_after_tax": baskek_total_after_tax,
+            })
         return response
 
 
@@ -47,6 +52,13 @@ def basket_update(request):
         basket.update(product=product_id, qty=product_qty)
 
         basketqty = basket.__len__()
-        baskettotal = basket.get_total_price()
-        response = JsonResponse({"qty": basketqty, "subtotal": baskettotal})
+        basket_product_subtotal = basket.get_product_total_before_tax(product_id)
+        baske_total_before_tax = basket.get_subtotal_price_before_tax()
+        baskek_total_after_tax = basket.get_subtotal_price_after_tax()
+        response = JsonResponse({
+            "qty": basketqty,
+            "product_total": basket_product_subtotal,
+            "basket_total_before_tax": baske_total_before_tax,
+            "basket_total_after_tax": baskek_total_after_tax,
+            })
         return response

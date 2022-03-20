@@ -19,7 +19,7 @@
             <div class="d-flex bd-highlight ms-0">
                 <div class="p-2 flex-grow-1 bd-highlight">Sub Total:</div>
                 <div class="p-2 bd-highlight"><span class="fw-bold h5">£</span><span id="sub_total"
-                        class="fw-bold h5">{{basket.get_subtotal_price}}</span></div>
+                        class="fw-bold h5">{{basket.get_subtotal_price_before_tax}}</span></div>
             </div>
             <div class="d-flex bd-highlight">
                 <div class="p-2 flex-grow-1 bd-highlight">Delivery Cost:</div>
@@ -69,10 +69,27 @@
             },
             createOrder: function (data, actions) {
                 return actions.order.create({
+                    application_context: {
+                        brand_name: 'Bookstore',
+                        locale: 'us-US',
+                        shipping_preference: 'SET_PROVIDED_ADDRESS',
+                    },
                     purchase_units: [{
-                        "amount": {
+                        amount: {
                             "currency_code": "USD",
                             "value": '{{basket.get_total_price}}'
+                        },
+                        shipping: {
+                            name: {
+                                full_name: '{{ address.full_name }}'
+                            },
+                            address: {
+                                address_line_1: '{{ address.address_line }}',
+                                address_line_2: '{{ address.address_line2 }}',
+                                admin_area_2: '{{ address.town_city }}',
+                                postal_code: '{{ address.postcode }}',
+                                country_code: '{{ address.country }}'
+                            }
                         }
                     }]
                 });
