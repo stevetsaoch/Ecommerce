@@ -1,7 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
+
 from .models import Category, Product
+from account.models import UserBase
+from review.models import Review
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from review.forms import ReviewForm
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -44,7 +49,6 @@ def product_all(request):
 def product_count(request, slug):
     product = get_object_or_404(Product, slug=slug, in_stock=True)
     # recording click
-    print("123")
     click = request.POST.get("click")
     product.click_counter += int(click)
     product.save()
@@ -53,19 +57,74 @@ def product_count(request, slug):
 
 
 def product_detail(request, slug):
+    # get product detail and quantity range
     product = get_object_or_404(Product, slug=slug, in_stock=True)
-
     qty = product.inventory
     _range = range(0, 1)
     if qty > 0 and qty < 5:
         _range = range(1, product.inventory + 1)
     elif qty >= 5:
         _range = range(1, 6)
-    return render(
-        request,
-        "store/single.html",
-        context={"product": product, "range": _range},
-    )
+    review_form = ReviewForm()
+
+    # check if there are reviews lefted for current product
+    try:
+        review_all = Review.objects.filter(product=product.id)
+    # if there are no reviews lefted for current prodcut
+    except ObjectDoesNotExist:
+        # check if user is login, then show form for entering review
+        if not request.user.is_authenticated:
+            return render(
+                request,
+                "store/single.html",
+                context={"product": product, "range": _range},
+            )
+        else:
+            return render(
+                request,
+                "store/single.html",
+                context={
+                    "product": product,
+                    "range": _range,
+                    "review_form": review_form,
+                },
+            )
+    else:
+        # check if user is logined, then return form or not
+        if not request.user.is_authenticated:
+            return render(
+                request,
+                "store/single.html",
+                context={"product": product, "range": _range, "review_all": review_all},
+            )
+        # if user has lefted review in this prodcut, then don't show review form
+        else:
+            
+            try:
+                review_of_current_user = Review.objects.get(reviewer=request.user.id, product=product.id)
+            except ObjectDoesNotExist:
+                return render(
+                    request,
+                    "store/single.html",
+                    context={
+                        "product": product,
+                        "range": _range,
+                        "review_form": review_form,
+                        "review_all": review_all,
+                    },
+                )
+
+            else:
+                return render(
+                    request,
+                    "store/single.html",
+                    context={
+                        "product": product,
+                        "range": _range,
+                        "review_all": review_all,
+                        "review_of_current_user": review_of_current_user,
+                    },
+                )
 
 
 def category_list(request, category_slug):

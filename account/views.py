@@ -162,7 +162,6 @@ def delete_user(request):
 
 @login_required
 def delivery_address(request):
-
     session = request.session
     if "purchase" not in request.session:
         messages.success(request, "Please choice a delivery option.")

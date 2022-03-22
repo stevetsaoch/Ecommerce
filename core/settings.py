@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "account",
     "checkout",
     "wishlist",
-    "mathfilters"
+    "review",
 ]
 
 MIDDLEWARE = [

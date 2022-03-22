@@ -9,3 +9,62 @@
     opacity: 0.5;
     text-decoration: none;
 }
+
+.icons i {
+    margin-left: 8px
+}
+
+.reply {
+    margin-left: 12px
+}
+
+.reply small {
+    color: #b7b4b4
+}
+
+.reply small:hover {
+    color: green;
+    cursor: pointer
+}
+
+.ratings {
+    margin-right: 10px
+}
+
+.small-ratings p {
+    color: #2deb14;
+    font-size: 16px;
+    display: inline-block
+}
+
+.rating-color {
+    color: #e98521 !important
+}
+
+.review-count {
+    font-weight: 400;
+    margin-bottom: 2px;
+    font-size: 24px !important
+}
+
+.small-ratings i {
+    color: #20e21a
+}
+
+img #user-profile-img{
+    margin-right: 0.8rem;
+    display : inline-flex;
+}
+
+.post-date {
+    position: relative;
+    margin-top: 3rem;
+}
+
+.post-date-text {
+    position:absolute;
+    bottom:0;
+    right:0;
+    font-size: 0.8em
+}
+

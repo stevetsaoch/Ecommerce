@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
-{% block stylesheet %}{% static 'store/css/store.css' %}{% endblock stylesheet %}
+{% load product_filter %}
+{% block stylesheet1 %}
+{% static 'store/css/store.css' %}
+{% endblock stylesheet1 %}
+
+{% block stylesheet2 %}
+{% static 'review/css/review.css' %}
+{% endblock stylesheet2 %}
+
+
 {% block title %}
 {% if product %}{{ product.title }}{% else %}Products{% endif %}
 {% endblock %}
@@ -31,14 +40,15 @@
                             <option value="{{value}}">{{value}}</option>
                             {% endfor %}
                             {% endif %}
-                        {% endif %}
-                        {% endwith %}
+                            {% endif %}
+                            {% endwith %}
                         </select>
                     </div>
                 </div>
                 <hr>
                 {% if product.inventory == 0 %}
-                <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500" disabled>Add to
+                <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500" disabled>Add
+                    to
                     basket</button>
                 {% else %}
                 <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500">Add to
@@ -62,7 +72,53 @@
             </div>
         </div>
     </div>
+    {% if not review_of_current_user and user.is_authenticated %}
+    <hr>
+    <h4>Hi <b>{{user.get_username}}</b>, please rate the product and leave a review:</h4>
+    <form id="review-form" action="#" method="POST">
+        <div class="rating">
+            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+        </div>
+        <div class="form-outline">
+            {{ review_form.review_text }}
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <button type="button" class="btn btn-success" id="review-submit">
+                Submit
+            </button>
+        </div>
+    </form>
+    {% endif %}
+    <hr>
+    <h3>Reviews</h3>
+    {% for review in review_all %}
+    <div class="card p-3 mt-2">
+        <div id="user-profile-img">
+            <img src="{{review.reviewer.profile_img.url}}" width="30" class="user-img rounded-circle mr-2">
+            <span>{{review.reviewer.user_name}}</span>
+        </div>
+        <div class="small-ratings">
+            {% for i in review.rating|times  %}
+            <p class="fa fa-star rating-color">&#11088</p>
+            {% endfor %}
+        </div>
+        <div class="user d-flex flex-row">
+            <span>
+                <small class="text-primary">{{review.review_text}}</small>
+            </span>
+        </div>
+        <div class="post-date">
+            <small class="post-date-text">{{review.post_time}}</small>
+        </div>
+    </div>
+    {% endfor %}
+
 </div>
+
 
 <script>
     $(document).on('click', '#add-button', function (e) {
@@ -99,13 +155,47 @@
                 csrfmiddlewaretoken: "{{ csrf_token }}",
                 action: 'post'
             },
-            success: function (json) {
-            },
+            success: function (json) {},
             error: function (xhr, errmsg, err) {
 
             }
         });
 
     })
+    $(".rating input").on('click', function (e) {
+        window.value = $(this).val();
+        window.productid = "{{product.id}}"
+        console.log(value)
+        window.isClicked = true;
+        console.log(isClicked)
+    });
+    
+    $("#review-submit").on('click', function (e) {
+        let isClicked = window.isClicked
+        let value = window.value
+        let productid = window.productid
+        console.log(isClicked)
+        if (isClicked) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "review:review_add"%}',
+                data: {
+                    productid: productid,
+                    rating: value,
+                    review_text: $('#review-text').val(),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    console.log($('#review-text').val(), )
+                    location.reload()
+                },
+                error: function (xhr, errmsg, err) {
+
+                }
+
+            });
+        }
+    });
 </script>
 {% endblock content %}
