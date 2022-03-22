@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 
 from .models import Category, Product
 from account.models import UserBase
+from orders.models import Order, OrderItem
 from review.models import Review
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from review.forms import ReviewForm
@@ -67,17 +68,19 @@ def product_detail(request, slug):
         _range = range(1, 6)
     review_form = ReviewForm()
 
-    # check if there are reviews lefted for current product
-    try:
-        review_all = Review.objects.filter(product=product.id)
-    # if there are no reviews lefted for current prodcut
-    except ObjectDoesNotExist:
-        # check if user is login, then show form for entering review
-        if not request.user.is_authenticated:
+    # check if user is logined, then return form or not
+    if not request.user.is_authenticated:
+        try:
+            review_all = Review.objects.filter(product=product.id)
+        # if there are no reviews lefted for current prodcut
+        except ObjectDoesNotExist:
             return render(
                 request,
                 "store/single.html",
-                context={"product": product, "range": _range},
+                context={
+                    "product": product,
+                    "range": _range,
+                },
             )
         else:
             return render(
@@ -86,23 +89,19 @@ def product_detail(request, slug):
                 context={
                     "product": product,
                     "range": _range,
-                    "review_form": review_form,
+                    "review_all": review_all,
                 },
             )
+
     else:
-        # check if user is logined, then return form or not
-        if not request.user.is_authenticated:
-            return render(
-                request,
-                "store/single.html",
-                context={"product": product, "range": _range, "review_all": review_all},
-            )
-        # if user has lefted review in this prodcut, then don't show review form
-        else:
-            
-            try:
-                review_of_current_user = Review.objects.get(reviewer=request.user.id, product=product.id)
-            except ObjectDoesNotExist:
+        # if user haven't purchase this product, then not provide review form
+        user_id = request.user.id
+        order_id = Order.objects.filter(user_id=user_id).values_list("id", flat=True)
+        order_items = OrderItem.objects.filter(order_id__in=order_id).values_list("product_id", flat=True).distinct()
+        try:
+            review_all = Review.objects.filter(product=product.id)
+        except ObjectDoesNotExist:
+            if product.id in order_items:
                 return render(
                     request,
                     "store/single.html",
@@ -110,10 +109,43 @@ def product_detail(request, slug):
                         "product": product,
                         "range": _range,
                         "review_form": review_form,
-                        "review_all": review_all,
                     },
                 )
-
+            else:
+                return render(
+                    request,
+                    "store/single.html",
+                    context={
+                        "product": product,
+                        "range": _range,
+                    },
+                )
+        else:
+            # if user has lefted review in this prodcut, then don't show review form
+            try:
+                review_of_current_user = Review.objects.get(reviewer=request.user.id, product=product.id)
+            except ObjectDoesNotExist:
+                if product.id in order_items:
+                    return render(
+                        request,
+                        "store/single.html",
+                        context={
+                            "product": product,
+                            "range": _range,
+                            "review_all": review_all,
+                            "review_form": review_form,
+                        },
+                    )
+                else:
+                    return render(
+                        request,
+                        "store/single.html",
+                        context={
+                            "product": product,
+                            "range": _range,
+                            "review_all": review_all,
+                        },
+                    )
             else:
                 return render(
                     request,
@@ -122,7 +154,7 @@ def product_detail(request, slug):
                         "product": product,
                         "range": _range,
                         "review_all": review_all,
-                        "review_of_current_user": review_of_current_user,
+                        "review_of_current_user": review_of_current_user
                     },
                 )
 

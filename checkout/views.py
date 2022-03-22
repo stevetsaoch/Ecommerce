@@ -115,10 +115,10 @@ def payment_complete(request):
         payment_option="paypal",
         billing_status=True,
     )
-    order_id = order.pk
 
+    # save order item
     for item in basket:
-        OrderItem.objects.create(order_id=order_id, product=item["product"], price=item["price"], quantity=item["qty"])
+        OrderItem.objects.create(order=order, product=item["product"], quantity=item["qty"])
 
     return JsonResponse("Payment complete!", safe=False)
 
