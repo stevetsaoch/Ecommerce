@@ -94,13 +94,4 @@ def order_issue_email(request):
                     "site_name": current_site,
                 },
             )
-        else:
-            return render(
-                request,
-                "account/order_issue_email.html",
-                # context={
-                #     "user": user,
-                #     "order_id": order_id,
-                #     "site_name": current_site,
-                # },
-            )
+

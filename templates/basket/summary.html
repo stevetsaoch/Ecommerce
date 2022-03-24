@@ -128,8 +128,7 @@ Basket summary
                     </a>
                 </div>
                 <div style="text-align:center">
-                    <a role="button" href="{% url 'checkout:deliverychoices' %}" class="btn btn-light fw-bold"
-                        type="button">
+                    <a role="button" class="btn btn-light fw-bold save_for_later" type="button" data-basket="{{basket}}">
                         Save for later
                     </a>
                 </div>
@@ -182,6 +181,28 @@ Basket summary
                 $('#basket-qty').html(json.qty)
                 $('#subtotal-price').html(json.basket_total_before_tax)
                 $('#total-to-pay-price').html(json.basket_total_after_tax)
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+
+    })
+
+    $(document).on('click', '.save_for_later', function (e) {
+        e.preventDefault();
+        var basket = $(this).data('basket');
+        console.log(basket)
+        $.ajax({
+            type: 'POST',
+            url: '{% url "basket:basket_save_for_later" %}',
+            data: {
+                basket: basket,
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                action: 'post'
+            },
+            success: function (json) {
+
             },
             error: function (xhr, errmsg, err) {
 
