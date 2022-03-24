@@ -37,13 +37,13 @@
             <div class="text-end">
                 Total paid: <span class="fw-bold">£{{ order.total_paid }}</span>
             </div>
-        </div>
-        <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
-            <div class="d-grid gap-2 ">
-                <button class="btn btn-warning" type="button">Problem with order</button>
-                <button class="btn btn-light" type="button">Leave a review</button>
+            <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
+                <div class="d-grid gap-2 ">
+                    <button class="btn btn-warning" id="order-issue-report" type="button" data-order="{{order.id}}">Problem with order</button>
+                </div>
             </div>
         </div>
+
         <div class="col-md-7 col-lg-8 p-0">
             {% for item in order.items.all %}
             <div class="card mb-3 border-0">
@@ -57,6 +57,10 @@
                                 <p class="card-text small">{{item.product|title}}</p>
                             </a>
                         </div>
+                        <a role="button" href="{{item.product.get_absolute_url}}" class="btn btn-light fw-bold"
+                            type="button">
+                            Leave a review
+                        </a>
                     </div>
                 </div>
             </div>
@@ -66,6 +70,25 @@
     <hr />
     {% endfor %}
 </div>
+<script>
+    $(document).on('click', '#order-issue-report', function (e) {
+        var orderid = $(this).data("order");
+        $.ajax({
+            type: 'GET',
+            url: '{% url "orders:order_issue" %}',
+            data: {
+                orderid: orderid,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (json) {
+                window.location.replace('{% url "orders:order_issue" %}' + '?orderid=' + orderid)
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+    })
+</script>
 
 
 {% endblock %}

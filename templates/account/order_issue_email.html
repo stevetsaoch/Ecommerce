@@ -1,0 +1,10 @@
+{% load i18n %}{% autoescape off %}
+{% blocktranslate %}Dear {{user}} , we have receied this email because your concern about your order: {{order_id}}.{% endblocktranslate %}
+
+{% translate "We will look into your issue and reply to you in 7 days" %}
+
+{% translate "Thanks for your patience!" %}
+
+{% blocktranslate %}The {{ site_name }} team{% endblocktranslate %}
+
+{% endautoescape %}

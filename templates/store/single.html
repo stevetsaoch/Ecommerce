@@ -165,9 +165,7 @@
     $(".rating input").on('click', function (e) {
         window.value = $(this).val();
         window.productid = "{{product.id}}"
-        console.log(value)
         window.isClicked = true;
-        console.log(isClicked)
     });
     
     $("#review-submit").on('click', function (e) {

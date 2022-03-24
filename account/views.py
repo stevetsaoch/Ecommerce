@@ -167,7 +167,7 @@ def delivery_address(request):
         messages.success(request, "Please choice a delivery option.")
 
 
-##
+
 def formdata_extract(form, request_data):
     dict = {}
     fields = form.Meta.fields

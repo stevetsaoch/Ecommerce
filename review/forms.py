@@ -11,15 +11,13 @@ class ReviewForm(ModelForm):
             "rating",
         )
 
-    review_text = forms.CharField(max_length=1000, widget=forms.Textarea(attrs={
-        'class': 'form-control',
-        'id': 'review-text',
-        'rows': "4"
-    }))
+    review_text = forms.CharField(
+        max_length=1000, widget=forms.Textarea(attrs={"class": "form-control", "id": "review-text", "rows": "4"})
+    )
     rating = forms.IntegerField()
 
     def clean_rating(self):
         rating = self.cleaned_data["rating"]
-        if rating == None:
+        if rating is None:
             raise forms.ValidationError("Please rate the product before submit.")
         return rating
