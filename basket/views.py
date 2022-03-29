@@ -5,7 +5,6 @@ from basket.models import Basket_db
 from store.models import Product
 from account.models import UserBase
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 
 
 def basket_summary(request):
@@ -95,16 +94,16 @@ def basket_save_for_later(request):
                 basket_db.save()
 
         # Update basket_db
-        for item in basket_in_db:
+        for product in basket_in_db:
             # if prodcut is remove from in-session basket
-            if str(item.product_id) not in list(basket.keys()):
-                item.delete()
-            
+            if str(product.product_id) not in list(basket.keys()):
+                product.delete()
+
             # Update product quantity if it was change
-            elif str(item.product_id) in list(basket.keys()):
-                if item.quantity != basket.get(str(item.product_id))["qty"]:
-                    item.quantity = basket.get(str(item.product_id))["qty"]
-                    item.save()
+            elif str(product.product_id) in list(basket.keys()):
+                if product.quantity != basket.get(str(product.product_id))["qty"]:
+                    product.quantity = basket.get(str(product.product_id))["qty"]
+                    product.save()
                 else:
                     pass
 

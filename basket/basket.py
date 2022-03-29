@@ -3,7 +3,7 @@ from checkout.models import DeliveryOptions
 from store.models import Product
 from decimal import *
 from django.conf import settings
-
+from .models import Basket_db
 
 class Basket:
     """
@@ -17,6 +17,19 @@ class Basket:
         if "skey" not in request.session:
             basket = self.session["skey"] = {}
         self.basket = basket
+
+    def check_basket_db_and_modify(self, request):
+        # Check if there are basket data store in db
+        user_id = request.user.id
+        basket_in_db = Basket_db.objects.filter(user_id=user_id)
+        if basket_in_db:
+            basket_in_session = request.session
+            basket_in_session["skey"] = {}
+            for product in basket_in_db:
+                product_price = Product.objects.get(id=int(product.product_id)).price
+                basket_in_session["skey"][str(product.product_id)] = {"price": str(product_price), "qty": product.quantity}
+            basket_in_session.modified = True
+        self.basket = basket_in_session["skey"]
 
     def add(self, product, qty):
         product_id = product.id
@@ -71,9 +84,7 @@ class Basket:
 
     def get_product_total_before_tax(self, product_id):
         product = self.basket.get(str(product_id))
-        print(product)
         product_total = Decimal(product["price"]) * Decimal(product["qty"])
-
         return product_total
 
     def get_subtotal_price_before_tax(self):

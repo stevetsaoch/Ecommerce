@@ -1,5 +1,4 @@
-from distutils.log import error
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
 from django.contrib.sites.shortcuts import get_current_site
@@ -12,8 +11,7 @@ from django.template.loader import render_to_string
 from .token import account_activation_token
 from orders.views import user_orders
 from orders.models import Order
-from basket.models import Basket_db
-from store.models import Product
+from basket.basket import Basket
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django import forms
@@ -30,18 +28,10 @@ def user_orders(request):
 
 @login_required
 def dashboard(request):
-    # Check if there are basket store in db
-    user_id = request.user.id
-    basket_in_db = Basket_db.objects.filter(user_id=user_id)
-    if basket_in_db:
-        basket_session = request.session
-        basket_session["skey"] = {}
-        for product in basket_in_db:
-            product_price = Product.objects.get(id=int(product.product_id)).price
-            basket_session["skey"][str(product.product_id)] = {"price": str(product_price), "qty": product.quantity}
-        basket_session.modified = True
-    orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
-    return render(request, "account/dashboard/dashboard.html", {"orders": orders})
+    # Check if there are basket data store in db
+    basket = Basket(request)
+    basket.check_basket_db_and_modify(request)
+    return render(request, "account/dashboard/dashboard.html")
 
 
 @login_required
@@ -119,7 +109,6 @@ def account_activate(request, uidb64, token):
 
 @login_required
 def edit_details(request):
-    print(request.META["HTTP_REFERER"])
     if request.method == "POST":
         user_data = formdata_extract(UserEditForm(), request)
 
@@ -131,10 +120,11 @@ def edit_details(request):
         try:
             address_instance = Address.objects.get(customer_id=request.user.id)
 
-        # add address if there is no address for current user
+        # add address if there is no address data in db for current user
         except ObjectDoesNotExist:
             address_data["customer"] = request.user.id
             address_form = AddressEditForm(data=address_data)
+
         else:
             address_data["customer"] = request.user.id
             address_form = AddressEditForm(instance=address_instance, data=address_data)
@@ -146,11 +136,7 @@ def edit_details(request):
 
             # save address change
             address_form.save()
-
-            if "delivery_address" in request.META["HTTP_REFERER"]:
-                return HttpResponseRedirect(request.META["HTTP_REFERER"])
-            else:
-                return HttpResponseRedirect(reverse("account:profile"))
+            return HttpResponseRedirect(reverse("account:profile"))
     else:
         user_form = UserEditForm(instance=request.user, use_required_attribute=False)
         address_form = AddressEditForm(instance=request.user, use_required_attribute=False)
