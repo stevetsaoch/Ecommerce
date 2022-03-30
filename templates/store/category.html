@@ -9,18 +9,15 @@
         <div class="col-12">
             <h1 class="h2">{{ category.name|title}}</h1>
         </div>
-        <div class="col-12 d-flex justify-content-between">
-            <div><b>Popular</b> products purchased</div>
-        </div>
         <hr />
         <div class="album">
-            {% if not products %}
+            {% if not category_all_product_paginated %}
             <div class="col-12"> There are current not products active.
                 <a href="{% url 'store:store_home' %}">Home</a>
             </div>
             {% else %}
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-                {% for product in products %}
+                {% for product in category_all_product_paginated %}
                 <div class="col">
                     <div class="card border-0">
                         <a href="{{ product.get_absolute_url }}">
@@ -41,6 +38,8 @@
                 {% endfor %}
             </div>
             {% endif %}
+            <hr>
+            {% include "store/category_all_product_pagination.html" %}
         </div>
     </div>
 </main>

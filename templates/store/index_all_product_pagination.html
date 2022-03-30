@@ -1,18 +1,18 @@
 <div>
     <span>
-        {% if all_product_page.has_previous %}
-            <a href="?page={{ all_product_page.previous_page_number }}">Previous</a>
+        {% if all_product_paginated.has_previous %}
+            <a href="?page={{ all_product_paginated.previous_page_number }}">Previous</a>
         {% endif %}
         
-        {% for i in all_product_page.paginator.page_range  %}
-        {% if all_prodcut_page.number == i %}
+        {% for i in all_product_paginated.paginator.page_range  %}
+        {% if all_product_paginated.number == i %}
             <a href="#">{{ i }}</a>
         {% else %}
             <a href="?page={{ i }}">{{ i }}</a>
         {% endif %}
         {% endfor %}
-        {% if all_product_page.has_next %}
-           <a href="?page={{ all_product_page.next_page_number }}">Next</a>
+        {% if all_product_paginated.has_next %}
+           <a href="?page={{ all_product_paginated.next_page_number }}">Next</a>
         {% endif %}
     </span>
 </div>

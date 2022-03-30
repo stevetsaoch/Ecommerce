@@ -1,165 +1,119 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
+from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, render
+from .prodcuts import ProductPaginator, ProductTools
 
 from .models import Category, Product
 from account.models import UserBase
 from orders.models import Order, OrderItem
 from review.models import Review
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from review.forms import ReviewForm
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
 
-def product_all(request):
-    # get all product
-    products = Product.products.all()
-    all_page_num = request.GET.get("page", 1)
-    all_paginator = Paginator(products, 10)
-    try:
-        all_page_object = all_paginator.page(all_page_num)
-    except PageNotAnInteger:
-        all_page_object = all_paginator.page(1)
-    except EmptyPage:
-        all_page_object = all_paginator.page(all_paginator.num_pages)
+class ProductAll(ListView):
+    template_name = "store/index.html"
+    model = Product
 
-    finally:
-        # get popular product
-        popular_products = Product.objects.all().order_by("-click_counter")[:5]
-        popular_page_num = request.GET.get("page", 1)
-        popular_paginator = Paginator(popular_products, 5)
+    def patch(self, request, *args, **kwargs):
+        # plus one in product click_counter when user click
+        slug = QueryDict(request.body)["slug"]
+        product = get_object_or_404(Product, slug=slug, in_stock=True)
+        product.click_counter += 1
+        product.save()
 
-        try:
-            popular_page_object = popular_paginator.page(popular_page_num)
-        except PageNotAnInteger:
-            popular_page_object = popular_paginator.page(1)
-        except EmptyPage:
-            popular_page_object = popular_paginator.page(popular_paginator.num_pages)
+        return HttpResponse(status=200)
 
-    return render(
-        request,
-        "store/index.html",
-        context={
-            "all_product_page": all_page_object,
-            "popular_product_page": popular_page_object,
-        },
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_num = self.request.GET.get("page", 1)
+        # all product pagination
+        all_product = Product.objects.all()
+        all_product_paginated = ProductPaginator(all_product).paginate(page_num, item_per_page=10)
+
+        # popular product pagination
+        popular_product = Product.objects.all().order_by("-click_counter")
+        popular_product_paginated = ProductPaginator(popular_product).paginate(page_num, item_per_page=5)
+
+        # update context
+        context["all_product_paginated"] = all_product_paginated
+        context["popular_product_paginated"] = popular_product_paginated
+        return context
 
 
-def product_count(request, slug):
-    product = get_object_or_404(Product, slug=slug, in_stock=True)
-    # recording click
-    click = request.POST.get("click")
-    product.click_counter += int(click)
-    product.save()
+class ProdcutSingle(DetailView):
+    model = Product
+    template_name = "store/single.html"
 
-    return HttpResponse(status=200)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.request.user.id
+        product = self.object
+        _range = ProductTools(product).quantity_range()
+        review_all = Review.objects.filter(product=product.id)
+        review_form = ReviewForm()
 
-
-def product_detail(request, slug):
-    # get product detail and quantity range
-    product = get_object_or_404(Product, slug=slug, in_stock=True)
-    qty = product.inventory
-    _range = range(0, 1)
-    if qty > 0 and qty < 5:
-        _range = range(1, product.inventory + 1)
-    elif qty >= 5:
-        _range = range(1, 6)
-    review_form = ReviewForm()
-
-    # check if user is logined, then return form or not
-    if not request.user.is_authenticated:
-        try:
-            review_all = Review.objects.filter(product=product.id)
-        # if there are no reviews lefted for current prodcut
-        except ObjectDoesNotExist:
-            return render(
-                request,
-                "store/single.html",
-                context={
-                    "product": product,
-                    "range": _range,
-                },
-            )
+        # check if user is logined, then return form or not
+        if not self.request.user.is_authenticated:
+            # if there are no reviews lefted for current prodcut
+            context["prodcut"] = product
+            context["range"] = _range
+            context["review_all"] = review_all
         else:
-            return render(
-                request,
-                "store/single.html",
-                context={
-                    "product": product,
-                    "range": _range,
-                    "review_all": review_all,
-                },
+            # Check wether current user had buy this product
+            user_id = self.request.user.id
+            # order_ids of current user
+            user_order_id = Order.objects.filter(user_id=user_id)
+            # all kind of product that user had buy
+            user_order_items = (
+                OrderItem.objects.filter(order_id__in=user_order_id).values_list("product_id", flat=True).distinct()
             )
-
-    else:
-        # if user haven't purchase this product, then not provide review form
-        user_id = request.user.id
-        order_id = Order.objects.filter(user_id=user_id).values_list("id", flat=True)
-        order_items = OrderItem.objects.filter(order_id__in=order_id).values_list("product_id", flat=True).distinct()
-        try:
-            review_all = Review.objects.filter(product=product.id)
-        except ObjectDoesNotExist:
-            if product.id in order_items:
-                return render(
-                    request,
-                    "store/single.html",
-                    context={
-                        "product": product,
-                        "range": _range,
-                        "review_form": review_form,
-                    },
-                )
-            else:
-                return render(
-                    request,
-                    "store/single.html",
-                    context={
-                        "product": product,
-                        "range": _range,
-                    },
-                )
-        else:
-            # if user has lefted review in this prodcut, then don't show review form
-            try:
-                review_of_current_user = Review.objects.get(reviewer=request.user.id, product=product.id)
-            except ObjectDoesNotExist:
-                if product.id in order_items:
-                    return render(
-                        request,
-                        "store/single.html",
-                        context={
-                            "product": product,
-                            "range": _range,
-                            "review_all": review_all,
-                            "review_form": review_form,
-                        },
-                    )
+            # Render review_form if user had buy this product
+            if product.id in user_order_items:
+                try:
+                    current_user_left_review = Review.objects.get(reviewer=user_id, product=product.id)
+                except ObjectDoesNotExist:
+                    context["prodcut"] = product
+                    context["range"] = _range
+                    context["review_all"] = review_all
+                    context["review_form"] = review_form
                 else:
-                    return render(
-                        request,
-                        "store/single.html",
-                        context={
-                            "product": product,
-                            "range": _range,
-                            "review_all": review_all,
-                        },
-                    )
+                    context["prodcut"] = product
+                    context["range"] = _range
+                    context["review_all"] = review_all
             else:
-                return render(
-                    request,
-                    "store/single.html",
-                    context={
-                        "product": product,
-                        "range": _range,
-                        "review_all": review_all,
-                        "review_of_current_user": review_of_current_user
-                    },
-                )
+                # if user has lefted review in this prodcut, then don't show review form
+                context["prodcut"] = product
+                context["range"] = _range
+                context["review_all"] = review_all
+
+        return context
 
 
 def category_list(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
     products = Product.objects.filter(category=category)
     return render(request, "store/category.html", context={"category": category, "products": products})
+
+
+class CategoryProductAll(ListView):
+    template_name = "store/category.html"
+    model = Category
+
+    def get_queryset(self, *args, **kwargs):
+        category = Category.objects.get(slug=self.kwargs["category_slug"])
+        products = Product.objects.filter(category=category)
+        return products
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_num = self.request.GET.get("page", 1)
+        # Category all product pagination
+        category_all_product_paginated = ProductPaginator(self.object_list).paginate(page_num, item_per_page=10)
+        # update context
+        context["category_all_product_paginated"] = category_all_product_paginated
+        context["category"] = Category.objects.get(slug=self.kwargs["category_slug"])
+        return context

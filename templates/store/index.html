@@ -17,9 +17,9 @@
             <div class="container">
                 <div class="pb-3 h5">Top 5 popular Books</div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-                    {% for product in popular_product_page %}
+                    {% for product in popular_product_paginated %}
                     <div class="col">
-                        <div class="card shadow-sm" id="click-count" data-index="{{product.get_absolute_url}}">
+                        <div class="card shadow-sm" id="click-count" data-index="{{product.slug}}">
                             <a href="{{product.get_absolute_url}}">
                                 <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
                             </a>
@@ -46,12 +46,12 @@
             <div class="container">
                 <div class="pb-3 h5">All Books</div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-                    {% if not all_product_page %}
+                    {% if not all_product_paginated %}
                     <div class="col-12"> There are current not product active.</div>
                     {% else %}
-                    {% for product in all_product_page %}
+                    {% for product in all_product_paginated %}
                     <div class="col">
-                        <div class="card shadow-sm" id="click-count" data-index="{{product.get_absolute_url}}">
+                        <div class="card shadow-sm" id="click-count" data-index="{{product.slug}}">
                             <a href="{{product.get_absolute_url}}">
                                 <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
                             </a>
@@ -81,14 +81,18 @@
 
 <script>
     $(document).on('click', '#click-count', function () {
-        var product_count_url = $(this).data('index') + '/product_count';
+        var slug = $(this).data('index');
+        console.log(slug)
         $.ajax({
-            type: 'POST',
-            url: product_count_url,
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            type: 'PATCH',
+            url: '{% url "store:store_home" %}',
             data: {
-                click: '1',
+                slug: slug,
                 csrfmiddlewaretoken: "{{ csrf_token }}",
-                action: 'post'
+                action: 'update_product_counter'
             },
             success: function () {
             },
