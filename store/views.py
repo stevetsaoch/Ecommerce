@@ -1,10 +1,9 @@
 from django.http import HttpResponse, QueryDict
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, render
-from .prodcuts import ProductPaginator, ProductTools
 
-from .models import Category, Product
-from account.models import UserBase
+from store.prodcuts import ProductPaginator, ProductTools
+from store.models import Category, Product
 from orders.models import Order, OrderItem
 from review.models import Review
 
@@ -58,8 +57,8 @@ class ProdcutSingle(DetailView):
 
         # check if user is logined, then return form or not
         if not self.request.user.is_authenticated:
-            # if there are no reviews lefted for current prodcut
-            context["prodcut"] = product
+            # if there are no reviews lefted for current product
+            context["product"] = product
             context["range"] = _range
             context["review_all"] = review_all
         else:
@@ -76,17 +75,17 @@ class ProdcutSingle(DetailView):
                 try:
                     current_user_left_review = Review.objects.get(reviewer=user_id, product=product.id)
                 except ObjectDoesNotExist:
-                    context["prodcut"] = product
+                    context["product"] = product
                     context["range"] = _range
                     context["review_all"] = review_all
                     context["review_form"] = review_form
                 else:
-                    context["prodcut"] = product
+                    context["product"] = product
                     context["range"] = _range
                     context["review_all"] = review_all
             else:
-                # if user has lefted review in this prodcut, then don't show review form
-                context["prodcut"] = product
+                # if user has lefted review in this product, then don't show review form
+                context["product"] = product
                 context["range"] = _range
                 context["review_all"] = review_all
 
