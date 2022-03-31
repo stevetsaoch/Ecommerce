@@ -145,17 +145,19 @@
 
     $(document).on('click', '#add-button-wishlist', function (e) {
         e.preventDefault();
-        console.log($('#select option:selected').text())
         $.ajax({
-            type: 'POST',
-            url: '{% url "wishlist:wishlist_add" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            type: 'PUT',
+            url: '{% url "wishlist:user_wishlist" %}',
             data: {
                 productid: $('#add-button-wishlist').val(),
-                productqty: $('#select').val(),
-                csrfmiddlewaretoken: "{{ csrf_token }}",
-                action: 'post'
+                action: 'add-to-user-wishlist'
             },
-            success: function (json) {},
+            success: function (json) {
+
+            },
             error: function (xhr, errmsg, err) {
 
             }

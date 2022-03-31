@@ -12,14 +12,14 @@
 </div>
 <hr />
 <div class="container-fluid">
-    {% if user_wishlist.product.all|length == 0 %}
+    {% if user_wishlist|length == 0 %}
     <div class="col-12">Your wish list is empty
         <a href="{% url 'store:store_home' %}">
             Shop
         </a>
     </div>
     {% else %}
-    {% for product in user_wishlist.product.all %}
+    {% for product in user_wishlist %}
     <div class="product-item" data-index="{{product.id}}">
         <div class="row g-3">
             <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
@@ -98,12 +98,14 @@
         e.preventDefault();
         var prodid = $(this).data('index');
         $.ajax({
-            type: 'POST',
-            url: '{% url "wishlist:wishlist_delete" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}',
+            },
+            type: 'DELETE',
+            url: '{% url "wishlist:user_wishlist" %}',
             data: {
                 productid: $(this).data('index'),
-                csrfmiddlewaretoken: "{{ csrf_token }}",
-                action: 'post'
+                action: 'delete-from-wishlist'
             },
             success: function (json) {
                 $('.product-item[data-index="' + prodid + '"]').remove()

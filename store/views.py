@@ -2,7 +2,7 @@ from django.http import HttpResponse, QueryDict
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, render
 
-from store.prodcuts import ProductPaginator, ProductTools
+from store.products import ProductPaginator, ProductTools
 from store.models import Category, Product
 from orders.models import Order, OrderItem
 from review.models import Review
@@ -17,9 +17,9 @@ class ProductAll(ListView):
     template_name = "store/index.html"
     model = Product
 
-    def patch(self, request, *args, **kwargs):
+    def patch(self):
         # plus one in product click_counter when user click
-        slug = QueryDict(request.body)["slug"]
+        slug = QueryDict(self.request.body)["slug"]
         product = get_object_or_404(Product, slug=slug, in_stock=True)
         product.click_counter += 1
         product.save()
@@ -50,45 +50,37 @@ class ProdcutSingle(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_id = self.request.user.id
+        # preparing extra context data
         product = self.object
         _range = ProductTools(product).quantity_range()
         review_all = Review.objects.filter(product=product.id)
         review_form = ReviewForm()
-
-        # check if user is logined, then return form or not
-        if not self.request.user.is_authenticated:
-            # if there are no reviews lefted for current product
-            context["product"] = product
-            context["range"] = _range
-            context["review_all"] = review_all
-        else:
-            # Check wether current user had buy this product
-            user_id = self.request.user.id
-            # order_ids of current user
-            user_order_id = Order.objects.filter(user_id=user_id)
-            # all kind of product that user had buy
-            user_order_items = (
-                OrderItem.objects.filter(order_id__in=user_order_id).values_list("product_id", flat=True).distinct()
-            )
-            # Render review_form if user had buy this product
-            if product.id in user_order_items:
-                try:
-                    current_user_left_review = Review.objects.get(reviewer=user_id, product=product.id)
-                except ObjectDoesNotExist:
-                    context["product"] = product
-                    context["range"] = _range
-                    context["review_all"] = review_all
-                    context["review_form"] = review_form
-                else:
-                    context["product"] = product
-                    context["range"] = _range
-                    context["review_all"] = review_all
+        context = {**context, **{
+            "product": product,
+            "range": _range,
+            "review_all": review_all
+        }}
+        # Check wether current user had buy this product
+        user_id = self.request.user.id
+        # order_ids of current user
+        user_order_id = Order.objects.filter(user_id=user_id)
+        # all kind of product that user had buy
+        user_order_items = (
+            OrderItem.objects.filter(order_id__in=user_order_id).values_list("product_id", flat=True).distinct()
+        )
+        # Render review_form if user had buy this product
+        if product.id in user_order_items:
+            try:
+                current_user_left_review = Review.objects.get(reviewer=user_id, product=product.id)
+            except ObjectDoesNotExist:
+                context["review_form"] = review_form
             else:
-                # if user has lefted review in this product, then don't show review form
-                context["product"] = product
-                context["range"] = _range
-                context["review_all"] = review_all
+                context = context
 
+        else:
+            # if user has lefted review in this product, then don't show review form
+            context = context
+            
         return context
 
 

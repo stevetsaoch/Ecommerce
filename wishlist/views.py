@@ -1,4 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
+from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from wishlist.models import WishList
 from django.contrib.auth.decorators import login_required
@@ -6,58 +9,51 @@ from account.models import UserBase
 from store.models import Product
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from store.products import ProductTools
+
 # Create your views here.
 
-@login_required
-def user_wishlist(request):
-    user_id = request.user.id
-    user_wishlist = WishList.objects.get(user=user_id)
-    products = user_wishlist.product.all()
-    range_dict = {}
-    for product in products:
-        qty = product.inventory
-        if qty > 0 and qty < 5:
-            _range = range(1, product.inventory + 1)
-            range_dict[str(product.id)] = _range
-        elif qty > 5:
-            _range = range(1, 6)
-            range_dict[str(product.id)] = _range
-    return render(request, 'account/wishlist/user_wishlist.html', context={
-        'user_wishlist': user_wishlist, 'range': range_dict
-    })
 
-@login_required
-def wishlist_add(request):
-    if request.method == 'POST':
-        user_id = request.user.id
-        product_id = int(request.POST.get('productid'))
+class WishListView(ListView):
+    template_name = "account/wishlist/user_wishlist.html"
+    model = WishList
+    context_object_name = "user_wishlist"
 
-        # check if product is already in wishlist, if it does then return success
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.user_id = request.user.id
+
+    def get_queryset(self):
+        user_wishlist = WishList.objects.get(user_id=self.user_id)
+        product_in_user_wishlist = user_wishlist.product.all()
+
+        return product_in_user_wishlist
+
+    def put(self, request):
+        product_id = int(QueryDict(request.body)["productid"])
+
+        # update wishlist if it exist
         try:
-            w_list = WishList.objects.get(user=user_id)
+            user_wishlist = WishList.objects.get(user=self.user_id)
             product = Product.objects.get(id=product_id)
-            if product not in w_list.product.all():
-                w_list.product.add(product)
-                return HttpResponse(status=201)
+            if product not in user_wishlist.product.all():
+                user_wishlist.product.add(product)
+                return HttpResponse(status=200)
             else:
-                return HttpResponse(status=201)
+                return HttpResponse(status=400)
         # if user is not setup an wish, create a wishlist and followed by adding product
         except ObjectDoesNotExist:
-            user_instance = UserBase.objects.get(id=user_id)
-            product_instance = Product.objects.get(id=product_id)
-            w_list = WishList.objects.create(user=user_instance)
-            w_list.save()
-            w_list.product.add(product_instance)
-            return HttpResponse(status=201)
+            product = Product.objects.get(id=product_id)
+            user_wishlist = WishList.objects.create(user_id=self.user_id)
+            user_wishlist.save()
+            user_wishlist.product.add(product)
+            return HttpResponse(status=200)
 
-@login_required
-def wishlist_delete(request):
-    product_id = int(request.POST.get("productid"))
-    w_list = WishList.objects.get(user=request.user.id)
-    product_instance = Product.objects.get(id=product_id)
-    w_list.product.remove(product_instance)
+    def delete(self, request):
+        user_id = request.user.id
+        product_id = int(QueryDict(request.body)["productid"])
+        user_wishlist = WishList.objects.get(user=user_id)
+        product = Product.objects.get(id=product_id)
+        user_wishlist.product.remove(product)
 
-    return HttpResponse(status=201)
-
-
-
+        return HttpResponse(status=202)

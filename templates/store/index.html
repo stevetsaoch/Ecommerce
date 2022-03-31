@@ -91,7 +91,6 @@
             url: '{% url "store:store_home" %}',
             data: {
                 slug: slug,
-                csrfmiddlewaretoken: "{{ csrf_token }}",
                 action: 'update_product_counter'
             },
             success: function () {
