@@ -171,14 +171,12 @@
     });
     
     $("#review-submit").on('click', function (e) {
-        let isClicked = window.isClicked
         let value = window.value
         let productid = window.productid
-        console.log(isClicked)
         if (isClicked) {
             $.ajax({
                 type: 'POST',
-                url: '{% url "review:review_add"%}',
+                url: '{% url "review:review"%}',
                 data: {
                     productid: productid,
                     rating: value,
