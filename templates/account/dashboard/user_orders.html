@@ -39,7 +39,9 @@
             </div>
             <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
                 <div class="d-grid gap-2 ">
-                    <button class="btn btn-warning" id="order-issue-report" type="button" data-order="{{order.id}}">Problem with order</button>
+                    <a href="{% url 'orders:order_issue' order_key=order.order_key%}">
+                        <button class="btn btn-warning" id="order-issue-report" type="button" data-order="{{order.id}}">Problem with order</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -70,25 +72,25 @@
     <hr />
     {% endfor %}
 </div>
-<script>
+{% comment %} <script>
     $(document).on('click', '#order-issue-report', function (e) {
         var orderid = $(this).data("order");
+        var url = "{% url 'orders:order_issue' %}";
         $.ajax({
             type: 'GET',
-            url: '{% url "orders:order_issue" %}',
+            url: url,
             data: {
                 orderid: orderid,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
             },
             success: function (json) {
-                window.location.replace('{% url "orders:order_issue" %}' + '?orderid=' + orderid)
+                window.location.replace('{% url "orders:order_issue" %}')
             },
             error: function (xhr, errmsg, err) {
-
+                
             }
         });
     })
-</script>
+</script> {% endcomment %}
 
 
 {% endblock %}

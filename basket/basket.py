@@ -23,13 +23,10 @@ class Basket:
         user_id = request.user.id
         basket_in_db = Basket_db.objects.filter(user_id=user_id)
         if basket_in_db:
-            basket_in_session = request.session
-            basket_in_session["skey"] = {}
             for product in basket_in_db:
                 product_price = Product.objects.get(id=int(product.product_id)).price
-                basket_in_session["skey"][str(product.product_id)] = {"price": str(product_price), "qty": product.quantity}
-            basket_in_session.modified = True
-        self.basket = basket_in_session["skey"]
+                self.basket[str(product.product_id)] = {"price": str(product_price), "qty": product.quantity}
+            self.session.modified = True
 
     def add(self, product, qty):
         product_id = product.id

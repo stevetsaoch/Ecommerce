@@ -1,97 +1,76 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from .models import Order, OrderItem
+from .models import Order
 from account.models import UserBase
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
-from basket.basket import Basket
-from django.http.response import JsonResponse
-from django.contrib.auth.decorators import login_required
 from orders.forms import OrderIssue
+from django.views.generic import ListView, TemplateView
+from django.views.generic.edit import FormMixin
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
 
-def user_orders(request):
-    user_id = request.user.id
-    orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
-    return orders
+class OrderView(ListView):
+    model = Order
+    template_name = "account/dashboard/user_orders.html"
+    context_object_name = "orders"
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.user_id = request.user.id
+
+    def get_queryset(self):
+        user_orders = Order.objects.filter(user_id=self.user_id).filter(billing_status=True)
+        return user_orders
 
 
-def add(request):
-    basket = Basket(request)
-    if request.POST.get("action") == "post":
-        user_id = request.user.id
-        order_key = request.POST.get("order_key")
-        baskettotal = basket.get_total_price
+class OrderIssueView(TemplateView, FormMixin):
+    template_name = "account/order_issue.html"
+    form_class = OrderIssue
+    # print(reverse_lazy("orders:user_orders"))
 
-        # Check if order exists
-        if Order.objects.filter(order_key=order_key).exists():
-            pass
-        else:
-            order = Order.objects.create(
-                user_id=user_id,
-                full_name="name",
-                address1="add1",
-                address2="add2",
-                total_paid=baskettotal,
-                order_key=order_key,
-            )
-            order_id = order.pk
-            for item in basket:
-                OrderItem.objects.create(order_id=order_id, product=item["prodcut"], price=item["price"])
-        response = JsonResponse({"success": "Return something"})
-        return response
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.order_key = self.kwargs["order_key"]
+        self.user_id = self.request.user.id
+        self.user = UserBase.objects.get(id=self.user_id)
+        try:
+            # Check if user have this order, prevent other fetch order information through url
+            self.order = Order.objects.get(order_key=self.order_key, user_id=self.user.id)
+        except ObjectDoesNotExist:
+            raise PermissionDenied
 
+    def get_initial(self):
+        initial = {"email": self.user.email, "orderid": self.order.order_key}
+        return initial
 
-@login_required
-def order_issue(request):
-    if request.method == "POST":
-        return HttpResponse(status=200)
-    if request.method == "GET":
-        orderid = request.GET.get("orderid")
-        order = Order.objects.get(id=orderid)
-        order_issue_form = OrderIssue(order)
-        return render(
-            request,
-            "account/order_issue.html",
-            context={
-                "order_issue_form": order_issue_form,
-                "order": order,
-            },
-        )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order_issue_form"] = self.get_form
+        context["order"] = self.order
+        return context
 
-
-@login_required
-def order_issue_email(request):
-    if request.method == "POST":
-        order = Order.objects.get(id=int(request.POST.get("orderid")))
-        order_issue_form = OrderIssue(order, request.POST)
-
+    def post(self, request, **kwargs):
+        order_issue_form = self.get_form()
         if order_issue_form.is_valid():
-            email = order_issue_form.cleaned_data["email"]
-            order_id = order_issue_form.cleaned_data["orderid"]
-            user = UserBase.objects.get(email=email)
             current_site = get_current_site(request)
-            subject = "Order Issue, order key: {orderkey}".format(orderkey=order_id)
+            subject = "Order Issue, order key: {orderkey}".format(orderkey=self.order_key)
             message = render_to_string(
                 "account/order_issue_email.html",
                 context={
-                    "user": user,
-                    "order_id": order_id,
+                    "user": self.user,
+                    "order_id": self.order_key,
                     "site_name": current_site,
                 },
             )
-            user.email_user(subject=subject, message=message)
-
+            self.user.email_user(subject=subject, message=message)
             return render(
                 request,
                 "account/order_issue_email.html",
                 context={
-                    "user": user,
-                    "order_id": order_id,
-                    "order": order,
+                    "user": self.user,
+                    "order_id": self.order_key,
                     "site_name": current_site,
                 },
+                status=202,
             )
-

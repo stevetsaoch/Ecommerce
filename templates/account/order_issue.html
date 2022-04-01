@@ -63,7 +63,7 @@
             {{ order_issue_form.email}}
             {{ order_issue_form.content.label}}
             {{ order_issue_form.content}}
-            <button type="submit" formaction="{% url 'orders:order_issue_email'%}" role="button" class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">
+            <button type="submit" formaction="{% url 'orders:order_issue' order_key=order.order_key %}" role="button" class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">
                 Submit
             </button>
         </form>

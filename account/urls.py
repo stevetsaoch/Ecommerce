@@ -1,7 +1,9 @@
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.views.generic.base import TemplateView
 from django.urls import path
 from . import views
+from orders.views import OrderView
 from .forms import UserLoginForm, PwdResetForm, PwdResetConfirmForm
 
 app_name = "account"
@@ -57,7 +59,4 @@ urlpatterns = [
         TemplateView.as_view(template_name="account/user/delete_confirmation.html"),
         name="delete_confirmation",
     ),
-
-
-    path("user_orders/", views.user_orders, name="user_orders"),
 ]

@@ -9,7 +9,6 @@ from account.models import UserBase, Address
 from .forms import RegistrationForm, UserEditForm, AddressEditForm
 from django.template.loader import render_to_string
 from .token import account_activation_token
-from orders.views import user_orders
 from orders.models import Order
 from basket.basket import Basket
 from django.core.exceptions import ObjectDoesNotExist
@@ -17,13 +16,6 @@ from django.urls import reverse
 from django import forms
 
 # Create your views here.
-
-
-@login_required
-def user_orders(request):
-    user_id = request.user.id
-    orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
-    return render(request, "account/dashboard/user_orders.html", {"orders": orders})
 
 
 @login_required
