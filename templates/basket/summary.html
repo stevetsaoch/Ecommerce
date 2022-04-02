@@ -101,7 +101,7 @@ Basket summary
             {% endwith %}
             {% endfor %}
         </div>
-        <div class="col-12 bg-light p-3 grid-column">
+        <div class="col-12 bg-light p-3 grid-column subtotal-section">
             <div style="margin-left: auto; width: 6em">
                 <div class="pt-2">
                     Subtotal(before-tax):
@@ -144,18 +144,25 @@ Basket summary
         e.preventDefault();
         var prodid = $(this).data('index');
         $.ajax({
-            type: 'POST',
-            url: '{% url "basket:basket_delete" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            type: 'DELETE',
+            url: '{% url "basket:basket" %}',
             data: {
                 productid: $(this).data('index'),
-                csrfmiddlewaretoken: "{{ csrf_token }}",
-                action: 'post'
+                action: 'delete-prodcut-basket'
             },
             success: function (json) {
+
                 $('.product-item[data-index="' + prodid + '"]').remove()
                 $('#basket-qty').html(json.qty)
                 $('#subtotal-price').html(json.basket_total_before_tax)
                 $('#total-to-pay-price').html(json.basket_total_after_tax)
+                if($(".product-total[data-index]").length == 0){
+                    $('.subtotal-section').remove();
+                    location.reload();
+                }
             },
             error: function (xhr, errmsg, err) {
 
@@ -168,13 +175,15 @@ Basket summary
         e.preventDefault();
         var prodid = $(this).data('index');
         $.ajax({
-            type: 'POST',
-            url: '{% url "basket:basket_update" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}',
+            },
+            type: 'PATCH',
+            url: '{% url "basket:basket" %}',
             data: {
                 productid: $(this).data('index'),
                 productqty: $('#select' + prodid + ' option:selected').text(),
-                csrfmiddlewaretoken: "{{ csrf_token }}",
-                action: 'post'
+                action: 'update-basket-product-quantity'
             },
             success: function (json) {
                 $('.product-total[data-index="' + prodid + '"]').html(json.product_total)
@@ -194,10 +203,10 @@ Basket summary
         var basket = $(this).data('basket');
         $.ajax({
             type: 'POST',
-            url: '{% url "basket:basket_save_for_later" %}',
+            url: '{% url "basket:basket" %}',
             data: {
                 csrfmiddlewaretoken: "{{ csrf_token }}",
-                action: 'post'
+                action: 'save-session-basket-to-basket-db'
             },
             success: function (json) {
 

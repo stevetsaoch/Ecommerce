@@ -17,9 +17,9 @@ class ProductAll(ListView):
     template_name = "store/index.html"
     model = Product
 
-    def patch(self):
+    def patch(self, request):
         # plus one in product click_counter when user click
-        slug = QueryDict(self.request.body)["slug"]
+        slug = QueryDict(request.body)["slug"]
         product = get_object_or_404(Product, slug=slug, in_stock=True)
         product.click_counter += 1
         product.save()

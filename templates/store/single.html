@@ -126,12 +126,12 @@
         console.log($('#select option:selected').text())
         $.ajax({
             type: 'POST',
-            url: '{% url "basket:basket_add" %}',
+            url: '{% url "basket:basket" %}',
             data: {
                 productid: $('#add-button').val(),
                 productqty: $('#select').val(),
                 csrfmiddlewaretoken: "{{ csrf_token }}",
-                action: 'post'
+                action: 'add-product-to-basket'
             },
             success: function (json) {
                 document.getElementById('basket-qty').innerHTML = json.qty
