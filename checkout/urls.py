@@ -1,13 +1,13 @@
 from django.urls import include, path
 from . import views
+from .views import DeliveryOptionView, DeliveryAddressView, PaymentView
+from django.contrib.auth.decorators import login_required
 
 app_name = "checkout"
 
 urlpatterns = [
-    path("deliverychoices/", views.deliverychoices, name="deliverychoices"),
-    path("basket_update_delivery/", views.basket_update_delivery, name="basket_update_delivery"),
-    path("delivery_address/", views.delivery_address, name="delivery_address"),
-    path("payment_selection/", views.payment_selection, name="payment_selection"),
-    path("payment_complete/", views.payment_complete, name="payment_complete"),
+    path("deliveryoptions/", login_required(DeliveryOptionView.as_view()), name="delivery_options"),
+    path("delivery_address/", login_required(DeliveryAddressView.as_view()), name="delivery_address"),
+    path("payment/", login_required(PaymentView.as_view()), name="payment"),
     path("payment_successful/", views.payment_successful, name="payment_successful"),
 ]

@@ -95,7 +95,7 @@
                 });
             },
             onApprove: function (data) {
-                var url = "{% url 'checkout:payment_complete' %}"
+                var url = "{% url 'checkout:payment' %}"
                 return fetch(url, {
                     method: 'POST',
                     headers: {

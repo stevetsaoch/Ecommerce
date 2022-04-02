@@ -1,11 +1,13 @@
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.views.generic import ListView
+from django.views.generic.edit import FormView
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+
 from .models import Order
 from account.models import UserBase
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
 from orders.forms import OrderIssue
-from django.views.generic import ListView, TemplateView
-from django.views.generic.edit import FormMixin
-from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -24,10 +26,9 @@ class OrderView(ListView):
         return user_orders
 
 
-class OrderIssueView(TemplateView, FormMixin):
+class OrderIssueView(FormView):
     template_name = "account/order_issue.html"
     form_class = OrderIssue
-    # print(reverse_lazy("orders:user_orders"))
 
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
@@ -72,5 +73,5 @@ class OrderIssueView(TemplateView, FormMixin):
                     "order_id": self.order_key,
                     "site_name": current_site,
                 },
-                status=202,
+                status=201,
             )

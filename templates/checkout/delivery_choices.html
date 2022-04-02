@@ -25,7 +25,7 @@ Delivery Options
     </div>
     {% endif %}
     <div class="row g-3">
-        {% if deliveryoptions|length  == 0 %}
+        {% if delivery_options|length  == 0 %}
         <div class="col-12">There are no delivery options <a href="{% url 'store:store_home' %}">Shop</a></div>
         {% else %}
         <div class="col-md-4 col-lg-4 order-md-last p-0 order-3">
@@ -48,7 +48,7 @@ Delivery Options
                 type="button">Pay Securely</a>
         </div>
         <div class="col-md-7 col-lg-8">
-            {% for option in deliveryoptions %}
+            {% for option in delivery_options %}
             <div class="card mb-3 border-1 rounded-0 product-item me-md-4" data-index="{{option.id}}">
                 <div class="row g-0">
                     <div class="col-md-2 ps-3 ps-md-4">
@@ -88,12 +88,14 @@ Delivery Options
     $('input[type=radio][name=deliveryOption]').on('change', function (e) {
         e.preventDefault();
         $.ajax({
-            type: "POST",
-            url: '{% url "checkout:basket_update_delivery" %}',
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}',
+            },
+            type: "PUT",
+            url: '{% url "checkout:delivery_options" %}',
             data: {
                 deliveryoption: $(this).val(),
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                action: "post",
+                action: "create-update-delivery-option-in-session",
             },
             success: function (json) {
                 document.getElementById("total").innerHTML = json.total;
