@@ -18,7 +18,7 @@ class Basket:
             basket = self.session["skey"] = {}
         self.basket = basket
 
-    def check_basket_db_and_modify(self, request):
+    def check_basket_db_and_modify_session_when_login(self, request):
         # Check if there are basket data store in db
         user_id = request.user.id
         basket_in_db = Basket_db.objects.filter(user_id=user_id)

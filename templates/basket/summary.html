@@ -127,11 +127,6 @@ Basket summary
                         Checkout Securely
                     </a>
                 </div>
-                <div style="text-align:center">
-                    <a role="button" class="btn btn-light fw-bold save_for_later" type="button">
-                        Save for later
-                    </a>
-                </div>
             </div>
         </div>
         {% endif %}
@@ -190,26 +185,6 @@ Basket summary
                 $('#basket-qty').html(json.qty)
                 $('#subtotal-price').html(json.basket_total_before_tax)
                 $('#total-to-pay-price').html(json.basket_total_after_tax)
-            },
-            error: function (xhr, errmsg, err) {
-
-            }
-        });
-
-    })
-
-    $(document).on('click', '.save_for_later', function (e) {
-        e.preventDefault();
-        var basket = $(this).data('basket');
-        $.ajax({
-            type: 'POST',
-            url: '{% url "basket:basket" %}',
-            data: {
-                csrfmiddlewaretoken: "{{ csrf_token }}",
-                action: 'save-session-basket-to-basket-db'
-            },
-            success: function (json) {
-
             },
             error: function (xhr, errmsg, err) {
 

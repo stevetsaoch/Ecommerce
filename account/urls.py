@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.base import TemplateView
 from django.urls import path
 from . import views
+from .views import CustomLogoutView
 from orders.views import OrderView
 from .forms import UserLoginForm, PwdResetForm, PwdResetConfirmForm
 
@@ -14,7 +15,7 @@ urlpatterns = [
         auth_views.LoginView.as_view(template_name="account/login.html", form_class=UserLoginForm),
         name="login",
     ),
-    path("logout/", auth_views.LogoutView.as_view(next_page="/account/login/"), name="logout"),
+    path("logout/", CustomLogoutView.as_view(next_page="/account/login/"), name="logout"),
     path("register/", views.account_register, name="register"),
     path("activate/<slug:uidb64>/<slug:token>", views.account_activate, name="activate"),
     # Password reset

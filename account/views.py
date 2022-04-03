@@ -14,15 +14,62 @@ from basket.basket import Basket
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django import forms
+from django.contrib.auth.views import LogoutView
+from .forms import UserLoginForm
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from basket.models import Basket_db
+from store.models import Product
 
 # Create your views here.
+
+
+class CustomLogoutView(LogoutView):
+    next_page = "/account/login/"
+
+    # PUT data from in-session basket into Basket_db when logout
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        user = UserBase.objects.get(id=request.user.id)
+        basket = request.session.get("skey")
+
+        basket_in_db = Basket_db.objects.filter(user=user)
+        if not basket_in_db:
+            # Save basket to db if user didn't save any
+            for key, value in basket.items():
+                product = Product.objects.get(id=int(key))
+                basket_db = Basket_db.objects.create(user=user, product=product, quantity=int(value["qty"]))
+                basket_db.save()
+        else:
+            # Add new product from in-session basket to Basket_db
+            basket_in_db_list = basket_in_db.values_list("product", flat=True)
+            for key, value in basket.items():
+                if int(key) not in basket_in_db_list:
+                    product = Product.objects.get(id=int(key))
+                    basket_db = Basket_db.objects.create(user=user, product=product, quantity=int(value["qty"]))
+                    basket_db.save()
+
+            # Update basket_db
+            for product in basket_in_db:
+                # if prodcut is remove from in-session basket
+                if str(product.product_id) not in list(basket.keys()):
+                    product.delete()
+
+                # Update product quantity if it was change
+                elif str(product.product_id) in list(basket.keys()):
+                    if product.quantity != basket.get(str(product.product_id))["qty"]:
+                        product.quantity = basket.get(str(product.product_id))["qty"]
+                        product.save()
+                    else:
+                        pass
+        return super().dispatch(request, *args, **kwargs)
 
 
 @login_required
 def dashboard(request):
     # Check if there are basket data store in db
     basket = Basket(request)
-    basket.check_basket_db_and_modify(request)
+    basket.check_basket_db_and_modify_session_when_login(request)
     return render(request, "account/dashboard/dashboard.html")
 
 
