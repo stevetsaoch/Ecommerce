@@ -1,15 +1,16 @@
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 
-from .models import Order
+# local app
+from orders.models import Order
 from account.models import UserBase
 from orders.forms import OrderIssue
 
-# Create your views here.
+# Views
 
 
 class OrderView(ListView):

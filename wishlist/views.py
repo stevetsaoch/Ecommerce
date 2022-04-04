@@ -1,10 +1,12 @@
 from django.http import HttpResponse, QueryDict
 from django.views.generic import ListView
-from wishlist.models import WishList
-from store.models import Product
 from django.core.exceptions import ObjectDoesNotExist
 
-# Create your views here.
+# local app
+from wishlist.models import WishList
+from store.models import Product
+
+# Views
 
 
 class WishListView(ListView):

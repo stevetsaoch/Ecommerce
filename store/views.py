@@ -1,16 +1,16 @@
 from django.http import HttpResponse, QueryDict
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, render
+from django.core.exceptions import ObjectDoesNotExist
 
+# local app
 from store.products import ProductPaginator, ProductTools
 from store.models import Category, Product
 from orders.models import Order, OrderItem
 from review.models import Review
-
 from review.forms import ReviewForm
-from django.core.exceptions import ObjectDoesNotExist
 
-# Create your views here.
+# Views
 
 
 class ProductAll(ListView):

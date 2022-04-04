@@ -1,11 +1,12 @@
 from django.http import HttpResponse
 from django.views.generic import View
+
+# local app
 from review.forms import ReviewForm
 from account.models import UserBase
 from store.models import Product
 
-# Create your views here.
-
+# Views
 
 class ReviewView(View):
     def setup(self, request, *args, **kwargs):

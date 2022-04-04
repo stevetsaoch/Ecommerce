@@ -4,27 +4,24 @@ from django.shortcuts import redirect, render
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.contrib.auth.decorators import login_required
-from account.models import UserBase, Address
-from .forms import RegistrationForm, UserEditForm, AddressEditForm
 from django.template.loader import render_to_string
-from .token import account_activation_token
-from orders.models import Order
-from basket.basket import Basket
-from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
-from django import forms
-from django.views.generic import TemplateView, View
+
+# django views
 from django.contrib.auth.views import LogoutView
+from django.views.generic import TemplateView, View
 from django.views.generic.edit import CreateView
-from .forms import UserLoginForm
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
+
+# local app
+from account.account import formdata_extract
+from account.models import UserBase, Address
+from account.forms import RegistrationForm, UserEditForm, AddressEditForm
+from account.token import account_activation_token
+from basket.basket import Basket
 from basket.models import Basket_db
 from store.models import Product
-from account.account import formdata_extract
 
-# Create your views here.
+# Views
 
 
 class AccountRegisterForm(CreateView):

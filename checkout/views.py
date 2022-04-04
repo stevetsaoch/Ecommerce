@@ -1,20 +1,23 @@
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, QueryDict
+import json
+
+# django
+from django.http import HttpResponseRedirect, JsonResponse, QueryDict
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-import json
-from .models import DeliveryOptions
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import View, ListView, TemplateView
+
+# local app
+from checkout.models import DeliveryOptions
+from checkout.paypal import PayPalClient
 from basket.basket import Basket
 from account.models import Address
 from orders.models import Order, OrderItem
 from store.models import Product
 from paypalcheckoutsdk.orders import OrdersGetRequest
-from checkout.paypal import PayPalClient
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import View, ListView, TemplateView
-from django.views.generic.detail import SingleObjectMixin
 
-# Create your views here.
+# Views
 
 
 class DeliveryOptionView(ListView):
