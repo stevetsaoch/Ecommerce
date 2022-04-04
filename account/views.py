@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
 from django.contrib.sites.shortcuts import get_current_site
@@ -14,23 +14,139 @@ from basket.basket import Basket
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django import forms
+from django.views.generic import TemplateView, View
 from django.contrib.auth.views import LogoutView
+from django.views.generic.edit import CreateView
 from .forms import UserLoginForm
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from basket.models import Basket_db
 from store.models import Product
+from account.account import formdata_extract
 
 # Create your views here.
+
+
+class AccountRegisterForm(CreateView):
+    template_name = "account/registration/register.html"
+    form_class = RegistrationForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.email = form.cleaned_data["email"]
+        self.object.set_password(form.cleaned_data["password"])
+        self.object.is_active = False
+        self.object.save()
+        current_site = get_current_site(self.request)
+        subject = "Activate your Account"
+        message = render_to_string(
+            "account/registration/account_activation_email.html",
+            context={
+                "user": self.object,
+                "domain": current_site.domain,
+                "uid": urlsafe_base64_encode(force_bytes(self.object.pk)),
+                "token": account_activation_token.make_token(self.object),
+            },
+        )
+        self.object.email_user(subject=subject, message=message)
+        return render(self.request, "account/registration/register_email_confirm.html", context={"form": self.object})
+
+
+def account_activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = UserBase.objects.get(pk=uid)
+    except:
+        pass
+    else:
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            login(request, user)
+
+            # create a address instance for user passing activation
+            Address.objects.create(customer_id=user.id)
+            return redirect("account:dashboard")
+        else:
+            return render(request, "account/registration/activation_invalid.html")
+
+
+class ProfileView(TemplateView):
+    template_name = "account/dashboard/profile.html"
+
+    def setup(self, request, *args, **kwargs):
+        user_id = request.user.id
+        self.profile = UserBase.objects.get(id=user_id)
+        self.address = Address.objects.get(customer_id=user_id)
+        super().setup(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["profile"] = self.profile
+        context["address"] = self.address
+
+        return context
+
+
+class ProfileEditView(View):
+    def setup(self, request, *args, **kwargs):
+        self.user = request.user
+        self.user_id = request.user.id
+        super().setup(request, *args, **kwargs)
+
+    def post(self, request):
+        user_data = formdata_extract(UserEditForm(), request)
+
+        # binding profile image to user_form
+        user_form = UserEditForm(data=user_data, files=request.FILES, instance=self.user)
+
+        address_data = formdata_extract(AddressEditForm(), request)
+        address_data["full_name"] = user_data["first_name"] + " " + user_data["last_name"]
+        # get address instance for current user and update it
+        address_data["customer"] = self.user_id
+        address_instance = Address.objects.get(customer_id=self.user_id)
+        address_form = AddressEditForm(data=address_data, instance=address_instance)
+        # data validation and save
+        if user_form.is_valid() & address_form.is_valid():
+            # save user change
+            user_form.save()
+
+            # save address change
+            address_form.save()
+            return HttpResponseRedirect(reverse("account:profile"))
+        else:
+            user_form = UserEditForm(instance=self.user, use_required_attribute=False)
+            address_form = AddressEditForm(instance=self.user, use_required_attribute=False)
+        return render(
+            request,
+            "account/dashboard/edit_details.html",
+            context={"user_form": user_form, "address_form": address_form},
+        )
+
+    def get(self, request):
+        user_form = UserEditForm(instance=self.user, use_required_attribute=False)
+        address_form = AddressEditForm(instance=self.user, use_required_attribute=False)
+        return render(
+            request,
+            "account/dashboard/edit_details.html",
+            context={"user_form": user_form, "address_form": address_form},
+        )
+
+    def patch(self, request):
+        user = UserBase.objects.get(id=self.user_id)
+        user.is_active = False
+        user.save()
+        logout(request)
+
+        return HttpResponse(status=200)
 
 
 class CustomLogoutView(LogoutView):
     next_page = "/account/login/"
 
     # PUT data from in-session basket into Basket_db when logout
-    @method_decorator(never_cache)
-    def dispatch(self, request, *args, **kwargs):
-        user = UserBase.objects.get(id=request.user.id)
+    def setup(self, request, *args, **kwargs):
+        user = UserBase.objects.get(id=request.user.id, is_active=True)
         basket = request.session.get("skey")
 
         basket_in_db = Basket_db.objects.filter(user=user)
@@ -62,156 +178,13 @@ class CustomLogoutView(LogoutView):
                         product.save()
                     else:
                         pass
-        return super().dispatch(request, *args, **kwargs)
+        super().setup(request, *args, **kwargs)
 
 
-@login_required
-def dashboard(request):
-    # Check if there are basket data store in db
-    basket = Basket(request)
-    basket.check_basket_db_and_modify_session_when_login(request)
-    return render(request, "account/dashboard/dashboard.html")
+class DashboardView(TemplateView):
+    template_name = "account/dashboard/dashboard.html"
 
-
-@login_required
-def profile(request):
-    profile = UserBase.objects.get(id=request.user.id)
-    try:
-        address = Address.objects.get(customer_id=request.user.id)
-    except ObjectDoesNotExist:
-        return render(
-            request,
-            "account/dashboard/profile.html",
-            context={
-                "profile": profile,
-            },
-        )
-
-    return render(
-        request,
-        "account/dashboard/profile.html",
-        context={
-            "profile": profile,
-            "address": address,
-        },
-    )
-
-
-def account_register(request):
-    # if request.user.is_authenticated:
-    #     return redirect('/')
-
-    if request.method == "POST":
-        registerForm = RegistrationForm(request.POST)
-        if registerForm.is_valid():
-            # if .save(commit=False) is called by a model form, it will return a model instance.
-            user = registerForm.save(commit=False)
-            user.email = registerForm.cleaned_data["email"]
-            user.set_password(registerForm.cleaned_data["password"])
-            user.is_active = False
-            user.save()
-            # Setup email
-            current_site = get_current_site(request)
-            subject = "Activate your Account"
-            message = render_to_string(
-                "account/registration/account_activation_email.html",
-                context={
-                    "user": user,
-                    "domain": current_site.domain,
-                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                    "token": account_activation_token.make_token(user),
-                },
-            )
-            user.email_user(subject=subject, message=message)
-            return render(request, "account/registration/register_email_confirm.html", context={"form": registerForm})
-
-    else:
-        registerForm = RegistrationForm()
-    return render(request, "account/registration/register.html", context={"form": registerForm})
-
-
-def account_activate(request, uidb64, token):
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        user = UserBase.objects.get(pk=uid)
-    except:
-        pass
-    else:
-        if user is not None and account_activation_token.check_token(user, token):
-            user.is_active = True
-            user.save()
-            login(request, user)
-            return redirect("account:dashboard")
-        else:
-            return render(request, "account/registration/activation_invalid.html")
-
-
-@login_required
-def edit_details(request):
-    if request.method == "POST":
-        user_data = formdata_extract(UserEditForm(), request)
-
-        # binding profile image to user_form
-        user_form = UserEditForm(data=user_data, files=request.FILES, instance=request.user)
-        address_data = formdata_extract(AddressEditForm(), request)
-        address_data["full_name"] = user_data["first_name"] + " " + user_data["last_name"]
-        # get address instance for current user
-        try:
-            address_instance = Address.objects.get(customer_id=request.user.id)
-
-        # add address if there is no address data in db for current user
-        except ObjectDoesNotExist:
-            address_data["customer"] = request.user.id
-            address_form = AddressEditForm(data=address_data)
-
-        else:
-            address_data["customer"] = request.user.id
-            address_form = AddressEditForm(instance=address_instance, data=address_data)
-
-        # data validation and save
-        if user_form.is_valid() & address_form.is_valid():
-            # save user change
-            user_form.save()
-
-            # save address change
-            address_form.save()
-            return HttpResponseRedirect(reverse("account:profile"))
-    else:
-        user_form = UserEditForm(instance=request.user, use_required_attribute=False)
-        address_form = AddressEditForm(instance=request.user, use_required_attribute=False)
-    return render(
-        request, "account/dashboard/edit_details.html", context={"user_form": user_form, "address_form": address_form}
-    )
-
-
-@login_required
-def delete_user(request):
-    user = UserBase.objects.get(user_name=request.user)
-    user.is_active = False
-    user.save()
-    logout(request)
-    return redirect("account:delete_confirmation")
-
-
-# Addresses
-
-
-@login_required
-def delivery_address(request):
-    session = request.session
-    if "purchase" not in request.session:
-        messages.success(request, "Please choice a delivery option.")
-
-
-def formdata_extract(form, request_data):
-    dict = {}
-    fields = form.Meta.fields
-    for field in fields:
-        if isinstance(form.fields[field], forms.ImageField) or isinstance(form.fields[field], forms.FileField):
-            pass
-        else:
-            if field == "customer" or field == "full_name":
-                dict[field] = ""
-            else:
-                dict[field] = request_data.POST[field]
-    return dict
+    def setup(self, request, *args, **kwargs):
+        basket = Basket(request)
+        basket.check_basket_db_and_modify_session_when_login(request)
+        super().setup(request, *args, **kwargs)

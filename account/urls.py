@@ -3,10 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.base import TemplateView
 from django.urls import path
 from . import views
-from .views import CustomLogoutView
+from .views import CustomLogoutView, AccountRegisterForm, DashboardView, ProfileView, ProfileEditView, DashboardView
 from orders.views import OrderView
 from .forms import UserLoginForm, PwdResetForm, PwdResetConfirmForm
-
+from django.contrib.auth.decorators import login_required
 app_name = "account"
 
 urlpatterns = [
@@ -16,7 +16,7 @@ urlpatterns = [
         name="login",
     ),
     path("logout/", CustomLogoutView.as_view(next_page="/account/login/"), name="logout"),
-    path("register/", views.account_register, name="register"),
+    path("register/", AccountRegisterForm.as_view(), name="register"),
     path("activate/<slug:uidb64>/<slug:token>", views.account_activate, name="activate"),
     # Password reset
     # send email to your mailbox
@@ -51,13 +51,13 @@ urlpatterns = [
         ),
     ),
     # User profile
-    path('dashboard/', views.dashboard, name='dashboard'),
-    path('profile/', views.profile, name='profile'),
-    path("profile/edit/", views.edit_details, name="edit_details"),
-    path("profile/delete_user/", views.delete_user, name="delete_user"),
+    path('dashboard/', login_required(DashboardView.as_view()), name='dashboard'),
+    path('profile/', login_required(ProfileView.as_view()), name='profile'),
+    path("profile/edit/", login_required(ProfileEditView.as_view()), name="edit_details"),
+    path("profile/delete_user/", login_required(ProfileEditView.as_view()), name="delete_user"),
     path(
         "profile/delete_confirm/",
-        TemplateView.as_view(template_name="account/user/delete_confirmation.html"),
+        TemplateView.as_view(template_name="account/dashboard/delete_confirmation.html"),
         name="delete_confirmation",
     ),
 ]

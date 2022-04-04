@@ -72,10 +72,32 @@
         Changes</button>
     <hr class="mb-3">
 </form>
-<form class="account-form" action="{% url "account:delete_user" %}" method="post">
-    {% csrf_token %}
+<div>
     <p class=" h3 pt-4 font-weight-bold">Delete Account</p>
     <p>Are you sure you want to delete your account?</p>
-    <button type="submit" role="button" class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">Delete</button>
-</form>
+    <button id="delete-user" type="submit" role="button" class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">Delete</button>
+</div>
+
+<script>
+    $(document).on('click', '#delete-user', function (e) {
+        $.ajax({
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}',
+            },
+            type: 'PATCH',
+            url: '{% url "account:edit_details" %}',
+            data: {
+                action: 'deletet-user'
+            },
+            success: function (json) {
+                window.location = '{% url "account:delete_confirmation" %}'
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+
+    })
+</script>
+
 {% endblock %}
