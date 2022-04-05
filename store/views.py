@@ -55,11 +55,7 @@ class ProdcutSingle(DetailView):
         _range = ProductTools(product).quantity_range()
         review_all = Review.objects.filter(product=product.id)
         review_form = ReviewForm()
-        context = {**context, **{
-            "product": product,
-            "range": _range,
-            "review_all": review_all
-        }}
+        context = {**context, **{"product": product, "range": _range, "review_all": review_all}}
         # Check wether current user had buy this product
         user_id = self.request.user.id
         # order_ids of current user
@@ -80,17 +76,11 @@ class ProdcutSingle(DetailView):
         else:
             # if user has lefted review in this product, then don't show review form
             context = context
-            
+
         return context
 
 
-def category_list(request, category_slug):
-    category = get_object_or_404(Category, slug=category_slug)
-    products = Product.objects.filter(category=category)
-    return render(request, "store/category.html", context={"category": category, "products": products})
-
-
-class CategoryProductAll(ListView):
+class CategoryProductView(ListView):
     template_name = "store/category.html"
     model = Category
 

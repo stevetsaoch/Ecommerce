@@ -1,11 +1,20 @@
-.grid-column {
+#grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    background: yellow;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
 }
 
-.grid-row {
+#grid-second-col {
     display: grid;
-    grid-template-rows: 20px, 50px;
+    background: green;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+#pro-img {
+  object-fit: cover;
+  width: 300%;
+  max-height: 100%;
 }
 
 .store-select-dropdown {
