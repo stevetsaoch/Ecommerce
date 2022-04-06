@@ -4,7 +4,7 @@
 
 
 <form class="account-form" method="post" enctype="multipart/form-data">
-
+    {% csrf_token %}
     {% if user_form.is_valid and address_form.is_valid %}
     <div class="alert alert-primary" role="alert">
         Details successfully updated!
@@ -17,17 +17,18 @@
     <p>You can edit your information using the following form:</p>
     {% endif %}
 
-    {% if user_form.errors %}
+    {% comment %} {% if user_form.errors %}
     <p>Please correct the following errors:</p>
-        {% for user_field in  user_form %}
+        {% for user_field in user_form %}
             {% if user_field.errors %}
             <div class="alert alert-primary" role="alert">
                 {{ user_field.label }}: {{ user_field.errors|striptags }}
             </div>
             {% endif %}
         {% endfor %}
-    {% endif %}
+    {% endif %} {% endcomment %}
     {% if address_form.errors %}
+            <p>Please correct the following errors:</p>
             {% for address_field in  address_form %}
                 {% if address_field.errors %}
                     <div class="alert alert-primary" role="alert">
@@ -37,7 +38,7 @@
             {% endfor %}
     {% endif %}
 
-    {% csrf_token %}
+
     <label class="small font-weight-bold">{{ user_form.profile_img.label}}</label>
     {{ user_form.profile_img }}
     <label class="small font-weight-bold">{{ user_form.email.label}}</label>

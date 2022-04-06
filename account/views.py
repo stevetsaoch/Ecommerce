@@ -111,9 +111,7 @@ class ProfileEditView(View):
             # save address change
             address_form.save()
             return HttpResponseRedirect(reverse("account:profile"))
-        else:
-            user_form = UserEditForm(instance=self.user, use_required_attribute=False)
-            address_form = AddressEditForm(instance=self.user, use_required_attribute=False)
+
         return render(
             request,
             "account/dashboard/edit_details.html",

@@ -19,8 +19,12 @@ class WishListView(ListView):
         self.user_id = request.user.id
 
     def get_queryset(self):
-        user_wishlist = WishList.objects.get(user_id=self.user_id)
-        product_in_user_wishlist = user_wishlist.product.all()
+        try:
+            user_wishlist = WishList.objects.get(user_id=self.user_id)
+        except ObjectDoesNotExist:
+            product_in_user_wishlist = None
+        else:
+            product_in_user_wishlist = user_wishlist.product.all()
 
         return product_in_user_wishlist
 

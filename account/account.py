@@ -1,3 +1,5 @@
+from django import forms
+
 def formdata_extract(form, request_data):
     dict = {}
     fields = form.Meta.fields

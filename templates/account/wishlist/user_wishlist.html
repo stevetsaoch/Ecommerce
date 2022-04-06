@@ -77,7 +77,7 @@
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '{% url "basket:basket_add" %}',
+            url: '{% url "basket:basket" %}',
             data: {
                 productid: $('#add-button').val(),
                 productqty: 1,
@@ -109,6 +109,7 @@
             },
             success: function (json) {
                 $('.product-item[data-index="' + prodid + '"]').remove()
+                location.reload();
             },
             error: function (xhr, errmsg, err) {
 

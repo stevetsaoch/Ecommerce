@@ -73,8 +73,6 @@ class UserEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["user_name"].required = True
-        self.fields["email"].required = True
 
     profile_img = forms.ImageField(
         label="Upload your profile picture!",
