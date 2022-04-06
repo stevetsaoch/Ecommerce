@@ -9,7 +9,9 @@ private_info.py
 __pycache__/
 *.py[cod]
 *$py.class
-*/migrations/
+*/migrations/*
+!__init__.py
+
 
 # C extensions
 *.so
