@@ -6,7 +6,6 @@ from django_countries import widgets, countries
 
 
 class RegistrationForm(forms.ModelForm):
-
     user_name = forms.CharField(label="Enter Username", min_length=4, max_length=50, help_text="Required")
     email = forms.EmailField(
         max_length=100, help_text="Required", error_messages={"required": "Sorry, you will need an email"}
@@ -21,25 +20,6 @@ class RegistrationForm(forms.ModelForm):
             "email",
         )
 
-    def clean_username(self):
-        user_name = self.cleaned_data["user_name"].lower()
-        r = UserBase.objects.filter(user_name=user_name)
-        if r.count():
-            raise forms.ValidationError("Username already exists")
-        return user_name
-
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd["password"] != cd["password2"]:
-            raise forms.ValidationError("Passwords do not match.")
-        return cd["password2"]
-
-    def clean_email(self):
-        email = self.cleaned_data["email"]
-        if UserBase.objects.filter(email=email).exists():
-            raise forms.ValidationError("Please use another Email, that is already taken")
-        return email
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["user_name"].widget.attrs.update({"class": "form-control mb-3", "placeholder": "Username"})
@@ -49,6 +29,29 @@ class RegistrationForm(forms.ModelForm):
         self.fields["password"].widget.attrs.update({"class": "form-control mb-3", "placeholder": "Password"})
         self.fields["password2"].widget.attrs.update({"class": "form-control", "placeholder": "Repeat Password"})
 
+    def clean_username(self):
+        user_name = self.cleaned_data["user_name"].lower()
+        r = UserBase.objects.filter(user_name=user_name)
+        if r.count():
+            raise forms.ValidationError("Username already exists")
+        return user_name
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if UserBase.objects.filter(email=email).exists():
+            raise forms.ValidationError("Please use another Email, that is already taken")
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean().copy()
+        if not any(char.isdigit() for char in str(cleaned_data["password"])):
+            password1_error_message = "You Need at least one digit in your password."
+            self.add_error('password', password1_error_message)
+        if cleaned_data["password"] != cleaned_data["password2"]:
+            password2_error_message = "Passwords do not match."
+            self.add_error('password2', password2_error_message)
+
+
 
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(
@@ -57,6 +60,7 @@ class UserLoginForm(AuthenticationForm):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Password", "id": "login-pwd"})
     )
+
 
 # customize template in ClearableFileInput widget
 class CustomClearableFileInput(forms.widgets.ClearableFileInput):
@@ -79,9 +83,7 @@ class UserEditForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
     profile_img = forms.ImageField(
-        label="Upload your profile picture!",
-        allow_empty_file=True,
-        widget=CustomClearableFileInput()
+        label="Upload your profile picture!", allow_empty_file=True, widget=CustomClearableFileInput()
     )
 
     email = forms.EmailField(
