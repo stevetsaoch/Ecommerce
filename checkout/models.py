@@ -49,7 +49,6 @@ class DeliveryOptions(models.Model):
         max_length=255,
     )
 
-    order = models.IntegerField(verbose_name=_("list order"), help_text=_("Required"), default=0)
     is_active = models.BooleanField(default=True)
 
     class Meta:
