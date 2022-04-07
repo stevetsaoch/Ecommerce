@@ -58,7 +58,7 @@ class UserLoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Password", "id": "login-pwd"})
     )
 
-
+# customize template in ClearableFileInput widget
 class CustomClearableFileInput(forms.widgets.ClearableFileInput):
     template_name = "account/dashboard/custom_clearable_file_input.html"
 

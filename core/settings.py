@@ -127,7 +127,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+# allow to override default template such as template render from widget
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
