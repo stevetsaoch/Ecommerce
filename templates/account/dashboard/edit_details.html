@@ -2,45 +2,41 @@
 {% block title %}Edit Profile{% endblock %}
 {% block sub_content %}
 
-
+<h3>Change your details</h3>
+<p>You can edit your information using the following form:</p>
+<hr>
 <form class="account-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {% if user_form.is_valid and address_form.is_valid %}
-    <div class="alert alert-primary" role="alert">
-        Details successfully updated!
-    </div>
-    <p class="small text-center pt-0">
-        <a href="{% url "account:dashboard" %}">Back to Dashboard</a>
-    </p>
-    {%else%}
-    <h3>Change your details</h3>
-    <p>You can edit your information using the following form:</p>
-    {% endif %}
 
-    {% comment %} {% if user_form.errors %}
+    {% if user_form.errors %}
     <p>Please correct the following errors:</p>
-        {% for user_field in user_form %}
-            {% if user_field.errors %}
-            <div class="alert alert-primary" role="alert">
-                {{ user_field.label }}: {{ user_field.errors|striptags }}
-            </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %} {% endcomment %}
+    {% for user_field in user_form %}
+    {% if user_field.errors %}
+    <div class="alert alert-primary" role="alert">
+        {{ user_field.label }}: {{ user_field.errors|striptags }}
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
     {% if address_form.errors %}
-            <p>Please correct the following errors:</p>
-            {% for address_field in  address_form %}
-                {% if address_field.errors %}
-                    <div class="alert alert-primary" role="alert">
-                        {{ address_field.label }}: {{ address_field.errors|striptags }}
-                    </div>
-                {% endif %}
-            {% endfor %}
+    <p>Please correct the following errors:</p>
+    {% for address_field in  address_form %}
+    {% if address_field.errors %}
+    <div class="alert alert-primary" role="alert">
+        {{ address_field.label }}: {{ address_field.errors|striptags }}
+    </div>
+    {% endif %}
+    {% endfor %}
     {% endif %}
 
-
-    <label class="small font-weight-bold">{{ user_form.profile_img.label}}</label>
-    {{ user_form.profile_img }}
+    <div style="display:flex; flex-direction:column;">
+        <div>
+            <label class="small font-weight-bold">{{ user_form.profile_img.label}}</label>
+        </div>
+        <div>
+            {{ user_form.profile_img }}
+        </div>
+    </div>
     <label class="small font-weight-bold">{{ user_form.email.label}}</label>
     {{ user_form.email }}
     <label class="small font-weight-bold">{{ user_form.user_name.label}}</label>
@@ -67,7 +63,7 @@
     {% comment %} about you {% endcomment %}
     <label class="small font-weight-bold">{{ user_form.about.label}}</label>
     {{ user_form.about }}
-    
+
 
     <button class="btn btn-primary btn-block py-2 mb-4 mt-5 fw-bold w-100" type="submit" value="Save changes">Save
         Changes</button>
@@ -76,7 +72,8 @@
 <div>
     <p class=" h3 pt-4 font-weight-bold">Delete Account</p>
     <p>Are you sure you want to delete your account?</p>
-    <button id="delete-user" type="submit" role="button" class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">Delete</button>
+    <button id="delete-user" type="submit" role="button"
+        class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">Delete</button>
 </div>
 
 <script>

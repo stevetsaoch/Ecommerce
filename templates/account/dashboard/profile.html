@@ -7,9 +7,10 @@
 
 {% block sub_content %}
 {% if user.is_authenticated %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="text-right">Profile</h4>
+<div class="col-12 d-flex justify-content-between">
+    <h1><b>Profile</b></h1>
 </div>
+<hr />
 <div class="container-profile">
     <div class="level-one-pic" style="flex-basis:35%">
             <img class="rounded-circle" width="150px" src={{ profile.profile_img.url}}>

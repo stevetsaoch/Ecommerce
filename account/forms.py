@@ -59,6 +59,10 @@ class UserLoginForm(AuthenticationForm):
     )
 
 
+class CustomClearableFileInput(forms.widgets.ClearableFileInput):
+    template_name = "account/dashboard/custom_clearable_file_input.html"
+
+
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = UserBase
@@ -77,6 +81,7 @@ class UserEditForm(forms.ModelForm):
     profile_img = forms.ImageField(
         label="Upload your profile picture!",
         allow_empty_file=True,
+        widget=CustomClearableFileInput()
     )
 
     email = forms.EmailField(
@@ -151,7 +156,7 @@ class AddressEditForm(forms.ModelForm):
             "address_line",
             "address_line2",
         )
-    
+
     full_name = forms.CharField(
         label="Full name",
         min_length=4,

@@ -72,25 +72,5 @@
     <hr />
     {% endfor %}
 </div>
-{% comment %} <script>
-    $(document).on('click', '#order-issue-report', function (e) {
-        var orderid = $(this).data("order");
-        var url = "{% url 'orders:order_issue' %}";
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data: {
-                orderid: orderid,
-            },
-            success: function (json) {
-                window.location.replace('{% url "orders:order_issue" %}')
-            },
-            error: function (xhr, errmsg, err) {
-                
-            }
-        });
-    })
-</script> {% endcomment %}
-
 
 {% endblock %}
