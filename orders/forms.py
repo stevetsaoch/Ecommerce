@@ -1,16 +1,16 @@
 from django import forms
-from account.models import UserBase
-from orders.models import Order
+from orders.models import OrderIssue
 
 
-class OrderIssue(forms.Form):
+class OrderIssue(forms.ModelForm):
+    class Meta:
+        model = OrderIssue
+        fields = ("email", "content", "orderid")
 
     email = forms.EmailField(
         label="Your email (can not be changed)",
         max_length=200,
-        widget=forms.TextInput(
-            attrs={"class": "form-control mb-3", "placeholder": "email", "id": "form-email", "readonly": "readonly"}
-        ),
+        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "email", "id": "form-email"}),
     )
 
     content = forms.CharField(
@@ -22,5 +22,12 @@ class OrderIssue(forms.Form):
     orderid = forms.CharField(
         label="Your order id",
         max_length=255,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "orderid", "id": "form-orderid", "readonly": "readonly"}),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control mb-3",
+                "placeholder": "orderid",
+                "id": "form-orderid",
+                "readonly": "readonly",
+            }
+        ),
     )

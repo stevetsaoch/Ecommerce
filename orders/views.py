@@ -55,6 +55,12 @@ class OrderIssueView(FormView):
     def post(self, request, **kwargs):
         order_issue_form = self.get_form()
         if order_issue_form.is_valid():
+            # save form into model
+            order_issue_model = order_issue_form.save(commit=False)
+            order_issue_model.order_id = self.order.id
+            order_issue_model.save()
+
+            # organize reply emain
             current_site = get_current_site(request)
             subject = "Order Issue, order key: {orderkey}".format(orderkey=self.order_key)
             message = render_to_string(

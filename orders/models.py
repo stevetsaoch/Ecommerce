@@ -36,3 +36,8 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class OrderIssue(models.Model):
+    order = models.ForeignKey(Order, related_name="order_issue_id", on_delete=models.CASCADE)
+    content = models.TextField(max_length=1000, default="", blank=True)
