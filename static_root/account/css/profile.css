@@ -1,0 +1,43 @@
+.container-profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+div.level-one-pic {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+div.level-one {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.first-last-name-phone {
+    display: flex;
+}
+
+.first-last-name-phone > div {
+    flex-basis: 33.33%;
+}
+
+.conuntry-city-postcode {
+    display: flex;
+}
+
+.conuntry-city-postcode > div {
+    flex-basis: 33.33%;
+}
+
+.address-line-12 {
+    display: flex;
+}
+
+.address-line-12 > div {
+    flex-basis: 33.33%;
+}

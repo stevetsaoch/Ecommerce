@@ -28,12 +28,6 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Username already exists")
         return user_name
 
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd["password"] != cd["password2"]:
-            raise forms.ValidationError("Passwords do not match.")
-        return cd["password2"]
-
     def clean_email(self):
         email = self.cleaned_data["email"]
         if UserBase.objects.filter(email=email).exists():
@@ -49,6 +43,14 @@ class RegistrationForm(forms.ModelForm):
         self.fields["password"].widget.attrs.update({"class": "form-control mb-3", "placeholder": "Password"})
         self.fields["password2"].widget.attrs.update({"class": "form-control", "placeholder": "Repeat Password"})
 
+    def clean(self):
+        cleaned_data = super().clean().copy()
+        if not any(char.isdigit() for char in str(cleaned_data["password"])):
+            password1_error_message = "You Need at least one digit in your password."
+            self.add_error('password', password1_error_message)
+        if cleaned_data["password"] != cleaned_data["password2"]:
+            password2_error_message = "Passwords do not match."
+            self.add_error('password2', password2_error_message)
 
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(
