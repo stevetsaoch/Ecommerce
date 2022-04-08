@@ -1,22 +1,25 @@
-{% extends 'account/sub_base.html' %}
-{% block title %}Account Email Sent{% endblock title %}
-
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Issue Reported{%endblock %}
 {% block content %}
+
 <div class="container">
-    <div>
-        <h3 class="mb-4">Activation email sent</h3>
-        <p>Check your email to activate your account</p>
+    <div class="col-12">
+        <h1 class="h2">Issue Reported</h1>
     </div>
-    <div>
+    <div class="col-12">
+        <p>We will process your issue as soon as possible, thanks for your patience.</p>
+        <p>
             Redirect to 
-            <a href="{% url 'account:login' %}">Login page</a> in <span id="countmesg"></span>
+            <a href="{% url 'store:store_home' %}">home page</a> in <span id="countmesg"></span>
+        </p>
     </div>
 </div>
 
 <script>
     $(document).ready(function () {
         var delay = 10;
-        var url = "{% url 'account:login' %}";
+        var url = "{% url 'store:store_home' %}";
         var timer = null
 
         function countdown() {
