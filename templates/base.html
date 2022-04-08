@@ -66,14 +66,17 @@
                     <div>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent2">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                {% if user.is_authenticated %}
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-reset" href="#" id="navbarDropdown"
                                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <div class="small text-muted">
-                                            {% if user.is_authenticated %}
                                             Hello, {{ user.get_username }}
                                             {% else %}
-                                            Login
+                                            <a href="{% url "account:login" %}"
+                                                class="small text-mute" style="text-decoration: none; color: #6c757d;">
+                                                Login
+                                            </a>
                                             {% endif %}
                                         </div>
                                     </a>
@@ -87,13 +90,10 @@
                                                     <a href="{% url 'orders:user_orders' %}"
                                                         class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Orders</a>
                                                     <a href="{% url 'wishlist:user_wishlist' %}"
-                                                        class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Wish List</a>
-
+                                                        class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Wish
+                                                        List</a>
                                                     <a href="{% url "account:logout" %}"
                                                         class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Logout</a>
-                                                    {% else %}
-                                                    <a href="{% url "account:login" %}"
-                                                        class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Login</a>
                                                     {% endif %}
                                                 </ul>
                                             </div>

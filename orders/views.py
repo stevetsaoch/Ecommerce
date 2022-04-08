@@ -68,11 +68,6 @@ class OrderIssueView(FormView):
             self.user.email_user(subject=subject, message=message)
             return render(
                 request,
-                "account/order_issue_email.html",
-                context={
-                    "user": self.user,
-                    "order_id": self.order_key,
-                    "site_name": current_site,
-                },
+                "account/order_issue_email_success.html",
                 status=201,
             )
