@@ -1,5 +1,11 @@
 {% extends "account/sub_base.html" %}
+{% load orderissue_filter %}
+{% load static %}
 {% block title %}User Orders{% endblock %}
+
+{% block stylesheet1 %}
+{% static 'orders/css/orders.css' %}
+{% endblock stylesheet1 %}
 
 {% block sub_content %}
 
@@ -39,9 +45,17 @@
             </div>
             <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
                 <div class="d-grid gap-2 ">
-                    <a href="{% url 'orders:order_issue' order_key=order.order_key%}">
-                        <button class="btn btn-warning" id="order-issue-report" type="button" data-order="{{order.id}}">Problem with order</button>
+                    {% if order|orderissueexist %}
+                    <a class="isDisabled" style="pointer-events: none;" href="{% url 'orders:order_issue' order_key=order.order_key%}" >
+                        <button class="btn btn-warning" id="order-issue-report" type="button" style="pointer-events: none;"
+                            data-order="{{order.id}}">Emain sent</button>
                     </a>
+                    {% else %}
+                    <a href="{% url 'orders:order_issue' order_key=order.order_key%}">
+                        <button class="btn btn-warning" id="order-issue-report" type="button"
+                            data-order="{{order.id}}">Problem with order</button>
+
+                        {% endif %}
                 </div>
             </div>
         </div>
