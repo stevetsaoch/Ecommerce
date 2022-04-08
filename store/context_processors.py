@@ -1,5 +1,4 @@
-from store.models import Category, Product
-from basket.basket import Basket
+from store.models import Category
 
 
 def categories(request):
