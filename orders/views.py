@@ -15,7 +15,7 @@ from orders.forms import OrderIssue
 
 class OrderView(ListView):
     model = Order
-    template_name = "account/dashboard/user_orders.html"
+    template_name = "account/dashboard/orders/order_list.html"
     context_object_name = "orders"
 
     def setup(self, request, *args, **kwargs):
@@ -28,7 +28,7 @@ class OrderView(ListView):
 
 
 class OrderIssueView(FormView):
-    template_name = "account/order_issue.html"
+    template_name = "account/dashboard/orders/order_issue.html"
     form_class = OrderIssue
 
     def setup(self, request, *args, **kwargs):
@@ -64,7 +64,7 @@ class OrderIssueView(FormView):
             current_site = get_current_site(request)
             subject = "Order Issue, order key: {orderkey}".format(orderkey=self.order_key)
             message = render_to_string(
-                "account/order_issue_email.html",
+                "account/dashboard/orders/order_issue_email.html",
                 context={
                     "user": self.user,
                     "order_id": self.order_key,
@@ -74,6 +74,6 @@ class OrderIssueView(FormView):
             self.user.email_user(subject=subject, message=message)
             return render(
                 request,
-                "account/order_issue_email_success.html",
+                "account/dashboard/orders/order_issue_email_success.html",
                 status=201,
             )

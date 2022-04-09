@@ -72,7 +72,7 @@ class UserLoginForm(AuthenticationForm):
 
 # customize template in ClearableFileInput widget
 class CustomClearableFileInput(forms.widgets.ClearableFileInput):
-    template_name = "account/dashboard/custom_clearable_file_input.html"
+    template_name = "account/dashboard/profile/custom_clearable_file_input.html"
 
 
 class UserEditForm(forms.ModelForm):
