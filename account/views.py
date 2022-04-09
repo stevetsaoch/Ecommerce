@@ -69,7 +69,7 @@ def account_activate(request, uidb64, token):
 
 
 class ProfileView(TemplateView):
-    template_name = "account/dashboard/profile.html"
+    template_name = "account/dashboard/profile/profile.html"
 
     def setup(self, request, *args, **kwargs):
         user_id = request.user.id
@@ -114,7 +114,7 @@ class ProfileEditView(View):
 
         return render(
             request,
-            "account/dashboard/edit_details.html",
+            "account/dashboard/profile/profile_edit_details.html",
             context={"user_form": user_form, "address_form": address_form},
         )
 
@@ -123,7 +123,7 @@ class ProfileEditView(View):
         address_form = AddressEditForm(instance=self.user, use_required_attribute=False)
         return render(
             request,
-            "account/dashboard/edit_details.html",
+            "account/dashboard/profile/profile_edit_details.html",
             context={"user_form": user_form, "address_form": address_form},
         )
 
