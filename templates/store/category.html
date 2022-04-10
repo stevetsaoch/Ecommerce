@@ -19,19 +19,21 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
                 {% for product in category_all_product_paginated %}
                 <div class="col">
-                    <div class="card border-0">
-                        <a href="{{ product.get_absolute_url }}">
-                            <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
-                        </a>
-                        <div class="card-body px-0">
+                    <div class="card border-0" style="height: 100%;display:flex;">
+                        <div style="flex-basis: 50%;">
+                            <a href="{{ product.get_absolute_url }}">
+                                <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
+                            </a>
+                        </div>
+                        <div class="card-body px-0" style="flex-basis: 40%;">
                             <p class="card-text">
                                 <a class="text-dark text-decoration-none"
                                     href="{{ product.get_absolute_url }}">{{ product.title }}
                                 </a>
                             </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">£{{product.price}}</small>
-                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center" style="flex-basis: 10%;">
+                            <small class="" style="color:red; font-weight:bold;">$ {{product.price}}</small>
                         </div>
                     </div>
                 </div>

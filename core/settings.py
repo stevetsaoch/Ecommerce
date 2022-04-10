@@ -83,6 +83,7 @@ TEMPLATES = [
             ],
             'libraries':{
                 'product_filter': 'store.templatetags.product_filter',
+                'author_filter': 'store.templatetags.author_filter',
                 'orderissue_filter': 'orders.templatetags.orderissue_filter',
             }
         },

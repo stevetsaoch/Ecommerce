@@ -99,10 +99,8 @@ Basket summary
                                     SubTotal:
                                 </div>
                                 <div>
-                                    <span class="fw-bold">£</span>
-                                    <span class="product-total" data-index="{{ product.id }}">
-                                        {{ item.total_price }}
-                                    </span>
+                                    <span class="fw-bold">$ </span>
+                                    <span class="product-total" data-index="{{ product.id }}">{{ item.total_price }}</span>
                                 </div>
                             </div>
                         </div>
@@ -124,11 +122,11 @@ Basket summary
                 </div>
                 <div style="flex-basis:22.5%; display:flex; flex-direction: column">
                     <div class="pt-2 fw-bold h5">
-                        <span class="fw-bold h5">£</span>
+                        <span class="fw-bold h5">$</span>
                         <span id="subtotal-price"> {{basket.get_subtotal_price_before_tax}} </span>
                     </div>
                     <div class="pt-2 fw-bold h5">
-                        <span class="fw-bold h5">£</span>
+                        <span class="fw-bold h5">$</span>
                         <span> {{basket.get_subtotal_price_after_tax}} </span>
                     </div>
                 </div>
