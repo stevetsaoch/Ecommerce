@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load author_filter %}
 {% block title %}Store - Low Prices in Books & more{% endblock title %}
 {% block content %}
 <main>
@@ -10,8 +11,8 @@
                 <path
                     d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
             </svg>
-            COVID-19 - <u>Click here for our latest updates</u> on our stores, website and contact centre. Thank you for
-            your patience and support.
+            Warning - This site is a personal project and still under testing, please don't checkout any order. Thank
+            you.
         </div>
         <div class="album py-5 bg-light">
             <div class="container">
@@ -19,23 +20,32 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
                     {% for product in popular_product_paginated %}
                     <div class="col">
-                        <div class="card shadow-sm" id="click-count" data-index="{{product.slug}}">
-                            <a href="{{product.get_absolute_url}}">
-                                <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
-                            </a>
-                            <div class="card-body">
-                                <p class="card-text">
+                        <div class="card shadow-sm" id="click-count" data-index="{{product.slug}}"
+                            style="height: 100%; display:flex;">
+                            <div style="flex-basis:50%">
+                                <a href="{{product.get_absolute_url}}">
+                                    <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
+                                </a>
+                            </div>
+                            <div class="card-body" style="display:flex; flex-direction: column">
+                                <p class="card-text" style="flex-basis:50%">
                                     <a class="text-dark text-decoration-none"
                                         href="{{ product.get_absolute_url }}">{{ product.title }}
                                     </a>
                                 </p>
-                                {% for author in product.author.all %}
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">{{ author.full_name }}</small>
+                                <div style="flex-basis:40%">
+                                    {% for author in product.author.all|authorsin3 %}
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">{{ author }}</small>
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
+                                <div class="d-flex justify-content-between align-items-center" style="flex-basis:10%;">
+                                    <small class="" style="color:red; font-weight:bold;">$ {{ product.price }}</small>
+                                </div>
                             </div>
                         </div>
+                        
                     </div>
                     {% endfor %}
                 </div>
@@ -47,34 +57,41 @@
                 <div class="pb-3 h5">All Books</div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
                     {% if not all_product_paginated %}
-                    <div class="col-12"> There are current not product active.</div>
+                    <div class="col-12"> There are current not product available.</div>
                     {% else %}
                     {% for product in all_product_paginated %}
                     <div class="col">
-                        <div class="card shadow-sm" id="click-count" data-index="{{product.slug}}">
-                            <a href="{{product.get_absolute_url}}">
-                                <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
-                            </a>
-                            <div class="card-body">
-                                <p class="card-text">
+                        <div class="card shadow-sm" id="click-count" data-index="{{product.slug}}"
+                            style="height: 100%; display:flex;">
+                            <div style="flex-basis:50%">
+                                <a href="{{product.get_absolute_url}}">
+                                    <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
+                                </a>
+                            </div>
+                            <div class="card-body" style="display:flex; flex-direction: column">
+                                <p class="card-text" style="flex-basis:50%">
                                     <a class="text-dark text-decoration-none"
                                         href="{{ product.get_absolute_url }}">{{ product.title }}
                                     </a>
                                 </p>
-                                {% for author in product.author.all %}
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">{{ author.full_name }}</small>
+                                <div style="flex-basis:40%">
+                                    {% for author in product.author.all|authorsin3 %}
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">{{ author }}</small>
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
+                                <div class="d-flex justify-content-between align-items-center" style="flex-basis:10%">
+                                    <small class="" style="color:red; font-weight:bold;">$ {{ product.price }}</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
-                </div>
                 {% endif %}
-                <hr>
-                {% include "store/pagination/index_all_product_pagination.html" %}
             </div>
+            <hr>
+            {% include "store/pagination/index_all_product_pagination.html" %}
         </div>
     </div>
 </main>
@@ -93,8 +110,7 @@
                 slug: slug,
                 action: 'update_product_counter'
             },
-            success: function () {
-            },
+            success: function () {},
             error: function (xhr, errmsg, err) {
 
             }

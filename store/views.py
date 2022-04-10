@@ -34,7 +34,7 @@ class ProductAll(ListView):
         all_product_paginated = ProductPaginator(all_product).paginate(page_num, item_per_page=10)
 
         # popular product pagination
-        popular_product = Product.objects.all().order_by("-click_counter")
+        popular_product = Product.objects.all().order_by("-click_counter")[:5]
         popular_product_paginated = ProductPaginator(popular_product).paginate(page_num, item_per_page=5)
 
         # update context
