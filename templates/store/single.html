@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load product_filter %}
+{% load author_filter %}
 {% block stylesheet1 %}
 {% static 'store/css/store.css' %}
 {% endblock stylesheet1 %}
@@ -16,8 +17,8 @@
 
 {% block content %}
 <div class="container">
-    <div class="row g-3">
-        <div class="col-md-5 ps-3 col-lg-5 order-md-last p-0 order-1">
+    <div class="row g-3" style="display:flex">
+        <div class="col-md-7 col-lg-7 p-0 order-1" style="flex-basis:30%">
             <div class="d-grid gap-2">
 
                 <div class="d-flex d-flex-inline justify-content-between">
@@ -58,14 +59,39 @@
                     Wish List</button>
             </div>
         </div>
-        <div class="col-md-7 col-lg-7 p-0">
+        <div class="col-md-7 col-lg-7 p-0" style="flex-basis:70%">
             <div class="card mb-3 border-0">
                 <div class="row g-0">
                     <div class="col-md-12">
-                        <div class="card-body p-1">
-                            <h1 class="mb-0 h2 pe-4 pb-4">{{ product.title }}</h1>
-                            <div class="bg-light"><img class="img-fluid mx-auto d-block" width="200px"
-                                    alt="Responsive image" src="{{ product.image.image.url }}"> </div>
+                        <div class="card-body p-0" style="display:flex; padding:0px 0px 0px 0px;">
+                            <div class="" style="flex-basis:40%">
+                                <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image"
+                                    src="{{ product.image.image.url }}">
+                            </div>
+                            <div style="flex-basis:60%; display:flex; flex-direction:column">
+                                <div style="display: inline-block; text-align: left;flex-basis:10%">
+                                        <h2 class="mb-0 h2">{{ product.title }}</h1>
+                                </div>
+                                <br>
+                                <div style="flex-basis:10%;">
+                                    <h4 style="margin-bottom:0rem; color:#404040">Author</h4>
+                                </div>
+                                <div style="flex-basis:10%; display:flex; flex-direction:row">
+                                    {% for author in product.author.all|authorsin3 %}
+                                    <div class="d-flex justify-content-between" style="flex-basis:25%">
+                                        <small class="text-muted">{{ author }}</small>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div style="flex-basis:10%; color:#404040">
+                                    <h4 style="margin-bottom:0rem">Description</h4>
+                                </div>
+                                <div style="flex-basis:60%;">
+                                    <p>
+                                        {{ product.description }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,7 +195,7 @@
         window.productid = "{{product.id}}"
         window.isClicked = true;
     });
-    
+
     $("#review-submit").on('click', function (e) {
         let value = window.value
         let productid = window.productid
