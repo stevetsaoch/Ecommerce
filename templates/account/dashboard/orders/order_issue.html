@@ -29,14 +29,14 @@
                 </div>
                 <div style="flex-basis:30%">
                     <span> <b>Name: </b> </span>
-                    <span> {{order.full_name}} </span>
+                    <span> {{order.address.full_name}} </span>
                 </div>
             </div>
             <div>
                 <b>Dispatch to: </b>
-                <span>{{order.address1}} {{order.address2}},</span>
-                <span>{{order.city}}, {{order.postcode}}</span>
-                <span>{{order.country_code}}</span>
+                <span>{{order.address.address_line}} {{order.address.address_line2}},</span>
+                <span>{{order.address.city}}, {{order.address.postcode}}</span>
+                <span>{{order.address.country}}</span>
             </div>
         </div>
     </div>

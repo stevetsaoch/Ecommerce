@@ -1,20 +1,15 @@
 from django.db import models
 from django.conf import settings
-from decimal import Decimal
 from store.models import Product
+from account.models import Address
 
 # Create your models here.
 
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="order_user")
-    full_name = models.CharField(max_length=50)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name="order_address")
     email = models.EmailField(max_length=254, blank=True)
-    address1 = models.CharField(max_length=250)
-    address2 = models.CharField(max_length=250)
-    city = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
-    country_code = models.CharField(max_length=4, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updateded = models.DateTimeField(auto_now=True)
     total_paid = models.DecimalField(max_digits=5, decimal_places=2)
