@@ -86,10 +86,8 @@ class Address(models.Model):
     postcode = models.CharField(_("Postcode"), max_length=50)
     address_line = models.CharField(_("Address Line 1"), max_length=255)
     address_line2 = models.CharField(_("Address Line 2"), max_length=255)
-    delivery_instructions = models.CharField(_("Delivery Instructions"), max_length=255, blank=True)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
-    default = models.BooleanField(_("Default"), default=False)
 
     class Meta:
         verbose_name = "Address"

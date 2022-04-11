@@ -30,7 +30,7 @@ class DeliveryOptions(models.Model):
         decimal_places=2,
     )
 
-    deliver_method = models.CharField(
+    delivery_method = models.CharField(
         choices=DELIVERY_COHICES,
         verbose_name=_("delivery_method"),
         help_text=_("Required"),
