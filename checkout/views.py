@@ -103,18 +103,12 @@ class PaymentView(View):
         requestorder = OrdersGetRequest(data)
         response = PPClient.client.execute(requestorder)
 
-        total_paid = response.result.purchase_units[0].amount.value
-
         basket = Basket(request)
+        address = Address.objects.get(customer_id=user_id)
         order = Order.objects.create(
             user_id=user_id,
-            full_name=response.result.purchase_units[0].shipping.name.full_name,
+            address=address,
             email=response.result.payer.email_address,
-            address1=response.result.purchase_units[0].shipping.address.address_line_1,
-            address2=response.result.purchase_units[0].shipping.address.address_line_2,
-            city=response.result.purchase_units[0].shipping.address.admin_area_2,
-            postal_code=response.result.purchase_units[0].shipping.address.postal_code,
-            country_code=response.result.purchase_units[0].shipping.address.country_code,
             total_paid=response.result.purchase_units[0].amount.value,
             order_key=response.result.id,
             payment_option="paypal",
