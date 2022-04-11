@@ -74,7 +74,7 @@
                                 </div>
                                 <br>
                                 <div style="flex-basis:10%;">
-                                    <h4 style="margin-bottom:0rem; color:#404040">Author</h4>
+                                    <h6 style="margin-bottom:0rem; color:#404040"><b>Author</b></h6>
                                 </div>
                                 <div style="flex-basis:10%; display:flex; flex-direction:row">
                                     {% for author in product.author.all|authorsin3 %}
@@ -84,11 +84,11 @@
                                     {% endfor %}
                                 </div>
                                 <div style="flex-basis:10%; color:#404040">
-                                    <h4 style="margin-bottom:0rem">Description</h4>
+                                    <h6 style="margin-bottom:0rem"><b>Description</b></h6>
                                 </div>
                                 <div style="flex-basis:60%;">
                                     <p>
-                                        <small class="text-muted"> {{ product.description }}</small>
+                                        <small class="text-muted">{{ product.description }}</small>
                                     </p>
                                 </div>
                             </div>
