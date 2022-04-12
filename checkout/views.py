@@ -9,12 +9,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View, ListView, TemplateView
 
 # local app
-from checkout.models import DeliveryOptions
-from checkout.paypal import PayPalClient
+from checkout.models import DeliveryOptions, PaymentSelections
 from basket.basket import Basket
 from account.models import Address
 from orders.models import Order, OrderItem
 from store.models import Product
+
+# paypal
+from checkout.paypal import PayPalClient
 from paypalcheckoutsdk.orders import OrdersGetRequest
 
 # Views
@@ -95,23 +97,36 @@ class PaymentView(View):
             return render(request, "checkout/payment_selection.html", context={"address": address})
 
     def post(self, request):
-        PPClient = PayPalClient()
-        body = json.loads(request.body)
-        data = body["orderID"]
         user_id = request.user.id
+        body = json.loads(request.body)
+        # get payment source
+        payment_source = body["paymentSource"]
+        payment_instance = PaymentSelections.objects.get(name=payment_source)
 
+        # send a request to paypal to fetch order information
+        PPClient = PayPalClient()
+        data = body["orderID"]
         requestorder = OrdersGetRequest(data)
         response = PPClient.client.execute(requestorder)
 
+        # basket instance
         basket = Basket(request)
-        address = Address.objects.get(customer_id=user_id)
+
+        # address instance
+        address_instance = Address.objects.get(customer_id=user_id)
+
+        # delivery option instance
+        delivery_id = request.session["purchase"]["delivery_id"]
+        delivery_instance = DeliveryOptions.objects.get(id=int(delivery_id))
+
         order = Order.objects.create(
             user_id=user_id,
-            address=address,
+            address=address_instance,
+            payment_option=payment_instance,
+            delivery_option=delivery_instance,
             email=response.result.payer.email_address,
             total_paid=response.result.purchase_units[0].amount.value,
             order_key=response.result.id,
-            payment_option="paypal",
             billing_status=True,
         )
 

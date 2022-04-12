@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from store.models import Product
 from account.models import Address
+from checkout.models import DeliveryOptions, PaymentSelections
 
 # Create your models here.
 
@@ -9,12 +10,13 @@ from account.models import Address
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="order_user")
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name="order_address")
+    delivery_option = models.ForeignKey(DeliveryOptions, on_delete=models.CASCADE, related_name="order_deliveryoption")
+    payment_option = models.ForeignKey(PaymentSelections, on_delete=models.CASCADE, related_name="order_paymentoption")
     email = models.EmailField(max_length=254, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    updateded = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now=True)
     total_paid = models.DecimalField(max_digits=5, decimal_places=2)
     order_key = models.CharField(max_length=200)
-    payment_option = models.CharField(max_length=200, blank=True)
     billing_status = models.BooleanField(default=False)
 
     class Meta:

@@ -67,6 +67,9 @@
                 label: 'paypal',
 
             },
+            onClick: (data) => {
+                var fundingSource = data.fundingSource;
+            },
             createOrder: function (data, actions) {
                 return actions.order.create({
                     application_context: {
@@ -88,14 +91,14 @@
                                 address_line_2: '{{ address.address_line2 }}',
                                 admin_area_2: '{{ address.town_city }}',
                                 postal_code: '{{ address.postcode }}',
-                                country_code: '{{ address.country }}'
+                                country_code: '{{ address.country }}',
                             }
                         }
                     }]
                 });
             },
             onApprove: function (data) {
-                var url = "{% url 'checkout:payment' %}"
+                var url = "{% url 'checkout:payment' %}";
                 return fetch(url, {
                     method: 'POST',
                     headers: {
@@ -103,7 +106,8 @@
                         'X-CSRFToken': csrftoken,
                     },
                     body: JSON.stringify({
-                        orderID: data.orderID
+                        orderID: data.orderID,
+                        paymentSource: data.paymentSource,
                     })
                 }).then(function () {
                     location.href = "{% url 'checkout:payment_successful' %}";
