@@ -19,16 +19,12 @@
 </head>
 
 <body>
-    <header class="pb-3">
+    <header class="pb-3" style="display:block; margin: 0 auto; width: 75%;" >
         <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom">
             <div class="container-fluid px-md-4">
                 <div class="d-flex w-100 navbar-collapse">
                     <a class="navbar-brand d-flex-inline" href="/">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
-                            class="bi bi-asterisk" viewBox="0 0 16 16">
-                            <path
-                                d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
-                        </svg>
+                        <img src="{% static 'core/images/books.png' %}" alt="" width="36px", height="36px">
                     </a>
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item dropdown">
@@ -71,11 +67,11 @@
                                     <a class="nav-link dropdown-toggle text-reset" href="#" id="navbarDropdown"
                                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <div class="small text-muted">
-                                            Hello, {{ user.get_username }}
+                                            <img src={{ user.profile_img.url }} alt="" width="36px" height="36px">
                                             {% else %}
-                                            <a href="{% url "account:login" %}"
-                                                class="small text-mute" style="text-decoration: none; color: #6c757d;">
-                                                Login
+                                            <a href="{% url "account:login" %}" class="small text-mute"
+                                                style="text-decoration: none; color: #6c757d;">
+                                                <img src="{% static 'core/images/user.png' %}" alt="" width="36px", height="36px">
                                             </a>
                                             {% endif %}
                                         </div>
