@@ -1,3 +1,30 @@
+body > header {
+    margin: 0 auto;
+}
+
+header {
+    display: block;
+    width: 75%;
+}
+
+.d-flex.w-100.navbar-collapse{
+    justify-content:space-between;
+}
+
+#nav-left{
+    display:flex;
+    justify-content: flex-start;
+}
+
+#nav-right{
+    display:flex;
+    justify-content: flex-end;
+}
+
+#store_bag {
+    align-self: center;
+}
+
 /* Bootstrap Over-ride */
 @media (min-width: 1000px){
     .container{
