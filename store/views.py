@@ -31,15 +31,38 @@ class ProductAll(ListView):
         page_num = self.request.GET.get("page", 1)
         # all product pagination
         all_product = Product.objects.all()
-        all_product_paginated = ProductPaginator(all_product).paginate(page_num, item_per_page=10)
+        all_product_paginated = ProductPaginator(all_product).paginate(page_num, item_per_page=6)
 
         # popular product pagination
         popular_product = Product.objects.all().order_by("-click_counter")[:5]
-        popular_product_paginated = ProductPaginator(popular_product).paginate(page_num, item_per_page=5)
+
+        #all categories
+        context["categories"] = Category.objects.all()
 
         # update context
         context["all_product_paginated"] = all_product_paginated
-        context["popular_product_paginated"] = popular_product_paginated
+        context["popular_product"] = popular_product
+        return context
+
+class CategoryProductView(ListView):
+    template_name = "store/category.html"
+    model = Category
+
+    def get_queryset(self, *args, **kwargs):
+        category = Category.objects.get(slug=self.kwargs["category_slug"])
+        products = Product.objects.filter(category=category)
+        return products
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_num = self.request.GET.get("page", 1)
+        # Category all product pagination
+        category_all_product_paginated = ProductPaginator(self.object_list).paginate(page_num, item_per_page=10)
+        popular_product = Product.objects.all().order_by("-click_counter")[:5]
+        # update context
+        context["category_all_product_paginated"] = category_all_product_paginated
+        context["category"] = Category.objects.get(slug=self.kwargs["category_slug"])
+        context["popular_product"] = popular_product
         return context
 
 
@@ -80,21 +103,4 @@ class ProdcutSingle(DetailView):
         return context
 
 
-class CategoryProductView(ListView):
-    template_name = "store/category.html"
-    model = Category
 
-    def get_queryset(self, *args, **kwargs):
-        category = Category.objects.get(slug=self.kwargs["category_slug"])
-        products = Product.objects.filter(category=category)
-        return products
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        page_num = self.request.GET.get("page", 1)
-        # Category all product pagination
-        category_all_product_paginated = ProductPaginator(self.object_list).paginate(page_num, item_per_page=10)
-        # update context
-        context["category_all_product_paginated"] = category_all_product_paginated
-        context["category"] = Category.objects.get(slug=self.kwargs["category_slug"])
-        return context

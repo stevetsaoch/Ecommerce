@@ -1,48 +1,121 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
-{% if product %}{{ product.title }}{% else %}Products{% endif %}
+{% load author_filter %}
+{% if product %}{{ product.title }}{% else %}{{ category.name|title}}{% endif %}
 {% endblock %}
+{% block stylesheet1 %}
+{% static 'store/css/store.css' %}
+{% endblock stylesheet1 %}
+
 {% block content %}
 
 <main>
     <div class="container">
-        <div class="col-12">
-            <h1 class="h2">{{ category.name|title}}</h1>
-        </div>
-        <hr />
         <div class="album">
-            {% if not category_all_product_paginated %}
-            <div class="col-12"> There are current not products active.
-                <a href="{% url 'store:store_home' %}">Home</a>
-            </div>
-            {% else %}
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-                {% for product in category_all_product_paginated %}
-                <div class="col">
-                    <div class="card border-0" style="height: 100%;display:flex;">
-                        <div style="flex-basis: 50%;">
-                            <a href="{{ product.get_absolute_url }}">
-                                <img class="img-fluid" alt="Responsive image" src="{{ product.image.image.url }}">
-                            </a>
-                        </div>
-                        <div class="card-body px-0" style="flex-basis: 40%;">
-                            <p class="card-text">
-                                <a class="text-dark text-decoration-none"
-                                    href="{{ product.get_absolute_url }}">{{ product.title }}
-                                </a>
-                            </p>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center" style="flex-basis: 10%;">
-                            <small class="" style="color:red; font-weight:bold;">$ {{product.price}}</small>
-                        </div>
+            <div class="container" id="books">
+                <div class="banner">
+                    <div class="category-list-title">
+                        Categories
+                    </div>
+                    <div class="current-category">
+                        {{ category.name|title}}
+                    </div>
+                    <div class="book-popular-title">
+                        Bestsellers
                     </div>
                 </div>
-                {% endfor %}
+                <div class="books">
+                    <div class="category-list">
+                        <div class="category">
+                            <a href="{% url 'store:store_home' %}">All</a>
+                        </div>
+                        <br>
+                        <hr>
+                        {% for category in categories %}
+                        <div class="category">
+                                <a href="{% url 'store:category_list' category_slug=category.slug %}">{{category.name}}</a>
+                        </div>
+                        <br>
+                        <hr>
+                        {% endfor %}
+                    </div>
+                    <div class="" id="book-all-category">
+                        {% if not category_all_product_paginated %}
+                        <div class="col-12"> There are current not product available.</div>
+                        {% else %}
+                        {% for product in category_all_product_paginated %}
+                        <div class="book-cover" id="click-count" data-index="{{product.slug}}">
+                            <div class="book-cover-img">
+                                <a href="{{product.get_absolute_url}}">
+                                    <img class="img-fluid" id="book-img" alt="Responsive image"
+                                        src="{{ product.image.image.url }}">
+                                </a>
+                            </div>
+                            <div class="book-cover-middle" style="flex-basis:2.5%">
+                            </div>
+                            <div class="book-cover-inf">
+                                <div class="book-category-name">
+                                    <span>
+                                        {{ product.category.name }}
+                                    </span>
+                                </div>
+                                <div class="book-title-price">
+                                    <div class="book-title">
+                                        <a class="text-dark text-decoration-none" href="{{ product.get_absolute_url }}">
+                                            <span>{{ product.title }}</span>
+                                        </a>
+                                    </div>
+                                    <div class="book-price">
+                                        <span class="" style="color:red; font-weight:bold;">$ {{ product.price }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <br>
+                    <div class="" id="book-popular">
+                        {% for product in popular_product %}
+                        <div class="card shadow-sm book-cover" id="click-count" data-index="{{product.slug}}">
+                            <div class="book-cover-img">
+                                <a href="{{product.get_absolute_url}}">
+                                    <img class="img-fluid" id="book-img" alt="Responsive image"
+                                        src="{{ product.image.image.url }}">
+                                </a>
+                            </div>
+                            <div class="book-cover-middle" style="flex-basis:2.5%">
+
+                            </div>
+                            <div class="book-cover-inf">
+                                <div class="book-popular-category">
+                                    <span>
+                                        {{ product.category.name }}
+                                    </span>
+                                </div>
+                                <div class="book-popular-title-img">
+                                    <div class="book-title">
+                                        <a class="text-dark text-decoration-none" href="{{ product.get_absolute_url }}">
+                                            <span>{{ product.title }}</span>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center book-price">
+                                        <span class="" style="color:red; font-weight:bold;">$ {{ product.price }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+                <div class="paginator">
+                    {% include "store/pagination/category_all_product_pagination.html" %}
+                </div>
             </div>
-            {% endif %}
-            <hr>
-            {% include "store/pagination/category_all_product_pagination.html" %}
         </div>
-    </div>
 </main>
+
 {% endblock %}

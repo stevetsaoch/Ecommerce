@@ -1,3 +1,31 @@
+div {
+    font-family: 'Merriweather';
+}
+
+.card {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0px;
+}
+
+.shadow-sm {
+    box-shadow: 0 0rem 0rem rgba(0,0,0,.075)!important;
+}
+
+#alert-banner {
+    text-align: center;
+}
+
+.album.py-5.bg-light{
+   padding-top: 1rem!important; 
+}
+
+.card-body {
+    display:flex; 
+    flex-direction: column; 
+    flex-basis:50%;
+}
+
 .store-select-dropdown {
     width: 50px;
     height: 40px;
@@ -66,5 +94,327 @@ img #user-profile-img{
     bottom:0;
     right:0;
     font-size: 0.8em
+}
+
+/* books and popular books */
+div.books {
+    display:flex;
+    justify-content: space-between;
+}
+
+
+/* category-banner */
+.banner {
+    display: flex;
+}
+
+.category-list-title {
+    display: block;
+    flex-basis: 20%;
+    padding: 0 1rem;
+    font-size: larger;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+.current-category {
+    flex-basis: 60%;
+    padding: 0 1rem;
+    font-size: larger;
+    text-decoration: none;
+    color: black;
+}
+
+.book-popular-title {
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: block;
+    text-align: center;
+    font-size: larger;
+
+}
+
+/* category-list */
+.category-list {
+    display: flex;
+    flex-basis: 20%;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+.category {
+    display: block;
+    width: 60%;
+    text-align: center;
+    border-bottom: thin solid #818181;
+    color: #818181;
+}
+
+.category > a {
+    text-decoration: none;
+}
+
+/* book all category */
+div#book-all-category {
+    flex-basis: 60%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(auto, 348px));
+    grid-template-rows: repeat(3, minmax(auto, 306px));
+    justify-items: center;
+    grid-gap: 4rem;
+    padding: 1rem 1rem;
+}
+
+div#book-img.img-fluid {
+    min-width: 100%;
+    min-height: 100%;
+    vertical-align:auto;
+}
+
+div#book-all-category > .book-cover > .book-cover-img {
+    flex-basis: 55%;
+}
+
+div#book-all-category > .book-cover > .book-cover-inf {
+    flex-basis: 42.5%;
+    padding: 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div#book-all-category > .book-cover > .book-cover-inf > .book-category-name {
+    text-align: center;
+}
+
+
+div#book-all-category > .book-cover > .book-cover-inf > .book-category-name > span{
+    display: block;
+    border-style: solid;
+    border-width: thin;
+    border-color: #c0bfbf;
+}
+
+div#book-all-category > .book-cover > .book-cover-inf > .book-title-price > .book-price {
+    font-size: larger;
+}
+
+
+/* popular books */
+div#book-popular {
+    flex-basis: 20%;
+    background-color: #f8f9fa;
+    padding: 1rem 1rem;
+}
+
+div#book-popular > * {
+    font-family: 'Merriweather';
+}
+
+div#book-popular > h2 {
+    text-align: center;
+} 
+
+div.book-cover {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+div.book-cover-img {
+    flex-basis: 50%;
+}
+
+div.book-cover-img > * > img{
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.7);
+}
+
+div#book-popular > .book-cover > .book-cover-inf {
+    flex-basis: 47.5%;
+    font-size: 10px;
+    padding: 0 0;
+    display: flex;
+    flex-direction: column;
+
+}
+
+div.book-popular-category {
+    text-align: center;
+    flex-basis: 30%;
+    justify-self: flex-start;
+}
+
+div.book-popular-category > span{
+    display: block;
+    border-style: solid;
+    border-width: thin;
+    border-color: #c0bfbf;
+}
+div.book-popular-header {
+    background-color: white;
+}
+
+
+/* paginator */
+
+.paginator {
+    text-align: center;
+}
+
+
+/* media */
+@media (min-width: 1000px) {
+    .container {
+        max-width: 100%;
+        margin-right: 0px;
+        margin-left: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .container {
+        max-width: 100%;
+        margin-right: 0px;
+        margin-left: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+}
+
+
+
+@media (max-width: 100vw){
+    #alert-banner{
+        max-width:60%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    #promotion.container{
+        max-width:60%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    #promotion.container > img {
+        border-radius:10px;
+        width: 100%;
+        height: 100%;
+    }
+
+    #books.container {
+        max-width:80%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    #books.container > img {
+        border-radius: 20px;
+    }
+}
+
+@media (max-width: 1400px){
+    #promotion.container{
+        max-width: 840px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+    #alert-banner{
+        max-width: 840px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    div#book-all-category {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(auto, 348px));
+        grid-template-rows: repeat(3, minmax(auto, 249px));
+    }
+    
+    #books.container {
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+    .book-cover-inf {
+        font-size: small;
+    }
+    
+    .category {
+        font-size: small;
+    }
+    
+}
+@media (max-width: 1200px){
+    div#book-all-category {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(auto, 348px));
+        grid-template-rows: repeat(3, minmax(auto, 175px));
+    }
+}
+
+@media (max-width: 840px){
+
+    .card.shadow-sm.book-cover {
+        display: block;
+    }
+    
+    #book-popular > .book-cover > .book-cover-inf {
+        display: none!important;
+    }
+    
+    #book-all-category > .book-cover {
+        flex-direction: column;
+    }
+
+    div#book-all-category {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(auto, auto));
+        grid-template-rows: repeat(3, minmax(auto, auto));
+
+    }
+    
+    #book-all-category > .book-cover  > .book-cover-inf {
+        text-align: center;
+    }
+    
+    #book-all-category > .book-cover  > .book-cover-inf > .book-category-name {
+        display: none;
+    }
+
+    #book-all-category > .book-cover  > .book-title-price {
+        text-align: center;
+    }
+    
+    #book-all-category > .book-cover  > .book-cover-inf > .book-title-price > .book-title {
+        display: none;
+    }
+    
+
+}
+
+@media (max-width: 640px){
+    #promotion.album.py-5.bg-light {
+        display: none;
+    }
+    
+    #alert-banner{
+        display: none;
+    }
+    
+    #promotion-hr > hr {
+        display: none;
+    }
+}
+
+@media (max-width: 360px){
+    .card-body{
+        display:none;
+    }
 }
 

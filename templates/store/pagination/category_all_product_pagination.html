@@ -1,18 +1,16 @@
+{% load static %}
 <div>
     <span>
         {% if category_all_product_paginated.has_previous %}
-            <a href="?page={{ category_all_product_paginated.previous_page_number }}">Previous</a>
-        {% endif %}
-        
-        {% for i in category_all_product_paginated.paginator.page_range  %}
-        {% if category_all_product_paginated.number == i %}
-            <a href="#">{{ i }}</a>
-        {% else %}
-            <a href="?page={{ i }}">{{ i }}</a>
-        {% endif %}
-        {% endfor %}
-        {% if category_all_product_paginated.has_next %}
-           <a href="?page={{ category_all_product_paginated.next_page_number }}">Next</a>
+            <a href="?page={{ category_all_product_paginated.previous_page_number }}">
+                <img src="{% static 'core/images/arrow-left.png' %}" width="24px" height="24px" alt="">
+            </a>
+            {% endif %}
+            
+            {% if category_all_product_paginated.has_next %}
+            <a href="?page={{ category_all_product_paginated.next_page_number }}">
+               <img src="{% static 'core/images/arrow-right.png' %}" width="24px" height="24px" alt="">
+           </a>
         {% endif %}
     </span>
 </div>
