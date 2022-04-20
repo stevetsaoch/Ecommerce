@@ -5,6 +5,10 @@
 Delivery Options
 {% endblock title %}
 
+{% block stylesheet1 %}
+{% static 'checkout/css/checkout.css' %}
+{% endblock stylesheet1 %}
+
 {% block content %}
 <div class="container" style="max-width: 1000px">
     <div class="col-12">
@@ -60,7 +64,7 @@ Delivery Options
                     </div>
                     <div class="col-md-9 ps-md-1">
                         <div class="card-body p-1">
-                            <p class="card-text ps-2 mb-1 pt-1 fw-bold">{{option.delivery_name}}</p>
+                            <p class="card-text ps-2 mb-1 pt-1">{{option.delivery_name}}</p>
                             <p class="card-text ps-2 pb-3">Your order should be delivered within
                                 {{option.delivery_timeframe}}</p>
                         </div>

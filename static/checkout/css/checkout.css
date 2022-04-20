@@ -1,0 +1,8 @@
+body, div, p, span{
+    font-family: 'Merriweather';
+}
+
+.card-text.ps-2.mb-1.pt-1{
+    font-family: 'Merriweather';
+    font-weight: 800;
+}

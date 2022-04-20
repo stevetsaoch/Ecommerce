@@ -1,5 +1,11 @@
 div, p, b{
     font-family: 'Merriweather';
+    font-weight: 700;
+}
+
+.col-12 > p {
+    font-family: 'Merriweather';
+    font-weight: 100;
 }
 
 .basket-title {

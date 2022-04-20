@@ -1,5 +1,10 @@
-div {
+div, button, .btn, p{
     font-family: 'Merriweather';
+    font-weight: 700;
+}
+
+.review-empty {
+    font-weight: 300;
 }
 
 .album {

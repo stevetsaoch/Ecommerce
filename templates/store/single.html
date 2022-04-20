@@ -72,13 +72,13 @@
             <div class="add-button">
                 {% if product.inventory == 0 %}
                 <div class="add-button">
-                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500"
+                    <button type="button" id="add-button" value="{{product.id}}" class=""
                         disabled>Add to basket
                     </button>
                 </div>
                 {% else %}
                 <div class="add-button">
-                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500">
+                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success">
                         Add to basket
                     </button>
                 </div>
@@ -121,7 +121,7 @@
         <h3>Reviews</h3>
     </div>
     {% if not review %}
-    <div>
+    <div class="review-empty">
         There is no review for this product.
     </div>
     {% endif %}
