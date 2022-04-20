@@ -35,7 +35,7 @@
                     <div class="category-list-title">
                         Categories
                     </div>
-                    <div class="current-category">
+                    <div class="current-category" style="text-align:center">
                         All
                     </div>
                     <div class="book-popular-title">
@@ -45,13 +45,21 @@
                 <div class="books">
                     <div class="category-list">
                         <div class="category">
-                            <a href="{% url 'store:store_home' %}">All</a>
+                            <a href="{% url 'store:store_home' %}">
+                                <button>
+                                    All
+                                </button>
+                            </a>
                         </div>
                         <br>
                         <hr>
                         {% for category in categories %}
                         <div class="category">
-                                <a href="{% url 'store:category_list' category_slug=category.slug %}">{{category.name}}</a>
+                            <a href="{% url 'store:category_list' category_slug=category.slug %}">
+                                <button>
+                                    {{category.name}}
+                                </button>
+                            </a>
                         </div>
                         <br>
                         <hr>
