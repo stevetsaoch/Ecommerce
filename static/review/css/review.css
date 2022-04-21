@@ -73,3 +73,29 @@
     position: relative;
     left: 45%;
 }
+
+#user-profile-img {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#user-profile-img > .profile-img {
+    margin-right: 5px;
+}
+
+#user-profile-img > .profile-name {
+    margin-right: 5px;
+}
+
+#user-profile-img > .post-time {
+    color: gray
+}
+
+.reviews {
+    border: thin solid;
+    border-color: #c2c2c2;
+    border-radius: 10px;
+    padding: 5px 5px;
+}

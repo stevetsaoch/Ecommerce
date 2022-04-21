@@ -46,7 +46,7 @@
                     <div class="category-list">
                         <div class="category">
                             <a href="{% url 'store:store_home' %}">
-                                <button>
+                                <button class="btn btn-success">
                                     All
                                 </button>
                             </a>
@@ -56,7 +56,7 @@
                         {% for category in categories %}
                         <div class="category">
                             <a href="{% url 'store:category_list' category_slug=category.slug %}">
-                                <button>
+                                <button class="btn btn-success">
                                     {{category.name}}
                                 </button>
                             </a>

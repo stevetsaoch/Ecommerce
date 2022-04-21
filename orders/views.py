@@ -23,7 +23,7 @@ class OrderView(ListView):
         self.user_id = request.user.id
 
     def get_queryset(self):
-        user_orders = Order.objects.filter(user_id=self.user_id).filter(billing_status=True)
+        user_orders = Order.objects.filter(user_id=self.user_id).order_by("-created").filter(billing_status=True)
         return user_orders
 
 

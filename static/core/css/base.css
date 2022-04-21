@@ -13,6 +13,11 @@ header {
     width: 75%;
 }
 
+.user-img{
+    object-fit: cover;
+}
+
+
 .d-flex.w-100.navbar-collapse{
     justify-content:space-between;
 }

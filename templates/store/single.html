@@ -72,8 +72,7 @@
             <div class="add-button">
                 {% if product.inventory == 0 %}
                 <div class="add-button">
-                    <button type="button" id="add-button" value="{{product.id}}" class=""
-                        disabled>Add to basket
+                    <button type="button" id="add-button" value="{{product.id}}" class="" disabled>Add to basket
                     </button>
                 </div>
                 {% else %}
@@ -120,16 +119,23 @@
         <hr>
         <h3>Reviews</h3>
     </div>
-    {% if not review %}
+    {% if not review_all %}
     <div class="review-empty">
         There is no review for this product.
     </div>
     {% endif %}
     {% for review in review_all %}
-    <div class="card p-3 mt-2">
+    <div class="reviews">
         <div id="user-profile-img">
-            <img src="{{review.reviewer.profile_img.url}}" width="30" class="user-img rounded-circle mr-2">
-            <span>{{review.reviewer.user_name}}</span>
+            <div class="profile-img">
+                <img src="{{review.reviewer.profile_img.url}}" width="30" class="user-img rounded-circle mr-2">
+            </div>
+            <div class="profile-name">
+                <span>{{review.reviewer.user_name}}</span>
+            </div>
+            <div class="post-time">
+                <small class="">{{review.post_time}}</small>
+            </div>
         </div>
         <div class="small-ratings">
             {% for i in review.rating|times  %}
@@ -141,14 +147,10 @@
                 <small class="text-primary">{{review.review_text}}</small>
             </span>
         </div>
-        <div class="post-date">
-            <small class="post-date-text">{{review.post_time}}</small>
-        </div>
     </div>
 </div>
 {% endfor %}
 
-</div>
 
 
 <script>
