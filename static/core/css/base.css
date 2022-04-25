@@ -22,6 +22,7 @@ body {
 
 a {
     text-decoration: none;
+    cursor: pointer;
 }
 
 ul {
@@ -131,6 +132,7 @@ main {
 }
 
 .nav__bag--number {
+    font-family: 'Courier New', Courier, monospace;
     position: absolute;
     background-color: red;
     color: white;

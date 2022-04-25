@@ -10,17 +10,23 @@
 {% block promotion %}
 <div class="promotion__content">
     <div class="promotion__cursor--left">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-            <path d="M11.56 5.56L10.5 4.5 6 9l4.5 4.5 1.06-1.06L8.12 9z">
-            </path>
-        </svg>
+        <a onclick="plusDivs(-1)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                <path d="M11.56 5.56L10.5 4.5 6 9l4.5 4.5 1.06-1.06L8.12 9z">
+                </path>
+            </svg>
+        </a>
     </div>
-    <img src="{% static 'core/images/promotion.png' %}" alt="">
+    {% for promotion in promotions  %}
+    <img class="promotion__content__img" src="{{ promotion.image.url }}" alt="">
+    {% endfor %}
     <div class="promotion__cursor--right">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-            <path d="M7.5 4.5L6.44 5.56 9.88 9l-3.44 3.44L7.5 13.5 12 9z">
-            </path>
-        </svg>
+        <a onclick="plusDivs(1)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                <path d="M7.5 4.5L6.44 5.56 9.88 9l-3.44 3.44L7.5 13.5 12 9z">
+                </path>
+            </svg>
+        </a>
     </div>
 </div>
 {% endblock promotion %}
@@ -163,6 +169,28 @@
 
 
 <script>
+    var slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+        showDivs(slideIndex += n);
+    }
+
+    function showDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("promotion__content__img");
+        if (n > x.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = x.length
+        }
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        x[slideIndex - 1].style.display = "block";
+    }
+
     $(document).on('click', '#click-count', function () {
         var slug = $(this).data('index');
         console.log(slug)
@@ -266,10 +294,36 @@
                     $(".productAll_paginator").remove();
                     $(".indexPaginator").append(
                         '<a href="?page=' + (page_int - 1).toString() + '" id="productAll_paginator_previous" class="productAll_paginator" style="text-decoration:none"> \
-                            ' + '<img src="static/core/images/arrow-left.png" alt="">'+' \
+                            <div class="pagePrevious"> \
+                                <div class="pagePrevious_svg"> \
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" \
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                        style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                        <path id="XMLID_227_" d="M233.25,306.001L127.5,165.005L233.25,24.001c4.971-6.628,3.627-16.03-3-21c-6.627-4.971-16.03-3.626-21,3 \
+                    L96.75,156.005c-4,5.333-4,12.667,0,18l112.5,149.996c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001 \
+                    C236.878,322.03,238.221,312.628,233.25,306.001z" stroke="#6b778d" stroke-width="20" /> \
+                                    </svg> \
+                                </div> \
+                                <div class="pagePrevious_string"> \
+                                    Previous \
+                                </div> \
+                            </div> \
                         </a> \
                         <a href="?page=' + (page_int + 1).toString() + '" id="productAll_paginator_next" class="productAll_paginator" style="text-decoration:none"> \
-                            ' + '<img src="static/core/images/arrow-right.png" alt="">'+' \
+                            <div class="pageNext"> \
+                                <div class="pageNext__string"> \
+                                    Next \
+                                </div> \
+                                <div class="pageNext__svg"> \
+                                    <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg" \
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                        style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                        <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 \
+                                    l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 \
+                                    c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z" \
+                                            stroke="#6b778d" stroke-width="20" /></svg> \
+                                </div> \
+                            </div> \
                         </a>'
                     );
                 }
@@ -278,22 +332,74 @@
                     $(".productAll_paginator").remove();
                     $(".indexPaginator").append(
                         '<a href="?page=' + (page_int - 1).toString() + '" id="productAll_paginator_previous" class="productAll_paginator" style="text-decoration:none"> \
-                            ' + '<img src="static/core/images/arrow-left.png" alt="">'+' \
+                            <div class="pagePrevious"> \
+                                <div class="pagePrevious_svg"> \
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" \
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                        style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                        <path id="XMLID_227_" d="M233.25,306.001L127.5,165.005L233.25,24.001c4.971-6.628,3.627-16.03-3-21c-6.627-4.971-16.03-3.626-21,3 \
+                    L96.75,156.005c-4,5.333-4,12.667,0,18l112.5,149.996c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001 \
+                    C236.878,322.03,238.221,312.628,233.25,306.001z" stroke="#6b778d" stroke-width="20" /> \
+                                    </svg> \
+                                </div> \
+                                <div class="pagePrevious_string"> \
+                                    Previous \
+                                </div> \
+                            </div> \
                         </a> \
-                        <a href="#" id="productAll_paginator_next" class="productAll_paginator" style="text-decoration:none; cursor: not-allowed;"> \
-                                ' + '<img src="static/core/images/arrow-right.png" alt="">'+' \
+                        <a href="#" id="productAll_paginator_next" class="productAll_paginator isDisabled" style="text-decoration:none;"> \
+                            <div class="pageNext"> \
+                                <div class="pageNext__string"> \
+                                    Next \
+                                </div> \
+                                <div class="pageNext__svg"> \
+                                    <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg" \
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                        style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                        <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 \
+                                    l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 \
+                                    c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z" \
+                                            stroke="#6b778d" stroke-width="20" /></svg> \
+                                </div> \
+                            </div> \
                             </a>'
-                            );
-                        }
-                        if (parseInt(page_number - 1) <= 0) {
-                            page_int = parseInt(page_number)
-                            $(".productAll_paginator").remove();
-                            $(".indexPaginator").append(
-                                '<a href="#" id="productAll_paginator_previous" class="productAll_paginator" style="text-decoration:none; cursor: not-allowed;"> \
-                                    ' + '<img src="static/core/images/arrow-left.png" alt="">'+' \
+                    );
+                }
+                if (parseInt(page_number - 1) <= 0) {
+                    page_int = parseInt(page_number)
+                    $(".productAll_paginator").remove();
+                    $(".indexPaginator").append(
+                        '<a href="#" id="productAll_paginator_previous" class="productAll_paginator isDisabled" style="text-decoration:none"> \
+                                    <div class="pagePrevious"> \
+                                        <div class="pagePrevious_svg"> \
+                                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" \
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                                style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                                <path id="XMLID_227_" d="M233.25,306.001L127.5,165.005L233.25,24.001c4.971-6.628,3.627-16.03-3-21c-6.627-4.971-16.03-3.626-21,3 \
+                            L96.75,156.005c-4,5.333-4,12.667,0,18l112.5,149.996c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001 \
+                            C236.878,322.03,238.221,312.628,233.25,306.001z" stroke="#6b778d" stroke-width="20" /> \
+                                            </svg> \
+                                        </div> \
+                                        <div class="pagePrevious_string"> \
+                                            Previous \
+                                        </div> \
+                                    </div> \
                                 </a> \
                                 <a href="?page=' + (page_int + 1).toString() + '" id="productAll_paginator_next" class="productAll_paginator" style="text-decoration:none"> \
-                                    ' + '<img src="static/core/images/arrow-right.png" alt="">'+' \
+                                    <div class="pageNext"> \
+                                        <div class="pageNext__string"> \
+                                            Next \
+                                        </div> \
+                                        <div class="pageNext__svg"> \
+                                            <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg" \
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                                style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                                <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 \
+                                            l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 \
+                                            c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z" \
+                                                    stroke="#6b778d" stroke-width="20" /></svg> \
+                                        </div> \
+                                    </div> \
                                 </a>'
                     );
 

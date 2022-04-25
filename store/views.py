@@ -3,14 +3,10 @@ from django.http import HttpResponse, JsonResponse, QueryDict
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, render
 from django.core.exceptions import ObjectDoesNotExist
-from django.core import serializers
 
 # local app
-from store.products import ProductPaginator, ProductTools
+from store.products import ProductPaginator
 from store.models import Category, Product, Promotion
-from orders.models import Order, OrderItem
-from review.models import Review
-from review.forms import ReviewForm
 
 # templatetag function
 from store.templatetags.product_filter import ratingaverage, ratingaverage_fill
@@ -56,7 +52,7 @@ class ProductAll(ListView):
                 product_dict["title"] = product.title
                 product_dict["authors"] = list(product.author.all().values_list("full_name", flat=True))
                 product_dict["price"] = product.price
-                product_dict["rating"] = ratingaverage(product.id)
+                product_dict["rating"] = str(ratingaverage(product.id))
                 product_dict["rating_transfer"] = ratingaverage_fill(product.id)
                 response["product_inf"][product.id] = product_dict
             return JsonResponse(response)
@@ -76,9 +72,8 @@ class ProductAll(ListView):
         context = super().get_context_data(**kwargs)
         page_num = self.request.GET.get("page", 1)
         # all product pagination
-        all_product = Product.objects.all()
+        all_product = Product.objects.all().order_by("id")
 
-        # if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
         # all product
         all_product_paginated = ProductPaginator(all_product).paginate(page_num, item_per_page=6)
         context["num_pages"] = all_product_paginated["num_pages"]
@@ -90,6 +85,9 @@ class ProductAll(ListView):
 
         # category list
         context["categories"] = Category.objects.all()
+
+        # promotion
+        context["promotions"] = Promotion.objects.all()
 
         return context
 
