@@ -3,13 +3,14 @@
     <span>
         {% if all_product_paginated.has_previous %}
         <a href="?page={{ all_product_paginated.previous_page_number }}" style="text-decoration:none">
-            <img src="{% static 'core/images/arrow-left.png' %}" width="24px" height="24px" alt="">
+            <!--<img src="{% static 'core/images/arrow-left.png' %}" width="24px" height="24px" alt="">-->
+            previous
         </a>
         {% endif %}
 
         {% if all_product_paginated.has_next %}
         <a href="?page={{ all_product_paginated.next_page_number }}" style="text-decoration:none">
-            <img src="{% static 'core/images/arrow-right.png' %}" width="24px" height="24px" alt="">
+            next
         </a>
         {% endif %}
     </span>

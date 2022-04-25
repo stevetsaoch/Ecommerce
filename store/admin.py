@@ -1,6 +1,7 @@
 from atexit import register
+from csv import list_dialects
 from django.contrib import admin
-from .models import Category, Product, Author, Image
+from .models import Category, Product, Author, Image, Promotion
 # Register your models here.
 
 
@@ -25,3 +26,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['in_stock', 'is_active']
     list_editable = ['price', 'in_stock']
     prepopulated_fields = {'slug': ('title', )}
+
+@admin.register(Promotion)
+class PromotionAdmin(admin.ModelAdmin):
+    list_display = ['name']

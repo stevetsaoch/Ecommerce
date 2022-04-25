@@ -2,7 +2,6 @@ from django.template import Library
 
 register = Library()
 
-
 @register.filter(name="authorsin3")
 def authorsin3(value):
     value_list = list(value)

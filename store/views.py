@@ -2,10 +2,11 @@ from django.http import HttpResponse, QueryDict
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, render
 from django.core.exceptions import ObjectDoesNotExist
+from django.core import serializers
 
 # local app
 from store.products import ProductPaginator, ProductTools
-from store.models import Category, Product
+from store.models import Category, Product, Promotion
 from orders.models import Order, OrderItem
 from review.models import Review
 from review.forms import ReviewForm
@@ -28,21 +29,24 @@ class ProductAll(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         page_num = self.request.GET.get("page", 1)
         # all product pagination
         all_product = Product.objects.all()
         all_product_paginated = ProductPaginator(all_product).paginate(page_num, item_per_page=6)
 
-        # popular product pagination
+        # popular product in index
         popular_product = Product.objects.all().order_by("-click_counter")[:5]
 
-        #all categories
+        # all categories
         context["categories"] = Category.objects.all()
 
         # update context
         context["all_product_paginated"] = all_product_paginated
         context["popular_product"] = popular_product
         return context
+
 
 class CategoryProductView(ListView):
     template_name = "store/category.html"
@@ -57,7 +61,7 @@ class CategoryProductView(ListView):
         context = super().get_context_data(**kwargs)
         page_num = self.request.GET.get("page", 1)
         # Category all product pagination
-        category_all_product_paginated = ProductPaginator(self.object_list).paginate(page_num, item_per_page=10)
+        category_all_product_paginated = ProductPaginator(self.object_list).paginate(page_num, item_per_page=4)
         popular_product = Product.objects.all().order_by("-click_counter")[:5]
         # update context
         context["category_all_product_paginated"] = category_all_product_paginated
@@ -101,6 +105,3 @@ class ProdcutSingle(DetailView):
             context = context
 
         return context
-
-
-

@@ -1,147 +1,165 @@
 {% extends 'base.html' %}
 {% load author_filter %}
+{% load product_filter %}
 {% load static%}
 {% block stylesheet1 %}
 {% static 'store/css/store.css' %}
 {% endblock stylesheet1 %}
 
 {% block title %}Store - Low Prices in Books & more{% endblock title %}
-{% block content %}
-<main>
-    <div class="alert alert-primary fw600 rounded-0 border-0 py-3" id="alert-banner" role="alert">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-            class="bi bi-info-circle me-2" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-            <path
-                d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+{% block promotion %}
+<div class="promotion__content">
+    <div class="promotion__cursor--left">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+            <path d="M11.56 5.56L10.5 4.5 6 9l4.5 4.5 1.06-1.06L8.12 9z">
+            </path>
         </svg>
-        Warning - This site is a personal project and still under testing, please don't checkout any order. Thank
-        you.
     </div>
-    <div class="container">
+    <img src="{% static 'core/images/promotion.png' %}" alt="">
+    <div class="promotion__cursor--right">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+            <path d="M7.5 4.5L6.44 5.56 9.88 9l-3.44 3.44L7.5 13.5 12 9z">
+            </path>
+        </svg>
+    </div>
+</div>
+{% endblock promotion %}
 
-        <div class="album py-5 bg-light" id="promotion">
-            <div class="container" id="promotion">
-                <img src="{% static 'core/images/promotion.png' %}" alt="">
-            </div>
+{% comment %} <div class="alert alert-primary fw600 rounded-0 border-0 py-3" id="alert-banner" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-info-circle me-2"
+        viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+        <path
+            d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+    </svg>
+    Warning - This site is a personal project and still under testing, please don't checkout any order. Thank
+    you.
+</div> {% endcomment %}
+{% block content %}
+<div class="indexTitle">
+    <h1>Browse Genres</h1>
+    <hr>
+</div>
+<div class="indexContent">
+    <div class="categoryList">
+        {% for category in categories %}
+        <div class="categoryList__category">
+            <a href="{% url 'store:category_list' category_slug=category.slug %}">
+                {{category.name}}
+            </a>
         </div>
-        <div id="promotion-hr">
-            <br>
-        </div>
-
-        <div class="album">
-            <div class="container" id="books">
-                <div class="banner">
-                    <div class="category-list-title">
-                        Categories
-                    </div>
-                    <div class="current-category" style="text-align:center">
-                        All
-                    </div>
-                    <div class="book-popular-title">
-                        Bestsellers
-                    </div>
+        <br>
+        <br>
+        {% endfor %}
+    </div>
+    <div class="productAll">
+        {% if not all_product_paginated %}
+        <h2> There are current not product available.</h2>
+        {% else %}
+        {% for product in all_product_paginated %}
+        <div class="productAll__item" data-index="{{product.slug}}">
+            <div class="productAll__img">
+                <div class="productAll__img--image">
+                    <a href="{{product.get_absolute_url}}">
+                        <img alt="Responsive image" src="{{ product.image.image.url }}">
+                    </a>
                 </div>
-                <div class="books">
-                    <div class="category-list">
-                        <div class="category">
-                            <a href="{% url 'store:store_home' %}">
-                                <button class="btn btn-success">
-                                    All
-                                </button>
-                            </a>
-                        </div>
-                        <br>
-                        <hr>
-                        {% for category in categories %}
-                        <div class="category">
-                            <a href="{% url 'store:category_list' category_slug=category.slug %}">
-                                <button class="btn btn-success">
-                                    {{category.name}}
-                                </button>
-                            </a>
-                        </div>
-                        <br>
-                        <hr>
-                        {% endfor %}
+                <div class="productAll__img--background">
+                </div>
+            </div>
+            <div class="productAll__info">
+                <div class="productAll__info__title">
+                    <a href="{{ product.get_absolute_url }}">
+                        {{ product.title }}
+                    </a>
+                </div>
+                <div class="productAll__info__authors">
+                    By
+                    {% for author in product.author.all|authorsin3 %}
+                    {{author}}
+                    {% endfor %}
+
+                </div>
+                <div class="productAll__info__price__rating">
+                    <div class="productAll__info__price">
+                        $ {{ product.price }}
                     </div>
-                    <div class="" id="book-all-category">
-                        {% if not all_product_paginated %}
-                        <div class="col-12"> There are current not product available.</div>
+                    <div class="productAll__info__rating">
+                        {% if product|ratingaverage == "0.0" %}
+                        <div class="noRating">No rating currently</div>
                         {% else %}
-                        {% for product in all_product_paginated %}
-                        <div class="book-cover" id="click-count" data-index="{{product.slug}}">
-                            <div class="book-cover-img">
-                                <a href="{{product.get_absolute_url}}">
-                                    <img class="img-fluid" id="book-img" alt="Responsive image"
-                                        src="{{ product.image.image.url }}">
-                                </a>
-                            </div>
-                            <div class="book-cover-middle" style="flex-basis:2.5%">
-                            </div>
-                            <div class="book-cover-inf">
-                                <div class="book-category-name">
-                                    <span>
-                                        {{ product.category.name }}
-                                    </span>
+                        <div class="productAll__info__rating__number">
+                            {{ product|ratingaverage }}
+                        </div>
+                        <div class="productAll__info__rating__stars">
+                            <div class="productAll__info__rating__stars__container"
+                                style="width:{{product|ratingaverage_fill}}%;">
+                                <div class="productAll__info__rating__stars--fill">
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt=""></div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt=""></div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt=""></div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt=""></div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt=""></div>
                                 </div>
-                                <div class="book-title-price">
-                                    <div class="book-title">
-                                        <a class="text-dark text-decoration-none" href="{{ product.get_absolute_url }}">
-                                            <span>{{ product.title }}</span>
-                                        </a>
-                                    </div>
-                                    <div class="book-price">
-                                        <span class="" style="color:red; font-weight:bold;">$ {{ product.price }}</span>
-                                    </div>
+                            </div>
+                            <div class="productAll__info__rating__stars--empty">
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
                         {% endif %}
                     </div>
-                    <br>
-                    <div class="" id="book-popular">
-                        {% for product in popular_product %}
-                        <div class="card shadow-sm book-cover" id="click-count" data-index="{{product.slug}}">
-                            <div class="book-cover-img">
-                                <a href="{{product.get_absolute_url}}">
-                                    <img class="img-fluid" id="book-img" alt="Responsive image"
-                                        src="{{ product.image.image.url }}">
-                                </a>
-                            </div>
-                            <div class="book-cover-middle" style="flex-basis:2.5%">
-
-                            </div>
-                            <div class="book-cover-inf">
-                                <div class="book-popular-category">
-                                    <span>
-                                        {{ product.category.name }}
-                                    </span>
-                                </div>
-                                <div class="book-title-price">
-                                    <div class="book-title">
-                                        <a class="text-dark text-decoration-none" href="{{ product.get_absolute_url }}">
-                                            <span>{{ product.title }}</span>
-                                        </a>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center book-price">
-                                        <span class="" style="color:red; font-weight:bold;">$ {{ product.price }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        {% endfor %}
-                    </div>
-                </div>
-                <hr>
-                <div class="paginator">
-                    {% include "store/pagination/index_all_product_pagination.html" %}
                 </div>
             </div>
         </div>
-</main>
+        {% endfor %}
+        {% endif %}
+    </div>
+        <div class="productPopular">
+            <div class="productPopular__title">
+                <h2>Bestsellers</h2>
+            </div>
+            {% for product in popular_product %}
+            <div class="productPopular__item" data-index="{{product.slug}}">
+                <div class="productPopular__img">
+                    <a href="{{product.get_absolute_url}}">
+                        <img alt="Responsive image" src="{{ product.image.image.url }}">
+                    </a>
+                </div>
+                <div class="productPopular__info">
+                    <div class="productPopular__info__title">
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product.title }}
+                        </a>
+                    </div>
+                    <div class="productPopular__info__price__rating">
+                        <div class="productPopular__info__price">
+                            $ {{ product.price }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<hr>
+<div class="paginator">
+    {% include "store/pagination/index_all_product_pagination.html" %}
+</div>
 
 <script>
     $(document).on('click', '#click-count', function () {
@@ -163,5 +181,27 @@
             }
         });
     })
+
+    $(document).on('click', '#click-count', function () {
+        var slug = $(this).data('index');
+        console.log(slug)
+        $.ajax({
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            type: 'PATCH',
+            url: '{% url "store:store_home" %}',
+            data: {
+                slug: slug,
+                action: 'update_product_counter'
+            },
+            success: function () {},
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+    })
+
+
 </script>
 {% endblock content %}
