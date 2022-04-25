@@ -8,10 +8,12 @@ class ProductPaginator:
     def __init__(self, objects: QuerySet, paginator: Paginator = Paginator):
         self._objects = objects
         self._paginator = paginator
+        self.num_pages = None
 
     def paginate(self, page_num: int, item_per_page: int = 5):
 
         paginated = self._paginator(self._objects, item_per_page)
+        num_pages = paginated.num_pages
         try:
             paginated_object = paginated.page(page_num)
         except PageNotAnInteger:
@@ -19,7 +21,7 @@ class ProductPaginator:
         except EmptyPage:
             paginated_object = paginated.page(paginated.num_pages)
 
-        return paginated_object
+        return {"paginated_object": paginated_object, "num_pages": num_pages}
 
 
 class ProductTools:

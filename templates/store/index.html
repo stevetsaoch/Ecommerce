@@ -52,114 +52,115 @@
         <br>
         {% endfor %}
     </div>
-    <div class="productAll">
-        {% if not all_product_paginated %}
-        <h2> There are current not product available.</h2>
-        {% else %}
-        {% for product in all_product_paginated %}
-        <div class="productAll__item" data-index="{{product.slug}}">
-            <div class="productAll__img">
-                <div class="productAll__img--image">
-                    <a href="{{product.get_absolute_url}}">
-                        <img alt="Responsive image" src="{{ product.image.image.url }}">
-                    </a>
-                </div>
-                <div class="productAll__img--background">
-                </div>
-            </div>
-            <div class="productAll__info">
-                <div class="productAll__info__title">
-                    <a href="{{ product.get_absolute_url }}">
-                        {{ product.title }}
-                    </a>
-                </div>
-                <div class="productAll__info__authors">
-                    By
-                    {% for author in product.author.all|authorsin3 %}
-                    {{author}}
-                    {% endfor %}
-
-                </div>
-                <div class="productAll__info__price__rating">
-                    <div class="productAll__info__price">
-                        $ {{ product.price }}
+    <div class="productAll__paginator">
+        <div class="productAll">
+            {% if not all_product_paginated %}
+            <h2> There are current not product available.</h2>
+            {% else %}
+            {% for product in all_product_paginated %}
+            <div class="productAll__item" id="click-count" data-index="{{product.slug}}">
+                <div class="productAll__img">
+                    <div class="productAll__img--image">
+                        <a href="{{product.get_absolute_url}}">
+                            <img alt="Responsive image" src="{{ product.image.image.url }}">
+                        </a>
                     </div>
-                    <div class="productAll__info__rating">
-                        {% if product|ratingaverage == "0.0" %}
-                        <div class="noRating">No rating currently</div>
-                        {% else %}
-                        <div class="productAll__info__rating__number">
-                            {{ product|ratingaverage }}
-                        </div>
-                        <div class="productAll__info__rating__stars">
-                            <div class="productAll__info__rating__stars__container"
-                                style="width:{{product|ratingaverage_fill}}%;">
-                                <div class="productAll__info__rating__stars--fill">
-                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
-                                            alt=""></div>
-                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
-                                            alt=""></div>
-                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
-                                            alt=""></div>
-                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
-                                            alt=""></div>
-                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
-                                            alt=""></div>
-                                </div>
-                            </div>
-                            <div class="productAll__info__rating__stars--empty">
-                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
-                                </div>
-                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
-                                </div>
-                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
-                                </div>
-                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
-                                </div>
-                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
+                    <div class="productAll__img--background">
                     </div>
                 </div>
-            </div>
-        </div>
-        {% endfor %}
-        {% endif %}
-    </div>
-        <div class="productPopular">
-            <div class="productPopular__title">
-                <h2>Bestsellers</h2>
-            </div>
-            {% for product in popular_product %}
-            <div class="productPopular__item" data-index="{{product.slug}}">
-                <div class="productPopular__img">
-                    <a href="{{product.get_absolute_url}}">
-                        <img alt="Responsive image" src="{{ product.image.image.url }}">
-                    </a>
-                </div>
-                <div class="productPopular__info">
-                    <div class="productPopular__info__title">
+                <div class="productAll__info">
+                    <div class="productAll__info__title">
                         <a href="{{ product.get_absolute_url }}">
                             {{ product.title }}
                         </a>
                     </div>
-                    <div class="productPopular__info__price__rating">
-                        <div class="productPopular__info__price">
+                    <div class="productAll__info__authors">
+                        By
+                        {% for author in product.author.all|authorsin3 %}
+                        {{author}}
+                        {% endfor %}
+                    </div>
+                    <div class="productAll__info__price__rating">
+                        <div class="productAll__info__price">
                             $ {{ product.price }}
+                        </div>
+                        <div class="productAll__info__rating">
+                            {% if product|ratingaverage == "0.0" %}
+                            <div class="noRating">No rating currently</div>
+                            {% else %}
+                            <div class="productAll__info__rating__number">
+                                {{ product|ratingaverage }}
+                            </div>
+                            <div class="productAll__info__rating__stars">
+                                <div class="productAll__info__rating__stars__container"
+                                    style="width:{{product|ratingaverage_fill}}%;">
+                                    <div class="productAll__info__rating__stars--fill">
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                    </div>
+                                </div>
+                                <div class="productAll__info__rating__stars--empty">
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
+            {% endif %}
+        </div>
+        <div class="paginator">
+            {% include "store/pagination/index_all_product_pagination.html" %}
         </div>
     </div>
+    <div class="productPopular">
+        <div class="productPopular__title">
+            <h2>Bestsellers</h2>
+        </div>
+        {% for product in popular_product %}
+        <div class="productPopular__item" id="click-count" data-index="{{product.slug}}">
+            <div class="productPopular__img">
+                <a href="{{product.get_absolute_url}}">
+                    <img alt="Responsive image" src="{{ product.image.image.url }}">
+                </a>
+            </div>
+            <div class="productPopular__info">
+                <div class="productPopular__info__title">
+                    <a href="{{ product.get_absolute_url }}">
+                        {{ product.title }}
+                    </a>
+                </div>
+                <div class="productPopular__info__price__rating">
+                    <div class="productPopular__info__price">
+                        $ {{ product.price }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-<hr>
-<div class="paginator">
-    {% include "store/pagination/index_all_product_pagination.html" %}
 </div>
+
 
 <script>
     $(document).on('click', '#click-count', function () {
@@ -182,26 +183,126 @@
         });
     })
 
-    $(document).on('click', '#click-count', function () {
-        var slug = $(this).data('index');
-        console.log(slug)
+    $(document).on('click', '.productAll_paginator', function (event) {
+        event.preventDefault();
+        var page_number = $(this).attr("href").split('=')[1];
+        console.log(page_number)
         $.ajax({
-            headers: {
-                'X-CSRFTOKEN': '{{ csrf_token }}'
-            },
-            type: 'PATCH',
+            type: 'GET',
             url: '{% url "store:store_home" %}',
             data: {
-                slug: slug,
-                action: 'update_product_counter'
+                page: page_number,
             },
-            success: function () {},
+            success: function (response) {
+                var product_inf = response['product_inf'];
+                var num_pages = response['pages'];
+                $(".productAll__item").remove();
+                $.each(product_inf, function (key, value) {
+                    let authors = product_inf[key].authors.join(", ");
+                    $(".productAll").append(
+                        '<div class="productAll__item" id="click-count" data-index="' +
+                        value["slug"] + '"> \
+                            <div class="productAll__img"> \
+                                <div class="productAll__img--image"> \
+                                    <a href="' + value["url"] + '"> \
+                                        <img alt="Responsive image" src="' + value["image_url"] + '"> \
+                                    </a> \
+                                </div> \
+                                <div class="productAll__img--background"> \
+                                </div> \
+                            </div> \
+                            <div class="productAll__info"> \
+                                <div class="productAll__info__title"> \
+                                    <a href="' + value["url"] + '"> \
+                                        ' + value["title"] + ' \
+                                    </a> \
+                                </div> \
+                                <div class="productAll__info__authors">By ' + authors + '</div> \
+                                <div class="productAll__info__price__rating"> \
+                                    <div class="productAll__info__price">$ ' + value["price"] + '</div> \
+                                    <div class="productAll__info__rating"> \
+                                        ' + (value["rating"] == '0.0' ?
+                            '<div class="noRating">No rating currently</div>' :
+                            '<div class="productAll__info__rating__number">' + value[
+                                "rating"] + '</div> \
+                                        <div class="productAll__info__rating__stars"> \
+                                            <div class="productAll__info__rating__stars__container" \
+                                                style="width:' + value["rating_transfer"] + '%;"> \
+                                                <div class="productAll__info__rating__stars--fill"> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                </div> \
+                                            </div> \
+                                            <div class="productAll__info__rating__stars--empty"> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                            </div>'
+                        ) + ' \
+                                        </div> \
+                                    </div> \
+                                </div> \
+                            </div> \
+                        </div>'
+                    );
+                });
+                if (parseInt(page_number) < num_pages) {
+                    page_int = parseInt(page_number)
+                    $(".productAll_paginator").remove();
+                    $(".indexPaginator").append(
+                        '<a href="?page=' + (page_int - 1).toString() + '" id="productAll_paginator_previous" class="productAll_paginator" style="text-decoration:none"> \
+                            ' + '<img src="static/core/images/arrow-left.png" alt="">'+' \
+                        </a> \
+                        <a href="?page=' + (page_int + 1).toString() + '" id="productAll_paginator_next" class="productAll_paginator" style="text-decoration:none"> \
+                            ' + '<img src="static/core/images/arrow-right.png" alt="">'+' \
+                        </a>'
+                    );
+                }
+                if (parseInt(page_number) >= num_pages) {
+                    page_int = parseInt(page_number)
+                    $(".productAll_paginator").remove();
+                    $(".indexPaginator").append(
+                        '<a href="?page=' + (page_int - 1).toString() + '" id="productAll_paginator_previous" class="productAll_paginator" style="text-decoration:none"> \
+                            ' + '<img src="static/core/images/arrow-left.png" alt="">'+' \
+                        </a> \
+                        <a href="#" id="productAll_paginator_next" class="productAll_paginator" style="text-decoration:none; cursor: not-allowed;"> \
+                                ' + '<img src="static/core/images/arrow-right.png" alt="">'+' \
+                            </a>'
+                            );
+                        }
+                        if (parseInt(page_number - 1) <= 0) {
+                            page_int = parseInt(page_number)
+                            $(".productAll_paginator").remove();
+                            $(".indexPaginator").append(
+                                '<a href="#" id="productAll_paginator_previous" class="productAll_paginator" style="text-decoration:none; cursor: not-allowed;"> \
+                                    ' + '<img src="static/core/images/arrow-left.png" alt="">'+' \
+                                </a> \
+                                <a href="?page=' + (page_int + 1).toString() + '" id="productAll_paginator_next" class="productAll_paginator" style="text-decoration:none"> \
+                                    ' + '<img src="static/core/images/arrow-right.png" alt="">'+' \
+                                </a>'
+                    );
+
+                }
+            },
             error: function (xhr, errmsg, err) {
 
             }
         });
     })
-
-
 </script>
 {% endblock content %}

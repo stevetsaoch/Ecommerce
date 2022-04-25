@@ -1,17 +1,24 @@
 {% load static %}
 <div>
-    <span>
+    <div class="indexPaginator">
         {% if all_product_paginated.has_previous %}
-        <a href="?page={{ all_product_paginated.previous_page_number }}" style="text-decoration:none">
+        <a href="?page={{ all_product_paginated.previous_page_number }}" id="productAll_paginator_previous" class="productAll_paginator" style="text-decoration:none">
             <!--<img src="{% static 'core/images/arrow-left.png' %}" width="24px" height="24px" alt="">-->
-            previous
+            <img src="{% static 'core/images/arrow-left.png' %}" alt="">
         </a>
+        {% else %}
+        
+        <a href="#" id="productAll_paginator_previous" class="productAll_paginator" style="text-decoration:none">
+            <!--<img src="{% static 'core/images/arrow-left.png' %}" width="24px" height="24px" alt="">-->
+            <img src="{% static 'core/images/arrow-left.png' %}" alt="">
+        </a>
+        
         {% endif %}
-
+        
         {% if all_product_paginated.has_next %}
-        <a href="?page={{ all_product_paginated.next_page_number }}" style="text-decoration:none">
-            next
+        <a href="?page={{ all_product_paginated.next_page_number }}" id="productAll_paginator_next" class="productAll_paginator" style="text-decoration:none">
+            <img src="{% static 'core/images/arrow-right.png' %}" alt="">
         </a>
         {% endif %}
-    </span>
+    </div>
 </div>

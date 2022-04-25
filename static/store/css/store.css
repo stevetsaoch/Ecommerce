@@ -129,6 +129,17 @@
     color: var(--seconary-color);
 }
 
+/* paginator */
+.paginator {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.indexPaginator img {
+    width: 1rem;
+    height: 1rem;
+}
+
 /* rating */
 .productAll__info__price__rating {
     display: grid;
@@ -267,6 +278,7 @@
     align-items: center;
 }
 
+
 @media screen and (max-width: 1440px) {
     .productPopular{
         margin-left: 0rem;
@@ -326,7 +338,7 @@
     .indexContent {
         width: 85%;
         display: grid;
-        grid-template-columns: 100%;
+        grid-template-columns: 95% 5%;
     }
     
     .productPopular {
