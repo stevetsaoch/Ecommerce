@@ -7,10 +7,46 @@
 .categoryName {
     display: flex;
     height: 12rem;
-    padding: 0 12%;
+    padding: 0 25%;
     align-items: center;
     font-size: 6rem;
     text-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
     color: rgb(177, 177, 1);
     font-weight: 600;
+}
+
+.indexTitle__bean {
+    display: flex;
+    flex-direction: row;
+}
+
+.indexTitle__bean div{
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 0 2rem;
+    border-right: thin solid var(--seconary-color);
+}
+
+.indexTitle__bean__category {
+    font-weight: 600;
+}
+
+@media screen and (max-width: 1440px) {
+
+}
+
+@media screen and (max-width: 1024px) {
+
+
+@media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 425px) {
+    .categoryName {
+        display: flex;
+        height: 12rem;
+        padding: 0 10%;
+    }
+
 }

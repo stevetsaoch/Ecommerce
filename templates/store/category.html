@@ -30,6 +30,14 @@
         {% endfor %}
     </div>
     <div class="productAll__paginator">
+        <div class="indexTitle__bean">
+            <div>
+                <a href="{% url 'store:store_home' %}"> Home </a>
+            </div>
+            <div class="indexTitle__bean__category">
+                {{ category.name }}
+            </div>
+        </div>
         <div class="productAll">
             {% if not category_all_product_paginated %}
             <h2> There are current not product available.</h2>
