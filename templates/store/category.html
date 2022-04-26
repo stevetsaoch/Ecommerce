@@ -1,129 +1,361 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}
+{% extends 'base.html' %}
 {% load author_filter %}
-{% if product %}{{ product.title }}{% else %}{{ category.name|title}}{% endif %}
-{% endblock %}
+{% load product_filter %}
+{% load static%}
 {% block stylesheet1 %}
 {% static 'store/css/store.css' %}
 {% endblock stylesheet1 %}
+{% block stylesheet2 %}
+{% static 'store/css/category.css' %}
+{% endblock stylesheet2 %}
+
+{% block title %}Store - Low Prices in Books & more{% endblock title %}
+{% block promotion %}
+<div class="categoryName" style="background-image: url('{% static category_background %}');">
+    {{ category.name }}
+</div>
+{% endblock promotion %}
 
 {% block content %}
-
-<main>
-    <div class="container">
-        <div class="album">
-            <div class="container" id="books">
-                <div class="banner">
-                    <div class="category-list-title">
-                        Categories
+<div class="indexContent">
+    <div class="categoryList">
+        {% for category in categories %}
+        <div class="categoryList__category">
+            <a href="{% url 'store:category_list' category_slug=category.slug %}">
+                {{category.name}}
+            </a>
+        </div>
+        <br>
+        <br>
+        {% endfor %}
+    </div>
+    <div class="productAll__paginator">
+        <div class="productAll">
+            {% if not category_all_product_paginated %}
+            <h2> There are current not product available.</h2>
+            {% else %}
+            {% for product in category_all_product_paginated %}
+            <div class="productAll__item" id="click-count" data-index="{{product.slug}}">
+                <div class="productAll__img">
+                    <div class="productAll__img--image">
+                        <a href="{{product.get_absolute_url}}">
+                            <img alt="Responsive image" src="{{ product.image.image.url }}">
+                        </a>
                     </div>
-                    <div class="current-category" style="text-align:center">
-                        {{ category.name|title}}
-                    </div>
-                    <div class="book-popular-title">
-                        Bestsellers
-                    </div>
-                </div>
-                <div class="books">
-                    <div class="category-list">
-                        <div class="category">
-                            <a href="{% url 'store:store_home' %}">
-                                <button class="btn btn-success">
-                                    All
-                                </button>
-                            </a>
-                        </div>
-                        <br>
-                        <hr>
-                        {% for category in categories %}
-                        <div class="category">
-                            <a href="{% url 'store:category_list' category_slug=category.slug %}">
-                            <button class="btn btn-success">
-                                {{category.name}}
-                            </button>
-                            </a>
-                        </div>
-                        <br>
-                        <hr>
-                        {% endfor %}
-                    </div>
-                    <div class="" id="book-all-category">
-                        {% if not category_all_product_paginated %}
-                        <div class="col-12"> There are current not product available.</div>
-                        {% else %}
-                        {% for product in category_all_product_paginated %}
-                        <div class="book-cover" id="click-count" data-index="{{product.slug}}">
-                            <div class="book-cover-img">
-                                <a href="{{product.get_absolute_url}}">
-                                    <img class="img-fluid" id="book-img" alt="Responsive image"
-                                        src="{{ product.image.image.url }}">
-                                </a>
-                            </div>
-                            <div class="book-cover-middle" style="flex-basis:2.5%">
-                            </div>
-                            <div class="book-cover-inf">
-                                <div class="book-category-name">
-                                    <span>
-                                        {{ product.category.name }}
-                                    </span>
-                                </div>
-                                <div class="book-title-price">
-                                    <div class="book-title">
-                                        <a class="text-dark text-decoration-none" href="{{ product.get_absolute_url }}">
-                                            <span>{{ product.title }}</span>
-                                        </a>
-                                    </div>
-                                    <div class="book-price">
-                                        <span class="" style="color:red; font-weight:bold;">$ {{ product.price }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-                    <br>
-                    <div class="" id="book-popular">
-                        {% for product in popular_product %}
-                        <div class="card shadow-sm book-cover" id="click-count" data-index="{{product.slug}}">
-                            <div class="book-cover-img">
-                                <a href="{{product.get_absolute_url}}">
-                                    <img class="img-fluid" id="book-img" alt="Responsive image"
-                                        src="{{ product.image.image.url }}">
-                                </a>
-                            </div>
-                            <div class="book-cover-middle" style="flex-basis:2.5%">
-
-                            </div>
-                            <div class="book-cover-inf">
-                                <div class="book-popular-category">
-                                    <span>
-                                        {{ product.category.name }}
-                                    </span>
-                                </div>
-                                <div class="book-popular-title-img">
-                                    <div class="book-title">
-                                        <a class="text-dark text-decoration-none" href="{{ product.get_absolute_url }}">
-                                            <span>{{ product.title }}</span>
-                                        </a>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center book-price">
-                                        <span class="" style="color:red; font-weight:bold;">$ {{ product.price }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        {% endfor %}
+                    <div class="productAll__img--background">
                     </div>
                 </div>
-                <hr>
-                <div class="paginator">
-                    {% include "store/pagination/category_all_product_pagination.html" %}
+                <div class="productAll__info">
+                    <div class="productAll__info__title">
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product.title }}
+                        </a>
+                    </div>
+                    <div class="productAll__info__authors">
+                        By
+                        {% for author in product.author.all|authorsin3 %}
+                        {{author}}
+                        {% endfor %}
+                    </div>
+                    <div class="productAll__info__price__rating">
+                        <div class="productAll__info__price">
+                            $ {{ product.price }}
+                        </div>
+                        <div class="productAll__info__rating">
+                            {% if product|ratingaverage == "0.0" %}
+                            <div class="noRating">No rating currently</div>
+                            {% else %}
+                            <div class="productAll__info__rating__number">
+                                {{ product|ratingaverage }}
+                            </div>
+                            <div class="productAll__info__rating__stars">
+                                <div class="productAll__info__rating__stars__container"
+                                    style="width:{{product|ratingaverage_fill}}%;">
+                                    <div class="productAll__info__rating__stars--fill">
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                        <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                                alt=""></div>
+                                    </div>
+                                </div>
+                                <div class="productAll__info__rating__stars--empty">
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                    <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="paginator">
+            {% include "store/pagination/category_all_product_pagination.html" %}
+        </div>
+    </div>
+    <div class="productPopular">
+        <div class="productPopular__title">
+            <h2>Bestsellers</h2>
+        </div>
+        {% for product in popular_product %}
+        <div class="productPopular__item" id="click-count" data-index="{{product.slug}}">
+            <div class="productPopular__img">
+                <a href="{{product.get_absolute_url}}">
+                    <img alt="Responsive image" src="{{ product.image.image.url }}">
+                </a>
+            </div>
+            <div class="productPopular__info">
+                <div class="productPopular__info__title">
+                    <a href="{{ product.get_absolute_url }}">
+                        {{ product.title }}
+                    </a>
+                </div>
+                <div class="productPopular__info__price__rating">
+                    <div class="productPopular__info__price">
+                        $ {{ product.price }}
+                    </div>
                 </div>
             </div>
         </div>
-</main>
+        {% endfor %}
+    </div>
+</div>
 
-{% endblock %}
+
+<script>
+    $(document).on('click', '#click-count', function () {
+        var slug = $(this).data('index');
+        console.log(slug)
+        $.ajax({
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            type: 'PATCH',
+            url: '{% url "store:store_home" %}',
+            data: {
+                slug: slug,
+                action: 'update_product_counter'
+            },
+            success: function () {},
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+    })
+
+    $(document).on('click', '.productCategory_paginator', function (event) {
+        event.preventDefault();
+        var page_number = $(this).attr("href").split('=')[1];
+        $.ajax({
+            type: 'GET',
+            url: '{% url "store:category_list" category_slug=category.slug %}',
+            data: {
+                page: page_number,
+            },
+            success: function (response) {
+                var product_inf = response['product_inf'];
+                var num_pages = response['pages'];
+                $(".productAll__item").remove();
+                $.each(product_inf, function (key, value) {
+                    let authors = product_inf[key].authors.join(", ");
+                    $(".productAll").append(
+                        '<div class="productAll__item" id="click-count" data-index="' +
+                        value["slug"] + '"> \
+                            <div class="productAll__img"> \
+                                <div class="productAll__img--image"> \
+                                    <a href="' + value["url"] + '"> \
+                                        <img alt="Responsive image" src="' + value["image_url"] + '"> \
+                                    </a> \
+                                </div> \
+                                <div class="productAll__img--background"> \
+                                </div> \
+                            </div> \
+                            <div class="productAll__info"> \
+                                <div class="productAll__info__title"> \
+                                    <a href="' + value["url"] + '"> \
+                                        ' + value["title"] + ' \
+                                    </a> \
+                                </div> \
+                                <div class="productAll__info__authors">By ' + authors + '</div> \
+                                <div class="productAll__info__price__rating"> \
+                                    <div class="productAll__info__price">$ ' + value["price"] + '</div> \
+                                    <div class="productAll__info__rating"> \
+                                        ' + (value["rating"] == '0.0' ?
+                            '<div class="noRating">No rating currently</div>' :
+                            '<div class="productAll__info__rating__number">' + value[
+                                "rating"] + '</div> \
+                                        <div class="productAll__info__rating__stars"> \
+                                            <div class="productAll__info__rating__stars__container" \
+                                                style="width:' + value["rating_transfer"] + '%;"> \
+                                                <div class="productAll__info__rating__stars--fill"> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                    <div class="starYellow"><img src="/static/core/images/star_yellow.png" \
+                                                            alt=""></div> \
+                                                </div> \
+                                            </div> \
+                                            <div class="productAll__info__rating__stars--empty"> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                                <div class="starEmpty"><img src="/static/core/images/star_empty.png" alt=""> \
+                                                </div> \
+                                            </div>'
+                        ) + ' \
+                                        </div> \
+                                    </div> \
+                                </div> \
+                            </div> \
+                        </div>'
+                    );
+                });
+                if (parseInt(page_number) < num_pages) {
+                    page_int = parseInt(page_number)
+                    $(".productCategory_paginator").remove();
+                    $(".indexPaginator").append(
+                        '<a href="?page=' + (page_int - 1).toString() + '" id="productCategory_paginator" class="productCategory_paginator" style="text-decoration:none"> \
+                            <div class="pagePrevious"> \
+                                <div class="pagePrevious_svg"> \
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" \
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                        style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                        <path id="XMLID_227_" d="M233.25,306.001L127.5,165.005L233.25,24.001c4.971-6.628,3.627-16.03-3-21c-6.627-4.971-16.03-3.626-21,3 \
+                    L96.75,156.005c-4,5.333-4,12.667,0,18l112.5,149.996c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001 \
+                    C236.878,322.03,238.221,312.628,233.25,306.001z" stroke="#6b778d" stroke-width="20" /> \
+                                    </svg> \
+                                </div> \
+                                <div class="pagePrevious_string"> \
+                                    Previous \
+                                </div> \
+                            </div> \
+                        </a> \
+                        <a href="?page=' + (page_int + 1).toString() + '" id="productCategory_paginator" class="productCategory_paginator" style="text-decoration:none"> \
+                            <div class="pageNext"> \
+                                <div class="pageNext__string"> \
+                                    Next \
+                                </div> \
+                                <div class="pageNext__svg"> \
+                                    <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg" \
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                        style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                        <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 \
+                                    l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 \
+                                    c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z" \
+                                            stroke="#6b778d" stroke-width="20" /></svg> \
+                                </div> \
+                            </div> \
+                        </a>'
+                    );
+                }
+                if (parseInt(page_number) >= num_pages) {
+                    page_int = parseInt(page_number)
+                    $(".productCategory_paginator").remove();
+                    $(".indexPaginator").append(
+                        '<a href="?page=' + (page_int - 1).toString() + '" id="productCategory_paginator" class="productCategory_paginator" style="text-decoration:none"> \
+                            <div class="pagePrevious"> \
+                                <div class="pagePrevious_svg"> \
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" \
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                        style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                        <path id="XMLID_227_" d="M233.25,306.001L127.5,165.005L233.25,24.001c4.971-6.628,3.627-16.03-3-21c-6.627-4.971-16.03-3.626-21,3 \
+                    L96.75,156.005c-4,5.333-4,12.667,0,18l112.5,149.996c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001 \
+                    C236.878,322.03,238.221,312.628,233.25,306.001z" stroke="#6b778d" stroke-width="20" /> \
+                                    </svg> \
+                                </div> \
+                                <div class="pagePrevious_string"> \
+                                    Previous \
+                                </div> \
+                            </div> \
+                        </a> \
+                        <a href="#" id="productCategory_paginator" class="productCategory_paginator isDisabled" style="text-decoration:none;"> \
+                            <div class="pageNext"> \
+                                <div class="pageNext__string"> \
+                                    Next \
+                                </div> \
+                                <div class="pageNext__svg"> \
+                                    <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg" \
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                        style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                        <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 \
+                                    l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 \
+                                    c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z" \
+                                            stroke="#6b778d" stroke-width="20" /></svg> \
+                                </div> \
+                            </div> \
+                            </a>'
+                    );
+                }
+                if (parseInt(page_number - 1) <= 0) {
+                    page_int = parseInt(page_number)
+                    $(".productCategory_paginator").remove();
+                    $(".indexPaginator").append(
+                        '<a href="#" id="productCategory_paginator" class="productCategory_paginator isDisabled" style="text-decoration:none"> \
+                                    <div class="pagePrevious"> \
+                                        <div class="pagePrevious_svg"> \
+                                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" \
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                                style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                                <path id="XMLID_227_" d="M233.25,306.001L127.5,165.005L233.25,24.001c4.971-6.628,3.627-16.03-3-21c-6.627-4.971-16.03-3.626-21,3 \
+                            L96.75,156.005c-4,5.333-4,12.667,0,18l112.5,149.996c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001 \
+                            C236.878,322.03,238.221,312.628,233.25,306.001z" stroke="#6b778d" stroke-width="20" /> \
+                                            </svg> \
+                                        </div> \
+                                        <div class="pagePrevious_string"> \
+                                            Previous \
+                                        </div> \
+                                    </div> \
+                                </a> \
+                                <a href="?page=' + (page_int + 1).toString() + '" id="productCategory_paginator" class="productCategory_paginator" style="text-decoration:none"> \
+                                    <div class="pageNext"> \
+                                        <div class="pageNext__string"> \
+                                            Next \
+                                        </div> \
+                                        <div class="pageNext__svg"> \
+                                            <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg" \
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330.002 330.002" \
+                                                style="enable-background:new 0 0 330.002 330.002;" xml:space="preserve"> \
+                                                <path id="XMLID_226_" d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 \
+                                            l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 \
+                                            c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z" \
+                                                    stroke="#6b778d" stroke-width="20" /></svg> \
+                                        </div> \
+                                    </div> \
+                                </a>'
+                    );
+
+                }
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+    })
+</script>
+{% endblock content %}

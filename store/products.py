@@ -1,6 +1,13 @@
+# others
+import os
+import random
+
+# django
 from django.db.models import QuerySet
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage, PageNotAnInteger
+
+# local app
 from .models import Product
 
 
@@ -38,3 +45,9 @@ class ProductTools:
             _range = range(1, 6)
 
         return _range
+
+
+def random_background_image():
+    image_list = os.listdir("static/store/images/")
+    random_choose_image = random.choice(image_list)
+    return "store/images/" + random_choose_image

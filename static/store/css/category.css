@@ -1,0 +1,16 @@
+.promotion {
+    height: 12rem;
+    overflow: hidden;
+    background-color: none;
+}
+
+.categoryName {
+    display: flex;
+    height: 12rem;
+    padding: 0 12%;
+    align-items: center;
+    font-size: 6rem;
+    text-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
+    color: rgb(177, 177, 1);
+    font-weight: 600;
+}
