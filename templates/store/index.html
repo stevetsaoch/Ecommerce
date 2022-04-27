@@ -49,11 +49,11 @@
 <div class="indexContent">
     <div class="categoryList">
         {% for category in categories %}
-        <div class="categoryList__category">
-            <a href="{% url 'store:category_list' category_slug=category.slug %}">
+        <a href="{% url 'store:category_list' category_slug=category.slug %}">
+            <div class="categoryList__category">
                 {{category.name}}
-            </a>
-        </div>
+            </div>
+        </a>
         <br>
         <br>
         {% endfor %}

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{% static 'core/css/base.css' %}">
     <link rel="stylesheet" href="{% block stylesheet1 %}{% endblock %}">
     <link rel="stylesheet" href="{% block stylesheet2 %}{% endblock %}">
+    <link rel="stylesheet" href="{% block stylesheet3 %}{% endblock %}">
 </head>
 
 <body>
@@ -71,7 +72,7 @@
                             </a>
                         </div>
                         {% with total_qty=basket|length %}
-                        <div class="nav__bag--number">
+                        <div class="nav__bag--number" id="basket-qty">
                             {% if total_qty > 0 %}
                             {{ total_qty }}
                             {% else %}

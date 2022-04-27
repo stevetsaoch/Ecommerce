@@ -2,94 +2,132 @@
 {% load static %}
 {% load product_filter %}
 {% load author_filter %}
+
 {% block stylesheet1 %}
 {% static 'store/css/store.css' %}
 {% endblock stylesheet1 %}
 
 {% block stylesheet2 %}
-{% static 'review/css/review.css' %}
+{% static 'store/css/single.css' %}
 {% endblock stylesheet2 %}
+
+{% block stylesheet3 %}
+{% static 'review/css/review.css' %}
+{% endblock stylesheet3 %}
 
 
 {% block title %}
 {% if product %}{{ product.title }}{% else %}Products{% endif %}
 {% endblock %}
 
-{% block content %}
-<div class="single-container">
 
-    <div class="product-detail">
-        <div class="single-book-cover-img">
-            <img alt="Responsive image" src="{{ product.image.image.url }}">
+{% block content %}
+<div class="single">
+    <div class="indexTitle__bean">
+        <div class="indexTitle__bean__home">
+            <a href="{% url 'store:store_home' %}"> Home </a>
         </div>
-        <div class="title-description">
-            <div>
-                <h2 class="mb-0 h2">{{ product.title }}</h1>
-                    <div>
-                        {% for author in product.author.all|authorsin3 %}
-                        <div class="d-flex justify-content-between">
-                            <small class="text-muted">{{ author }}</small>
-                        </div>
-                        {% endfor %}
-                    </div>
-            </div>
-            <br>
-            <div>
-                <h6><b>Description</b></h6>
-            </div>
-            <div>
-                <p>
-                    <small class="text-muted">{{ product.description }}</small>
-                </p>
-            </div>
+        <div class="indexTitle__bean__category">
+            <a href="{% url 'store:category_list' category_slug=product.category.slug %}"> {{ product.category.name }}
+            </a>
         </div>
-        <div class="price-add-button">
-            <div class="price-quantity">
-                <div><span class="h3">$ {{ product.price }}</span>
-                    <p class="text-muted">before tax</p>
+        <div class="indexTitle__bean__product">
+            {{ product.title }}
+        </div>
+    </div>
+    <div class="productSingle">
+        <div class="productSingle__info">
+            <div class="productSingle__img">
+                <div class="productSingle__img--image">
+                    <a href="{{product.get_absolute_url}}">
+                        <img alt="Responsive image" src="{{ product.image.image.url }}">
+                    </a>
                 </div>
-                <div class="">
-                    {% with qty=product.inventory %}
-                    {% if qty == 0 %}
-                    <span>Out of stock!</span>
-                    {% else %}
-                    <label for="select">Qty</label>
-                    <select id="select" class="h6 store-select-dropdown">
-                        {% if qty > 5 %}
-                        {% for value in range %}
-                        <option value="{{value}}">{{value}}</option>
-                        {% endfor %}
+                <div class="productSingle__img--background">
+                </div>
+            </div>
+            <div class="productSingle__content">
+                <div class="productSingle__Title">
+                    {{ product.title }}
+                </div>
+                <div class="productSingle__Author">
+                    By
+                    {% for author in product.author.all|authorsin3 %}
+                    {{ author }}
+                    {% endfor %}
+                </div>
+                <div class="productSingle__Description">
+                    Description
+                </div>
+                <div class="productSingle__Description__content">
+                    {{ product.description }}
+                </div>
+            </div>
+            <div class="productSingle__addItem">
+                <div class="addItem__priceQuantity">
+                    <div class="addItem__price">
+                        <div class="addItem__price--price">
+                            $ {{ product.price }}
+                        </div>
+                        <div class="beforeTax">
+                            (before tax)
+                        </div>
+                    </div class="addItem__Quantity--select">
+                    <div class="quantity">
+                        {% with qty=product.inventory %}
+                        {% if qty == 0 %}
+                        <div>Out of stock!</div>
                         {% else %}
-                        {% for value in range %}
-                        <option value="{{value}}">{{value}}</option>
-                        {% endfor %}
-                        {% endif %}
+                        <a class="isDisabled" id="decreaseQty_anchor">
+                            <div class="decreaseQty">
+                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                    viewBox="0 0 330.002 330.002" style="enable-background:new 0 0 330.002 330.002;"
+                                    xml:space="preserve">
+                                    <path id="XMLID_227_"
+                                        d="M233.25,306.001L127.5,165.005L233.25,24.001c4.971-6.628,3.627-16.03-3-21c-6.627-4.971-16.03-3.626-21,3 L96.75,156.005c-4,5.333-4,12.667,0,18l112.5,149.996c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001 C236.878,322.03,238.221,312.628,233.25,306.001z"
+                                        stroke="#6b778d" stroke-width="20" />
+                                </svg>
+                            </div>
+                        </a>
+                        <div class="quantity--quantity">1</div>
+                        <a>
+                            <div class="increaseQty" id="increaseQty_anchor">
+                                <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                    viewBox="0 0 330.002 330.002" style="enable-background:new 0 0 330.002 330.002;"
+                                    xml:space="preserve">
+                                    <path id="XMLID_226_"
+                                        d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z"
+                                        stroke="#6b778d" stroke-width="20" /></svg>
+                            </div>
+                        </a>
                         {% endif %}
                         {% endwith %}
-                    </select>
+                    </div>
                 </div>
-            </div>
-            <div class="add-button">
-                {% if product.inventory == 0 %}
-                <div class="add-button">
-                    <button type="button" id="add-button" value="{{product.id}}" class="" disabled>Add to basket
-                    </button>
-                </div>
-                {% else %}
-                <div class="add-button">
-                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success">
-                        Add to basket
-                    </button>
-                </div>
-                {% endif %}
-                <br>
-                <div class="add-button-wishlist">
-                    <button type="button" id="add-button-wishlist" value="{{product.id}}" class="btn btn-light fw500">
-                        Add to Wish List
-                    </button>
+                <div class="addItem__basketWishlist">
+                    {% if product.inventory == 0 %}
+                    <div class="addItem__addtoBasket">
+                        <button type="button" id="add-button" value="{{product.id}}" disabled>Add to basket
+                        </button>
+                    </div>
+                    {% else %}
+                    <div class="addItem__addtoBasket">
+                        <button type="button" id="add-button" value="{{product.id}}">
+                            Add to basket
+                        </button>
+                    </div>
+                    {% endif %}
+                    <div class="addItem__addtoWishlist">
+                        <button type="button" id="add-button-wishlist" value="{{product.id}}">
+                            Add to Wish List
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 <br>
@@ -154,25 +192,56 @@
 
 
 <script>
+    $(document).on('click', '.decreaseQty', function(e){
+        var current_quantity = $('.quantity--quantity').text();
+        current_quantity = parseInt(current_quantity);
+
+        if ( current_quantity - 1 <= 1) {
+            $('.quantity--quantity').html(current_quantity - 1);
+            $('#decreaseQty_anchor').addClass("isDisabled");
+        } else {
+            $('.quantity--quantity').html(current_quantity - 1);
+            $('#increaseQty_anchor').removeClass("isDisabled");
+        };
+        
+    })
+    
+    $(document).on('click', '.increaseQty', function(e){
+        var current_quantity = $('.quantity--quantity').text();
+        var product_inventory = "{{product.inventory}}";
+        current_quantity = parseInt(current_quantity);
+        product_inventory = parseInt(product_inventory);
+        $('.quantity--quantity').html(current_quantity + 1)  
+
+        if ( current_quantity + 1 >= product_inventory) {
+            $('.quantity--quantity').html(current_quantity + 1);
+            $('#increaseQty_anchor').addClass("isDisabled");
+        } else if (current_quantity + 1 >= 2) {
+            $('.quantity--quantity').html(current_quantity + 1);
+            $('#decreaseQty_anchor').removeClass("isDisabled");
+        };
+        
+    })
+
     $(document).on('click', '#add-button', function (e) {
         e.preventDefault();
-        console.log($('#select option:selected').text())
+        var current_quantity = parseInt($('.quantity--quantity').text());
         $.ajax({
             type: 'POST',
             url: '{% url "basket:basket" %}',
             data: {
                 productid: $('#add-button').val(),
-                productqty: $('#select').val(),
+                productqty: current_quantity,
                 csrfmiddlewaretoken: "{{ csrf_token }}",
                 action: 'add-product-to-basket'
             },
             success: function (json) {
-                document.getElementById('basket-qty').innerHTML = json.qty
+                document.getElementById('basket-qty').innerHTML = json.qty;
             },
             error: function (xhr, errmsg, err) {
 
             }
-        });
+        }); 
 
     })
 
@@ -197,6 +266,7 @@
         });
 
     })
+    
     $(".rating input").on('click', function (e) {
         window.value = $(this).val();
         window.productid = "{{product.id}}"

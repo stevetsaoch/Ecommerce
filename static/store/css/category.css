@@ -24,12 +24,14 @@
     color: var(--primary-color);
     font-weight: 600;
     padding: 0 2rem;
-    border-right: thin solid var(--seconary-color);
+    
 }
 
 .indexTitle__bean__category {
+    border-left: thin solid var(--seconary-color);
     font-weight: 600;
 }
+
 
 @media screen and (max-width: 1440px) {
 

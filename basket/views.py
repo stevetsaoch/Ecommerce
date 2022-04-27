@@ -27,6 +27,7 @@ class BasketView(TemplateView):
         product_qty = int(request.POST.get("productqty"))
         product = get_object_or_404(Product, id=product_id)
         self.basket.add(product=product, qty=product_qty)
+        print(self.basket.__len__())
         basketqty = self.basket.__len__()
         response = JsonResponse({"qty": basketqty})
         return response
