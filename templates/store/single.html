@@ -22,19 +22,19 @@
 
 
 {% block content %}
-<div class="single">
-    <div class="indexTitle__bean">
-        <div class="indexTitle__bean__home">
-            <a href="{% url 'store:store_home' %}"> Home </a>
-        </div>
-        <div class="indexTitle__bean__category">
-            <a href="{% url 'store:category_list' category_slug=product.category.slug %}"> {{ product.category.name }}
-            </a>
-        </div>
-        <div class="indexTitle__bean__product">
-            {{ product.title }}
-        </div>
+<div class="indexTitle__bean">
+    <div class="indexTitle__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
     </div>
+    <div class="indexTitle__bean__category">
+        <a href="{% url 'store:category_list' category_slug=product.category.slug %}"> {{ product.category.name }}
+        </a>
+    </div>
+    <div class="indexTitle__bean__product">
+        {{ product.title }}
+    </div>
+</div>
+<div class="single">
     <div class="productSingle">
         <div class="productSingle__info">
             <div class="productSingle__img">
@@ -80,13 +80,12 @@
                         {% else %}
                         <a class="isDisabled" id="decreaseQty_anchor">
                             <div class="decreaseQty">
-                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                    viewBox="0 0 330.002 330.002" style="enable-background:new 0 0 330.002 330.002;"
-                                    xml:space="preserve">
-                                    <path id="XMLID_227_"
-                                        d="M233.25,306.001L127.5,165.005L233.25,24.001c4.971-6.628,3.627-16.03-3-21c-6.627-4.971-16.03-3.626-21,3 L96.75,156.005c-4,5.333-4,12.667,0,18l112.5,149.996c2.947,3.93,7.451,6.001,12.012,6.001c3.131,0,6.29-0.978,8.988-3.001 C236.878,322.03,238.221,312.628,233.25,306.001z"
-                                        stroke="#6b778d" stroke-width="20" />
+                                <svg version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330 330"
+                                    style="enable-background:new 0 0 330 330;" xml:space="preserve">
+                                    <path id="XMLID_26_"
+                                        d="M315,0H15C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V15
+                               C330,6.716,323.284,0,315,0z M255,180H75c-8.284,0-15-6.716-15-15s6.716-15,15-15h180c8.284,0,15,6.716,15,15S263.284,180,255,180z" />
                                 </svg>
                             </div>
                         </a>
@@ -94,12 +93,14 @@
                         <a>
                             <div class="increaseQty" id="increaseQty_anchor">
                                 <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                    viewBox="0 0 330.002 330.002" style="enable-background:new 0 0 330.002 330.002;"
-                                    xml:space="preserve">
-                                    <path id="XMLID_226_"
-                                        d="M233.252,155.997L120.752,6.001c-4.972-6.628-14.372-7.97-21-3c-6.628,4.971-7.971,14.373-3,21 l105.75,140.997L96.752,306.001c-4.971,6.627-3.627,16.03,3,21c2.698,2.024,5.856,3.001,8.988,3.001 c4.561,0,9.065-2.072,12.012-6.001l112.5-150.004C237.252,168.664,237.252,161.33,233.252,155.997z"
-                                        stroke="#6b778d" stroke-width="20" /></svg>
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330 330"
+                                    style="enable-background:new 0 0 330 330;" xml:space="preserve">
+                                    <path id="XMLID_23_"
+                                        d="M315,0H15C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V15
+                               C330,6.716,323.284,0,315,0z M255,180h-75v75c0,8.284-6.716,15-15,15s-15-6.716-15-15v-75H75c-8.284,0-15-6.716-15-15
+                               s6.716-15,15-15h75V75c0-8.284,6.716-15,15-15s15,6.716,15,15v75h75c8.284,0,15,6.716,15,15S263.284,180,255,180z" />
+                                </svg>
+
                             </div>
                         </a>
                         {% endif %}
@@ -127,63 +128,100 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-<br>
+
 <div class="review">
     {% if review_form %}
-    <hr>
-    <h4>Hi <b>{{user.get_username}}</b>, please rate the product and leave a review:</h4>
-    <form id="review-form" action="#" method="POST">
-        <div class="rating">
-            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-        </div>
-        <div class="form-outline">
-            {{ review_form.review_text }}
-        </div>
-        <div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn btn-success" id="review-submit">
-                Submit
-            </button>
-        </div>
-    </form>
+    <div class="review_form">
+        <div class="reviewForm__title">Hi <span class="username">{{user.get_username}}</span>, leave a review:</div>
+        <form id="review-form" action="#" method="POST">
+            {% csrf_token %}
+            <div class="rating">
+                <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+            </div>
+            <div class="form-outline">
+                {{ review_form.review_text }}
+            </div>
+            <div class="reviewSubmit">
+                <button class="" id="review-submit">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
     {% endif %}
-    <div>
-        <hr>
-        <h3>Reviews</h3>
+    <br>
+    <hr>
+    <br>
+    <div class="review__title">
+        Reviews
     </div>
     {% if not review_all %}
     <div class="review-empty">
-        There is no review for this product.
+        There is no review currently.
     </div>
     {% endif %}
     {% for review in review_all %}
-    <div class="reviews">
-        <div id="user-profile-img">
-            <div class="profile-img">
-                <img src="{{review.reviewer.profile_img.url}}" width="30" class="user-img rounded-circle mr-2">
+    <div class="review_all">
+        <div class="reviewer">
+            <div class="reviewer__image">
+                <img src="{{review.reviewer.profile_img.url}}">
             </div>
-            <div class="profile-name">
-                <span>{{review.reviewer.user_name}}</span>
+            <div class="reviewer__right">
+                <div class="reviewer__username">
+                    {{review.reviewer.user_name}}
+                </div>
+                <div class="reviewer__ratingtime">
+                    <div class="reviewer__rating">
+                        <div class="productAll__info__rating__stars">
+                            <div class="productAll__info__rating__stars__container"
+                                style="width:{{ review.rating|inttopercent }}%;">
+                                <div class="productAll__info__rating__stars--fill">
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="productAll__info__rating__stars--empty">
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reviewer__posttime">
+                        {{review.post_time|daymonthyears}}
+                    </div>
+                </div>
             </div>
-            <div class="post-time">
-                <small class="">{{review.post_time}}</small>
-            </div>
+
         </div>
-        <div class="small-ratings">
-            {% for i in review.rating|times  %}
-            <p class="fa fa-star rating-color">&#11088</p>
-            {% endfor %}
-        </div>
-        <div class="user d-flex flex-row">
-            <span>
-                <small class="text-primary">{{review.review_text}}</small>
-            </span>
+        <div class="review_text">
+            {{review.review_text}}
         </div>
     </div>
 </div>
@@ -192,35 +230,37 @@
 
 
 <script>
-    $(document).on('click', '.decreaseQty', function(e){
+    $(document).on('click', '.decreaseQty', function (e) {
         var current_quantity = $('.quantity--quantity').text();
         current_quantity = parseInt(current_quantity);
 
-        if ( current_quantity - 1 <= 1) {
+        if (current_quantity - 1 <= 1) {
             $('.quantity--quantity').html(current_quantity - 1);
             $('#decreaseQty_anchor').addClass("isDisabled");
+            $('#increaseQty_anchor').removeClass("isDisabled");
         } else {
             $('.quantity--quantity').html(current_quantity - 1);
             $('#increaseQty_anchor').removeClass("isDisabled");
         };
-        
+
     })
-    
-    $(document).on('click', '.increaseQty', function(e){
+
+    $(document).on('click', '.increaseQty', function (e) {
         var current_quantity = $('.quantity--quantity').text();
         var product_inventory = "{{product.inventory}}";
         current_quantity = parseInt(current_quantity);
         product_inventory = parseInt(product_inventory);
-        $('.quantity--quantity').html(current_quantity + 1)  
+        $('.quantity--quantity').html(current_quantity + 1)
 
-        if ( current_quantity + 1 >= product_inventory) {
+        if (current_quantity + 1 >= product_inventory) {
             $('.quantity--quantity').html(current_quantity + 1);
             $('#increaseQty_anchor').addClass("isDisabled");
+            $('#decreaseQty_anchor').removeClass("isDisabled");
         } else if (current_quantity + 1 >= 2) {
             $('.quantity--quantity').html(current_quantity + 1);
             $('#decreaseQty_anchor').removeClass("isDisabled");
         };
-        
+
     })
 
     $(document).on('click', '#add-button', function (e) {
@@ -241,7 +281,7 @@
             error: function (xhr, errmsg, err) {
 
             }
-        }); 
+        });
 
     })
 
@@ -266,7 +306,7 @@
         });
 
     })
-    
+
     $(".rating input").on('click', function (e) {
         window.value = $(this).val();
         window.productid = "{{product.id}}"

@@ -172,6 +172,8 @@ main {
 
 /* footer */
 footer {
+    margin-top: 1rem;
+    border-top: thin solid var(--primary-color);
     padding: 0 13rem;
     display: flex;
     flex-direction: column;

@@ -237,29 +237,49 @@
 /* popular product */
 
 .productPopular{
+    width: 70%;
     margin-top: 2rem;
-    margin-left: 3rem;
-    margin-right: 3rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
     display: grid;
-    grid-template-rows: 2rem repeat(auto-fill, 17.5rem);
-    align-items: center;
-    justify-content: center;
+    grid-template-rows: 3% 97%;
     background-color: #fafafa;
+    justify-self: center;
+    justify-items: center;
+}
+
+.productPopular img {
+    width: 6.5rem;
+    box-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
 }
 
 .productPopular__title {
+    padding-top: 0.8rem;
+    font-size: var(--font-size-big);
+    font-weight: 600;
     text-align: center;
     margin-left: 2rem;
     margin-right: 2rem;
 }
-.productPopular__title > h2{
-    font-weight: 600;
-    font-size: var(--font-size-big);
+
+
+.productPopular__content{
+    width: 100%;
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    justify-items: center;
+    align-items: center;
 }
 
-.productPopular img {
-    width: 8rem;
-    box-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
+.productPopular__item {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    font-size: var(--font-size-small);
+    justify-content: center;
+    align-items: center;
 }
 
 .productPopular__info__title a{
@@ -268,29 +288,21 @@
 
 .productPopular__img {
     position: relative;
-    width: 12rem;
-    height: 12rem;
-    padding-bottom: 1rem;
+    width: 7rem;
+    text-align: center;
 }
 
-.productPopular__item {
-    width: 80%;
-    height: 16rem;
-    margin: 0 auto;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    grid-template-rows: 80% 20%;
-    font-size: var(--font-size-small);
-}
 
 .productPopular__item a{
-    font-size: var(--font-size-small);
+    font-size: 0.8rem;
     text-align: center;
 }
 
-.productPopular__img {
+.productPopular__info {
+    padding-top: 1rem;
     text-align: center;
+    display: grid;
+    justify-content: center;
 }
 
 .productPopular__info__price {
@@ -298,12 +310,6 @@
     font-weight: 600;
 }
 
-.productPopular__info {
-    text-align: center;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-}
 
 
 @media screen and (max-width: 1440px) {
@@ -311,17 +317,51 @@
         margin-left: 0rem;
         margin-right: 0rem;   
     }
+
+    .productPopular img {
+        width: 6rem;
+        box-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
+    }
+
+    .productPopular__item {
+        width: 80%;
+    }
+
+    .productPopular__img {
+        width: 6rem;
+    }
+    
+
 }
 
 @media screen and (max-width: 1024px) {
     .productPopular{
         margin-left: 0rem;
-        margin-right: 0rem;   
+        margin-right: 0rem;
     }
 
-    .categoryList {
-        padding: 0 1.2rem;
-        padding-top: 4rem;
+    .productPopular{
+        width: 100%;
+    }
+
+    .productPopular img {
+        width: 7rem;
+        box-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
+    }
+
+    .productPopular__content{
+        row-gap: 1rem;
+        grid-template-rows: repeat(5, 16rem);
+        align-items: flex-end;
+        justify-items: flex-end;
+    }
+    
+    .productPopular__item {
+        width: 90%;
+    }
+    
+    .productPopular__img {
+        width: 100%;
     }
 
 }
@@ -331,25 +371,40 @@
         margin-left: 0rem;
         margin-right: 0rem; 
         display: grid;
-        grid-template-rows: 2rem repeat(auto-fill, 12rem);
+        grid-template-rows: 2rem repeat(auto-fill, 16rem);
+    }
+
+    .productPopular__title {
+        padding-top: 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+
+    .productPopular__content{
+        position: relative;
+        width: 100%;
+        row-gap: 1rem;
     }
 
     .productPopular__item {
-        width: 80%;
-        height: 11rem;
+        width: 100%;
+        grid-template-rows: 70% 30%;
     }
 
     .productPopular__img {
         position: relative;
-        width: 8rem;
-        height: 8rem;
+        width: 6rem;
         padding-bottom: 1rem;
     }
 
     .productPopular img {
-        width: 5rem;
+        width: 6rem;
         box-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
     }
+
     .categoryList {
         padding: 0 1rem;
         padding-top: 4rem;

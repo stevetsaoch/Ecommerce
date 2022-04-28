@@ -10,4 +10,4 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="review_product", default=None)
     review_text = models.CharField(max_length=1000, blank=True, default="")
     rating = models.IntegerField(blank=False)
-    post_time = models.DateField(auto_now_add=True)
+    post_time = models.DateTimeField(auto_now_add=True)
