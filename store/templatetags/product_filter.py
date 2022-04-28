@@ -1,6 +1,8 @@
 # others
-from datetime import date, datetime
+from datetime import date, datetime, timezone
+import pytz
 
+# local app
 from django.template import Library
 from review.models import Review
 
@@ -20,12 +22,43 @@ def inttopercent(value):
 
 @register.filter(name="daymonthyears")
 def daymonthyears(value):
-    today = datetime.now()
-    # delta = today - value
-    print(type(value.tzinfo))
-    print(value)
-    print(type(today.tzinfo))
-    print(today)
+    today = datetime.now(pytz.UTC)
+    delta = today - value
+    days = delta.days
+
+    if days >= 1:
+        years = days // 365
+        if years >= 1:
+            if years == 1:
+                return f"{years} year ago".format(years)
+            if years > 1:
+                return f"{years} years ago".format(years)
+
+        months = days // 30
+        if months >= 1:
+            if months == 1:
+                return f"{months} month ago".format(months)
+            if months > 1:
+                return f"{months} months ago".format(months)
+        else:
+            if days == 1:
+                return f"{days} day ago".format(days)
+            if days > 1:
+                return f"{days} days ago".format(days)
+
+    if days < 1:
+        hours = delta.seconds // 3600
+        if hours >= 1:
+            if hours == 1:
+                return f"{hours} hour ago".format(hours)
+            if hours > 1:
+                return f"{hours} hours ago".format(hours)
+        else:
+            mins = (delta.seconds % 3600) // 60
+            if mins <= 1:
+                return f"{mins} minute ago".format(mins)
+            else:
+                return f"{mins} minutes ago".format(mins)
 
 
 @register.filter(name="ratingaverage")

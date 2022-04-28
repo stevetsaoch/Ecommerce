@@ -167,11 +167,12 @@ textarea[type="text"] {
     border-color: #c2c2c2;
     border-radius: 10px;
     padding: 1rem 1rem;
+    margin-bottom: 1rem;
 }
 
 .reviewer {
     display: grid;
-    grid-template-columns: 4rem 0.5rem 10rem;
+    grid-template-columns: 4rem 0.5rem 15rem;
     justify-items: center;
 }
 
@@ -188,7 +189,7 @@ textarea[type="text"] {
 
 .reviewer__ratingtime {
     display: grid;
-    grid-template-columns: 5rem 5rem;
+    grid-template-columns: 5rem 10rem;
 }
 
 .reviewer__rating {
