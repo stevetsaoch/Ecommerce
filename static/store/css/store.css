@@ -319,8 +319,13 @@
     }
 
     .productPopular img {
-        width: 6rem;
+        width: 100%;
         box-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
+    }
+
+    .productPopular__content{
+        row-gap: 1rem;
+        grid-template-rows: repeat(5, 14rem);
     }
 
     .productPopular__item {
@@ -328,7 +333,7 @@
     }
 
     .productPopular__img {
-        width: 6rem;
+        width: 5rem;
     }
     
 
@@ -345,13 +350,13 @@
     }
 
     .productPopular img {
-        width: 7rem;
+        width: 6rem;
         box-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
     }
 
     .productPopular__content{
         row-gap: 1rem;
-        grid-template-rows: repeat(5, 16rem);
+        grid-template-rows: repeat(5, 14rem);
         align-items: flex-end;
         justify-items: flex-end;
     }
@@ -361,7 +366,7 @@
     }
     
     .productPopular__img {
-        width: 100%;
+        width: 6rem;
     }
 
 }

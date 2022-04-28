@@ -119,29 +119,31 @@
     </div>
     <div class="productPopular">
         <div class="productPopular__title">
-            <h2>Bestsellers</h2>
+            Bestsellers
         </div>
-        {% for product in popular_product %}
-        <div class="productPopular__item" id="click-count" data-index="{{product.slug}}">
-            <div class="productPopular__img">
-                <a href="{{product.get_absolute_url}}">
-                    <img alt="Responsive image" src="{{ product.image.image.url }}">
-                </a>
-            </div>
-            <div class="productPopular__info">
-                <div class="productPopular__info__title">
-                    <a href="{{ product.get_absolute_url }}">
-                        {{ product.title }}
+        <div class="productPopular__content">
+            {% for product in popular_product %}
+            <div class="productPopular__item" id="click-count" data-index="{{product.slug}}">
+                <div class="productPopular__img">
+                    <a href="{{product.get_absolute_url}}">
+                        <img alt="Responsive image" src="{{ product.image.image.url }}">
                     </a>
                 </div>
-                <div class="productPopular__info__price__rating">
-                    <div class="productPopular__info__price">
-                        $ {{ product.price }}
+                <div class="productPopular__info">
+                    <div class="productPopular__info__title">
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product.title }}
+                        </a>
+                    </div>
+                    <div class="productPopular__info__price__rating">
+                        <div class="productPopular__info__price">
+                            $ {{ product.price }}
+                        </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
 
