@@ -62,9 +62,11 @@
     margin: auto;
     fill: #858585;
 }
+
 .quantity--quantity{
     padding: auto 0;
 }
+
 .quantity div {
     font-size: 1.5rem;
     font-weight: 600;
@@ -109,8 +111,6 @@
     background-color: var(--seconary-color);
     border-color: var(--seconary-color);
 }
-
-
 
 .productSingle__Title{
     font-size: 1.5rem;

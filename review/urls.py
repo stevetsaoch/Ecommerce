@@ -6,5 +6,5 @@ from django.contrib.auth.decorators import login_required
 app_name = "review"
 
 urlpatterns = [
-    path("", login_required(ReviewView.as_view()), name="review"),
+    path("", login_required(ReviewView.as_view()), name="post_review"),
 ]

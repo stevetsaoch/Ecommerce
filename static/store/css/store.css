@@ -238,7 +238,7 @@
 
 .productPopular{
     width: 70%;
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding-left: 0.8rem;
     padding-right: 0.8rem;
     display: grid;
@@ -249,7 +249,7 @@
 }
 
 .productPopular img {
-    width: 6.5rem;
+    width: 5rem;
     box-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
 }
 
@@ -266,8 +266,8 @@
 .productPopular__content{
     width: 100%;
     display: grid;
-    grid-template-rows: repeat(5, 1fr);
-    justify-items: center;
+    grid-template-rows: repeat(6, 1fr);
+    justify-items:center;
     align-items: center;
 }
 
@@ -288,7 +288,7 @@
 
 .productPopular__img {
     position: relative;
-    width: 7rem;
+    width: 6rem;
     text-align: center;
 }
 
@@ -389,6 +389,7 @@
     }
 
     .productPopular__content{
+        grid-template-rows: repeat(5, 1fr);
         position: relative;
         width: 100%;
         row-gap: 1rem;

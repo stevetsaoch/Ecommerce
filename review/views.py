@@ -21,8 +21,11 @@ class ReviewView(View):
         if review_form.is_valid():
             review_form = review_form.save(commit=False)
             review_form.reviewer = user
+            print("checkpoint1")
             review_form.product = product
+            print("checkpoint2")
             review_form.save()
+            print("checkpoint3")
             return HttpResponse(status=200)
 
         else:

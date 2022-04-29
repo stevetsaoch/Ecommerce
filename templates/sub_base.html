@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block sub_base %}
+{% static 'core/css/sub_base.css' %}
+{% endblock sub_base %}
+
+{% block content %}
+<div class="subBaseContent">
+    <div class="subBaseContent--title">
+        {% block sub_base_title %}{% endblock sub_base_title %}    
+    </div>
+    <div class="subBaseContent--content">
+        {% block sub_base_content %}{% endblock sub_base_content %}
+    </div>
+</div>
+{% endblock content %}

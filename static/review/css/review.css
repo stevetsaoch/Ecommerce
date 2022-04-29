@@ -172,7 +172,7 @@ textarea[type="text"] {
 
 .reviewer {
     display: grid;
-    grid-template-columns: 4rem 0.5rem 15rem;
+    grid-template-columns: 4rem 1rem 15rem;
     justify-items: center;
 }
 
@@ -216,9 +216,10 @@ textarea[type="text"] {
 
 .review_text {
     margin-top: 0.3rem;
-    padding-left: 4.5rem;
+    padding-left: 5rem;
     font-size: 1rem;
     font-weight: 600;
+    word-break: break-all;
 }
 
 @media screen and (max-width: 1440px) {
