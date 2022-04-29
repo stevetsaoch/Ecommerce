@@ -198,9 +198,10 @@ Basket summary
 
                 $('.basket__item[data-index="' + product_id + '"]').remove()
                 $('#basket-qty').html(json.qty)
-                $('#subtotal-price').html(json.basket_total_before_tax)
-                $('#total-to-pay-price').html(json.basket_total_after_tax)
-                if ($(".basket").length == 1) {
+                $('.totalCheckout__quantity').html(json.qty)
+                $('#total-before-tax').html(json.basket_total_before_tax)
+                $('#total-after-tax').html(json.basket_total_after_tax)
+                if ($(".basket__item").length == 0) {
                     $(".totalCheckout").remove();
                     $(".basket__topBanner").remove();
                     $(".basket__title").remove();

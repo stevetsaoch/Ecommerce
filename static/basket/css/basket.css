@@ -100,7 +100,7 @@
 .basket__item__subtotal div {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--alter-color);
+    color: var(--seconary-color);
 }
 
 .basket__item__delete svg {
@@ -108,7 +108,7 @@
     height: 1.2rem;
     display: block;
     margin: auto;
-    fill: var(--alter-color);
+    fill: var(--seconary-color);
 }
 
 /* total checkout */
