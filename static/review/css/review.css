@@ -30,9 +30,9 @@
 }
 
 .review-empty{
-    font-size: 1.5rem;
+    font-size: 1.0rem;
     font-weight: 600;
-    color: var(--alter-color);
+    color: var(--seconary-color);
     padding-bottom: 0.6rem;
 }
 

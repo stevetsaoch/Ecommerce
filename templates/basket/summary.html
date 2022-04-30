@@ -14,7 +14,7 @@ Basket summary
 {% if basket|length == 0 %}
 <div class="basket--empty">Your Shopping Bag is empty.
     <a href="{% url 'store:store_home' %}">
-        Home
+        Shop
     </a>
 </div>
 {% else %}
@@ -42,7 +42,9 @@ Basket summary
     {% with product=item.product %}
     <div class="basket__item" data-index="{{product.id}}">
         <div class="basket__item__image">
-            <img class="" alt="Responsive image" src="{{ product.image.image.url }}" />
+            <a href="{{ item.product.get_absolute_url }}">
+                <img class="" alt="Responsive image" src="{{ product.image.image.url }}" />
+            </a>
         </div>
         <div class="basket__item__title">
             <a class="" href="{{ item.product.get_absolute_url }}">
@@ -136,34 +138,26 @@ Basket summary
 </div>
 {% if basket|length == 0 %}
 {% else %}
-{% comment %} <div class="totalCheckout__topBanner">
-    <div class="totalCheckout__topBanner__quantity">
-        Quantity
-    </div>
-    <div class="totalCheckout__topBanner__total">
-        Total
-    </div>
-    <div class="totalCheckout__topBanner__annotation">
-        Annotation
-    </div>
-</div> {% endcomment %}
+
 <div class="totalCheckout">
     <div class="totalCheckout__quantity">
         {{ basket|length }}
     </div>
-    <div class="totalCheckout__price__beforetax">
-        <div>
-            <span>$</span>
-            <span id="total-before-tax"> {{basket.get_subtotal_price_before_tax}} </span>
+    <div class="totalCheckout__price">
+        <div class="totalCheckout__price__beforetax">
+            <div>
+                <span>$</span>
+                <span id="total-before-tax"> {{basket.get_subtotal_price_before_tax}} </span>
+            </div>
+            <div class="totalCheckout__annotation">(Before-tax)</div>
         </div>
-        <div class="totalCheckout__annotation">(Before-tax)</div>
-    </div>
-    <div class="totalCheckout__price__aftertax">
-        <div>
-            <span class="">$</span>
-            <span id="total-after-tax"> {{basket.get_subtotal_price_after_tax}} </span>
+        <div class="totalCheckout__price__aftertax">
+            <div>
+                <span class="">$</span>
+                <span id="total-after-tax"> {{basket.get_subtotal_price_after_tax}} </span>
+            </div>
+            <div class="totalCheckout__annotation">(After-tax)</div>
         </div>
-        <div class="totalCheckout__annotation">(After-tax)</div>
     </div>
     <div class="totalCheckout__checkoutButton">
         <a href="{% url 'checkout:delivery_options' %}">

@@ -40,7 +40,7 @@ class WishListView(ListView):
                 return HttpResponse(status=200)
             else:
                 return HttpResponse(status=400)
-        # if user is not setup an wish, create a wishlist and followed by adding product
+        # if user is not setup a wish list, create a wishlist and followed by adding product
         except ObjectDoesNotExist:
             product = Product.objects.get(id=product_id)
             user_wishlist = WishList.objects.create(user_id=self.user_id)
