@@ -22,7 +22,14 @@ Wish List
     </a>
 </div>
 {% else %}
-<div class="basket__title">Wish List</div>
+<div class="basket__title">
+    <div class="basket__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
+    </div>
+    <div class="basket__bean__bag">
+        Wish List
+    </div>
+</div>
 {% endif %}
 {% endblock %}
 

@@ -19,7 +19,12 @@ Basket summary
 </div>
 {% else %}
 <div class="basket__title">
-    Shopping Bag
+    <div class="basket__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
+    </div>
+    <div class="basket__bean__bag">
+        Shopping Bag
+    </div>
 </div>
 {% endif %}
 {% endblock %}

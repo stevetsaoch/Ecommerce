@@ -7,11 +7,25 @@ svg {
     margin-bottom: 3rem;
 }
 
-.deliveryoptions__title {
-    margin-bottom: 1.2rem;
+.deliveryOption__title {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+/* bean */
+.deliveryOption__bean__home a{
+    color: var(--primary-color);
+    padding: 0 2rem;
+    border-right: thin solid var(--seconary-color);
+}
+
+.deliveryOption__bean__current {
+    color: var(--primary-color);
     font-weight: 600;
-    font-size: 2rem;
-    padding-left: 1.5rem;
+    padding: 0 2rem;
 }
 
 
@@ -40,8 +54,8 @@ label {
     border: thin solid black;
     border-radius: 10px;
     margin-top: 1rem;
-    transition-property: background-color;
-    transition-duration: 500ms;
+    transition-property: background-color, box-shadow;
+    transition-duration: 500ms, 100ms;
     padding: 1rem 0.5rem;
 }
 
@@ -65,7 +79,7 @@ label {
 
 .deliveryOption__name {
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-bottom: 0.5rem;
 }
 
@@ -93,7 +107,7 @@ label {
     width: 100%;
 }
 .deliveryOption__total span, .deliveryOption__total div{
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .deliveryOptionn__total__price span{
@@ -115,7 +129,7 @@ label {
 .deliveryOption__total__paybutton button {
     width: 100%;
     height: 100%;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
     color: white;
     font-weight: 400;
@@ -128,11 +142,11 @@ label {
         width: 100%;
     }
     .deliveryOption__total span, .deliveryOption__total div{
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 
     .deliveryOption__total__paybutton button {
-        font-size: 2rem;
+        font-size: 1rem;
     }
 }
 

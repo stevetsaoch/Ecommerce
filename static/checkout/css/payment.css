@@ -1,0 +1,166 @@
+.subBaseContent--title{
+    margin-bottom: 2rem;
+}
+
+
+.basket__title {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+}
+
+.basket__bean__home a{
+    color: var(--primary-color);
+    padding: 0 2rem;
+    border-right: thin solid var(--seconary-color);
+}
+
+.basket__bean__bag {
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 0 2rem;
+}
+
+.addressPayment{
+    width: 85%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 65% 30%;
+    align-items: center;
+    column-gap: 5%;
+}
+
+/* address */
+.deliveryAddress_title {
+    border-bottom: thin solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.deliveryAddress__detail {
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+}
+
+.deliveryAddress__detail__content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    align-items: center;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+
+.deliveryAddress__detail__content--title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.deliveryAddress__detail__content--content {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.deliveryAddress__detail__content--edit {
+    text-align: center;
+}
+
+.deliveryAddress__detail__content--edit button {
+    font-size: 1.2rem;
+    width: 100%;
+    color: white;
+    padding: 0.5rem 0.5rem;
+    text-align: center;
+    background-color: var(--seconary-color);
+    border-color: var(--seconary-color);
+}
+
+.payment__summaryPaypal {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 60% 40%;
+    background-color: #eef3f8;
+    padding: 0.5rem
+}
+
+.payment__summary__subsection{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+}
+
+.payment__summary__subsection div {
+    font-size: 1.2rem;
+}
+
+.payment__price {
+    font-weight: 600;
+}
+
+.payment__summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#totalCost {
+    padding-top: 1rem;
+    border-top: thin solid var(--primary-color);
+}
+
+@media screen and (max-width: 1024px) {
+    .addressPayment {
+        width: 100%;
+        column-gap: 5%;
+        grid-template-columns: 55% 40%;
+    }
+    .payment__summaryPaypal{
+        padding: 0rem;
+    }
+    .payment__summary__subsection div {
+        font-size: 1rem;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .addressPayment {
+        width: 100%;
+        row-gap: 10%;
+        grid-template-rows: 45% 45%;
+        grid-template-columns: none;
+    }
+
+    .subBaseContent {
+        width: 90%;
+    }
+    .subBaseContent--title {
+        width: 100%;
+        margin: 0 auto;
+        padding-bottom: 1rem;
+    }
+
+    .basket__title{
+        justify-content: center;
+    }
+
+    .deliveryAddress__detail__content--title {
+        font-size: 1rem;
+    }
+    
+    .deliveryAddress__detail__content--content {
+        font-size: 1rem;
+    }
+
+    .deliveryAddress__detail__content--edit button {
+        font-size: 1rem;
+    }
+}

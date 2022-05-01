@@ -57,44 +57,52 @@ class DeliveryOptionView(ListView):
         return response
 
 
-class DeliveryAddressView(TemplateView):
-    template_name = "checkout/delivery_address.html"
+# class DeliveryAddressView(View):
+    
+#     def get(self, request):
+#         session = request.session
+#         if "purchase" not in request.session:
+#             messages.success(request, "Please select delivery option")
+#             return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
+#         try:
+#             self.address = Address.objects.get(customer_id=request.user.id)
+
+#         except ObjectDoesNotExist:
+#             return render(request, "checkout/delivery_address.html")
+
+#         else:
+#             if "address" not in request.session:
+#                 session["address"] = {"address_id": str(self.address)}
+#             else:
+#                 session["address"]["address_id"] = str(self.address)
+#                 session.modified = True
+#             return render(
+#                 request,
+#                 "checkout/delivery_address.html",
+#                 context={
+#                     "address": self.address,
+#                 },
+#             )
+
+class PaymentView(View):
 
     def get(self, request):
+
         session = request.session
+        address = Address.objects.get(customer_id=request.user.id)
         if "purchase" not in request.session:
             messages.success(request, "Please select delivery option")
             return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
-        try:
-            self.address = Address.objects.get(customer_id=request.user.id)
-
-        except ObjectDoesNotExist:
-            return render(request, "checkout/delivery_address.html")
-
         else:
             if "address" not in request.session:
-                session["address"] = {"address_id": str(self.address)}
+                session["address"] = {"address_id": str(address)}
             else:
-                session["address"]["address_id"] = str(self.address)
+                session["address"]["address_id"] = str(address)
                 session.modified = True
-            return render(
-                request,
-                "checkout/delivery_address.html",
-                context={
-                    "address": self.address,
-                },
-            )
 
-
-class PaymentView(View):
-    def get(self, request):
-        try:
-            address = Address.objects.get(customer_id=request.user.id)
-        except ObjectDoesNotExist:
-            return render(request, "checkout/delivery_address.html")
-        else:
-            return render(request, "checkout/payment_selection.html", context={"address": address})
+        return render(request, "checkout/payment_selection.html", context={"address": address})
 
     def post(self, request):
         user_id = request.user.id

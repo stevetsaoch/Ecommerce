@@ -10,14 +10,19 @@ Delivery Options
 {% endblock stylesheet1 %}
 
 {% block sub_base_title %}
-<div class="deliveryoptions__title">
-    Delivery Options
+<div class="deliveryOption__title">
+    <div class="deliveryOption__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
+    </div>
+    <div class="deliveryOption__bean__current">
+        Delivery Options
+    </div>
 </div>
 {% endblock %}
 {% block sub_base_content %}
 <div class="deliveryoptions">
     {% if messages %}
-    <div alert-"{{ message.tags }}" role="alert">
+    <div class="warning" alert-"{{ message.tags }}" role="alert">
         {% for message in messages  %}
         {{message|safe}}
         {% endfor %}
@@ -84,7 +89,7 @@ Delivery Options
                 <div class="deliveryOptionn__total__price"><span>$ </span=><span id="total">{{basket.get_total_price}}</span></div>
             </div>
             <div class="deliveryOption__total__paybutton">
-                <a role="button" href=" {% url 'checkout:delivery_address' %}">
+                <a role="button" href=" {% url 'checkout:payment' %}">
                     <button>
                         Pay Securely
                     </button>
