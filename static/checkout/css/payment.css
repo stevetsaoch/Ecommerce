@@ -86,7 +86,7 @@
     display: grid;
     grid-template-rows: 60% 40%;
     background-color: #eef3f8;
-    padding: 0.5rem
+    padding: 0.5rem;
 }
 
 .payment__summary__subsection{
@@ -106,9 +106,14 @@
 }
 
 .payment__summary {
+    padding-top: 4rem;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+}
+
+.paypal__button {
+    align-self: center ;
 }
 
 #totalCost {
@@ -132,12 +137,6 @@
 }
 
 @media screen and (max-width: 768px) {
-    .addressPayment {
-        width: 100%;
-        row-gap: 10%;
-        grid-template-rows: 45% 45%;
-        grid-template-columns: none;
-    }
 
     .subBaseContent {
         width: 90%;
@@ -162,5 +161,27 @@
 
     .deliveryAddress__detail__content--edit button {
         font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .deliveryAddress{
+        padding-bottom: 1rem;
+    }
+    
+    .addressPayment {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items:stretch;
+    }
+    .payment__summary__subsection div {
+        margin-bottom: 0.5rem;
+    }
+
+    .payment__summary{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        height: 100%;
     }
 }
