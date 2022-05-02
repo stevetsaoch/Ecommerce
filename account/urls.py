@@ -51,7 +51,7 @@ urlpatterns = [
         ),
     ),
     # User profile
-    path('dashboard/', login_required(DashboardView.as_view()), name='dashboard'),
+    # path('dashboard/', login_required(DashboardView.as_view()), name='dashboard'),
     path('profile/', login_required(ProfileView.as_view()), name='profile'),
     path("profile/edit/", login_required(ProfileEditView.as_view()), name="edit_details"),
     path("profile/delete_user/", login_required(ProfileEditView.as_view()), name="delete_user"),

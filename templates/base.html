@@ -37,14 +37,14 @@
                     <div class="nav__user">
                         <div class="nav__user__dropdown">
                             <div class="nav__user__dropdown--img">
-                                <a href="{% url "account:dashboard" %}">
+                                <a href="{% url "account:profile" %}">
                                     <img class="nav__img" src={{ user.profile_img.url }}>
                                 </a>
                             </div>
                             <div class="nav__user__dropdown--content">
                                 {% if user.is_authenticated %}
                                 <div>
-                                    <a href="{% url "account:dashboard" %}">Dashboard</a>
+                                    <a href="{% url "account:profile" %}">Profile</a>
                                 </div>
                                 <div>
                                     <a href="{% url 'orders:user_orders' %}">Orders</a>

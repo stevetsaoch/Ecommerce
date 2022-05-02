@@ -34,12 +34,8 @@ class BasketView(TemplateView):
     def delete(self, request):
         product_id = int(QueryDict(request.body).get("productid"))
         self.basket.delete(product=product_id)
-        print(self.basket.basket)
-
         basketqty = self.basket.__len__()
-        print(basketqty)
         baske_total_before_tax = self.basket.get_subtotal_price_before_tax()
-        print(baske_total_before_tax)
         baskek_total_after_tax = self.basket.get_subtotal_price_after_tax()
         response = JsonResponse(
             {
