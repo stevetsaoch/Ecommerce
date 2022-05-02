@@ -1,112 +1,122 @@
-{% extends "base.html" %}
-{% load orderissue_filter %}
+{% extends 'sub_base.html' %}
 {% load static %}
-{% block title %}User Orders{% endblock %}
+{% load product_filter %}
+{% load orderissue_filter %}
+
+{% block title %}
+Order List
+{% endblock title %}
 
 {% block stylesheet1 %}
 {% static 'orders/css/orders.css' %}
-{% endblock stylesheet1 %}
+{% endblock %}
 
-{% block content %}
-
-<div class="title">
-    <div class="">
-        <h1 class="">User Orders</h1>
+{% block sub_base_title %}
+<div class="orders__bean">
+    <div class="orders__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
     </div>
-    <div class="">
-        <div><b>Orders</b> details</div>
+    <div class="orders__bean__orders">
+        Orders
     </div>
 </div>
-<br>
+{% endblock %}
+
+{% block sub_base_content %}
 <div class="orders">
     {% for order in orders %}
-    <div>
-        <div class="orders-banner">
-            <div class="">
-                <div>
-                    {{ order.created }}
-                </div>
+    <div class="order__infomation">
+        <div class="order__infomation__title">
+            <div>
+                {{ order.created }}
             </div>
-            <div class="">
-                <div class="">
-                    {{ order.order_key }}
-                </div>
+            <div>
+                {{ order.order_key }}
+            </div>
+            <div class="order__infomation__content__report">
+                {% if order|orderissueexist %}
+                <a class="isDisabled" style="pointer-events: none;"
+                    href="{% url 'orders:order_issue' order_key=order.order_key%}">
+                    <button class="report__button" id="order-issue-report" type="button" style="pointer-events: none;"
+                        data-order="{{order.id}}">Mail sent</button>
+                </a>
+                {% else %}
+                <a  href="{% url 'orders:order_issue' order_key=order.order_key%}">
+                    <button class="report__button" id="order-issue-report" type="button"
+                        data-order="{{order.id}}">Problem with
+                        order</button>
+                </a>
+                {% endif %}
             </div>
         </div>
-        <div class="order-information">
-            <div class="order-information-out">
-                <div class="order-information-out-col-name">
+        <div class="order__infomation__content">
+            <div>
+                <div>
                     Payment Method:
                 </div>
-                <div "order-information-out-col-content">
+                <div>
                     {{ order.payment_option.name }}
                 </div>
             </div>
-            <div class="order-information-out">
-                <div class="order-information-out-col-name">
-                    Dispacted to:
+            <div>
+                <div>
+                    Shipped to:
                 </div>
-                <div "order-information-out-col-content">
+                <div>
                     {{order.address.address_line2}} {{order.address.address_line}} {{order.address.postcode}}
                     {{order.address.town_city}}, {{order.address.country}}.
                     {{order.address.full_name}}, {{order.address.phone}}
                 </div>
             </div>
-            <div class="order-information-out">
-                <div class="order-information-out-col-name">
+            <div>
+                <div>
+                   Delivery cost:
+                </div>
+                <div>
+                    $ {{ order.delivery_option.delivery_price }}
+                </div>
+            </div>
+            <div>
+                <div>
                     Total paid:
                 </div>
-                <div "order-information-out-col-content">
+                <div>
                     $ {{ order.total_paid }}
-                </div>
-                <div class="order-information-out-issue-report">
-                    {% if order|orderissueexist %}
-                    <a class="isDisabled" style="pointer-events: none;"
-                        href="{% url 'orders:order_issue' order_key=order.order_key%}">
-                        <button class="" id="order-issue-report" type="button" style="pointer-events: none;"
-                            data-order="{{order.id}}">Mail sent</button>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'orders:order_issue' order_key=order.order_key%}">
-                        <button class="btn btn-success fw-bold" id="order-issue-report" type="button" data-order="{{order.id}}">Problem with
-                            order</button>
-                    </a>
-                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    <div class="order-items">
-        {% for item in order.items.all %}
-        <div class="order-items-information">
-            <div class="image">
-                <img class="" src="{{item.product.image.image.url}}" />
-            </div>
-            <div class="title-quantity-subtotal">
-                <div class="order-item-title">
-                    <a class="text-decoration-none" href="{{ item.product.get_absolute_url }}">
-                        <span class="">{{item.product|title}}</span>
-                    </a>
-                </div>
-                <div>
-                    <span> Quantity: </span> {{ item.quantity }}
-                </div>
-                <div>
-                    <span> Subtotal: </span> $ {% multiply item.product.price item.quantity %}
-                </div>
+    <div class="order__items">
+        <div class="order__items__title">
+            <div>
+                Product
             </div>
             <div>
-                <a role="button" href="{{item.product.get_absolute_url}}" type="button">
-                    <button class="btn btn-success fw-bold">Leave a review</button> 
+                Subtotal
+            </div>
+        </div>
+        {% for item in order.items.all %}
+        <div class="order__items__summary">
+            <div class="order__items__summary__img">
+                <img src="{{item.product.image.image.url}}" />
+            </div>
+            <div class="order__items__summary__title">
+                <a href="{{ item.product.get_absolute_url }}">
+                    {{item.product|title}}
+                </a>
+            </div>
+            <div class="order__items__summary__subtotal">
+                $ {% multiply item.product.price item.quantity %}
+            </div>
+            <div class="order__items__summary__reviewbutton">
+                <a href="{{item.product.get_absolute_url}}">
+                    <button>Leave a review</button>
                 </a>
             </div>
         </div>
         {% endfor %}
     </div>
-    <br>
-    <br>
     {% endfor %}
-</div>
 </div>
 
 
