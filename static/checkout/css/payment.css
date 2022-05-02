@@ -121,6 +121,37 @@
     border-top: thin solid var(--primary-color);
 }
 
+/* payment successful */
+
+.paymentsuccess__bean__home a{
+    color: var(--primary-color);
+    padding: 0 2rem;
+}
+
+.paymentSuccess {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.paymentSuccess__thankyou {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.paymentSuccess__redirect {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+.paymentSuccess__redirect a {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.paymentSuccess__redirect span {
+    font-weight: 600;
+}
+
 @media screen and (max-width: 1024px) {
     .addressPayment {
         width: 100%;

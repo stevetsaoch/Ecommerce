@@ -147,13 +147,13 @@ class PaymentView(View):
 
 @login_required
 def payment_successful(request):
-    basket = Basket(request)
-    # update inventory
-    product_ids = basket.basket.keys()
-    products = Product.objects.filter(id__in=product_ids)
-    for product in products:
-        product.inventory -= basket.basket[str(product.id)]["qty"]
-        product.save()
+    # basket = Basket(request)
+    # # update inventory
+    # product_ids = basket.basket.keys()
+    # products = Product.objects.filter(id__in=product_ids)
+    # for product in products:
+    #     product.inventory -= basket.basket[str(product.id)]["qty"]
+    #     product.save()
 
-    basket.clear()
+    # basket.clear()
     return render(request, "checkout/payment_successful.html", {})

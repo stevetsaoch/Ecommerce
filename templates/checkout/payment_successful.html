@@ -1,25 +1,52 @@
-{% extends "base.html" %}
+{% extends 'sub_base.html' %}
 {% load static %}
-{% block title %}Payment Successful{%endblock %}
+{% load product_filter %}
+
+{% block title %}
+Payment Selection
+{% endblock title %}
 
 {% block stylesheet1 %}
-{% static 'checkout/css/checkout.css' %}
+{% static 'checkout/css/payment.css' %}
 {% endblock stylesheet1 %}
 
-{% block content %}
+{% block sub_base_title %}
+<div class="basket__title">
+    <div class="payment__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
+    </div>
+</div>
+{% endblock %}
 
-<div class="container">
-  <div class="col-12">
-    <h1 class="h2">Payment Successful</h1>
+{% block sub_base_content %}
+
+<div class="paymentSuccess">
+  <div class="paymentSuccess__thankyou">
+    Thank you for choosing Tsao Books!
   </div>
-  <div class="col-12">
-    <p>Order Summary</p>
-  </div>
-  <hr />
-  <div class="col-12">
-    <p>View all <a href="{% url 'orders:user_orders' %}">orders</a></p>
+  <div class="paymentSuccess__redirect">
+    Redirect to <a href="{% url 'orders:user_orders' %}">orders</a> in <span id="countmesg"></span>
   </div>
 </div>
 
+<script>
+  $(document).ready(function () {
+      var delay = 10;
+      var url = "{% url 'orders:user_orders' %}";
+      var timer = null
+
+      function countdown() {
+          timer = setTimeout(countdown, 1000);
+          $('#countmesg').html(delay + " seconds.");
+          delay--;
+          if (delay < 0) {
+              clearTimeout(timer);
+              window.location = url;
+              delay = 0;
+          }
+      }
+      countdown();
+  });
+</script>
 
 {% endblock %}
