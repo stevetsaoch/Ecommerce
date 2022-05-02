@@ -45,15 +45,18 @@
     padding: 0.5rem 0.5rem;
     background-color: #eef3f8;
 }
+
 .order__infomation__title div{
     font-weight: 600;
 }
+
 .order__infomation__content{
     border-bottom: thin solid var(--primary-color);
     /* background-color: #eef3f8; */
     /* margin-bottom: 1rem; */
     padding: 0.5rem 0.5rem;
 }
+
 .order__infomation__content > div{
     display: grid;
     grid-template-columns: 25% 75% ;

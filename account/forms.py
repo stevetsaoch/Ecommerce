@@ -22,12 +22,10 @@ class RegistrationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["user_name"].widget.attrs.update({"class": "form-control mb-3", "placeholder": "Username"})
-        self.fields["email"].widget.attrs.update(
-            {"class": "form-control mb-3", "placeholder": "E-mail", "name": "email", "id": "id_email"}
-        )
-        self.fields["password"].widget.attrs.update({"class": "form-control mb-3", "placeholder": "Password"})
-        self.fields["password2"].widget.attrs.update({"class": "form-control", "placeholder": "Repeat Password"})
+        self.fields["user_name"].widget.attrs.update({"placeholder": "Username"})
+        self.fields["email"].widget.attrs.update({"placeholder": "E-mail", "name": "email", "id": "id_email"})
+        self.fields["password"].widget.attrs.update({"placeholder": "Password"})
+        self.fields["password2"].widget.attrs.update({"placeholder": "Repeat Password"})
 
     def clean_username(self):
         user_name = self.cleaned_data["user_name"].lower()
@@ -46,20 +44,15 @@ class RegistrationForm(forms.ModelForm):
         cleaned_data = super().clean().copy()
         if not any(char.isdigit() for char in str(cleaned_data["password"])):
             password1_error_message = "You Need at least one digit in your password."
-            self.add_error('password', password1_error_message)
+            self.add_error("password", password1_error_message)
         if cleaned_data["password"] != cleaned_data["password2"]:
             password2_error_message = "Passwords do not match."
-            self.add_error('password2', password2_error_message)
-
+            self.add_error("password2", password2_error_message)
 
 
 class UserLoginForm(AuthenticationForm):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Username", "id": "login-username"})
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Password", "id": "login-pwd"})
-    )
+    username = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Username", "id": "login-username"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "Password", "id": "login-pwd"}))
 
 
 # customize template in ClearableFileInput widget
@@ -83,15 +76,13 @@ class UserEditForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
     profile_img = forms.ImageField(
-        label="Upload your profile picture!", allow_empty_file=True, widget=CustomClearableFileInput()
+        label="Upload your profile picture:", allow_empty_file=True, widget=CustomClearableFileInput()
     )
 
     email = forms.EmailField(
         label="Account email (can not be changed)",
         max_length=200,
-        widget=forms.TextInput(
-            attrs={"class": "form-control mb-3", "placeholder": "email", "id": "form-email", "readonly": "readonly"}
-        ),
+        widget=forms.TextInput(attrs={"placeholder": "email", "id": "form-email", "readonly": "readonly"}),
     )
     user_name = forms.CharField(
         label="Username",
@@ -99,9 +90,7 @@ class UserEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "Username",
-                "id": "form-firstname",
                 "readonly": "readonly",
             }
         ),
@@ -112,9 +101,7 @@ class UserEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "First name",
-                "id": "form-firstname",
             }
         ),
     )
@@ -125,9 +112,7 @@ class UserEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "Last name",
-                "id": "form-firstname",
             }
         ),
     )
@@ -137,9 +122,7 @@ class UserEditForm(forms.ModelForm):
         max_length=500,
         widget=forms.Textarea(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "Something about you",
-                "id": "form-firstname",
             }
         ),
     )
@@ -165,9 +148,7 @@ class AddressEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "First name",
-                "id": "form-firstname",
             }
         ),
     )
@@ -177,21 +158,14 @@ class AddressEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "Phone number",
-                "id": "form-firstname",
             }
         ),
     )
 
     country = forms.ChoiceField(
         label="Country",
-        widget=widgets.CountrySelectWidget(
-            attrs={
-                "class": "form-control mb-3",
-                "id": "form-firstname",
-            }
-        ),
+        widget=widgets.CountrySelectWidget(),
         choices=countries,
     )
 
@@ -201,9 +175,7 @@ class AddressEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "Town & City",
-                "id": "form-firstname",
             }
         ),
     )
@@ -214,9 +186,7 @@ class AddressEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "Postcode",
-                "id": "form-firstname",
             }
         ),
     )
@@ -227,9 +197,7 @@ class AddressEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "Address line 1",
-                "id": "form-firstname",
             }
         ),
     )
@@ -240,9 +208,7 @@ class AddressEditForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "Address line 2",
-                "id": "form-firstname",
             }
         ),
     )
@@ -251,7 +217,7 @@ class AddressEditForm(forms.ModelForm):
 class PwdResetForm(PasswordResetForm):
     email = forms.EmailField(
         max_length=254,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Email", "id": "form-email"}),
+        widget=forms.TextInput(attrs={"placeholder": "Email", "id": "form-email"}),
     )
 
     def clean_email(self):
@@ -265,13 +231,9 @@ class PwdResetForm(PasswordResetForm):
 class PwdResetConfirmForm(SetPasswordForm):
     new_password1 = forms.CharField(
         label="New password",
-        widget=forms.PasswordInput(
-            attrs={"class": "form-control mb-3", "placeholder": "New Password", "id": "form-newpass"}
-        ),
+        widget=forms.PasswordInput(attrs={"placeholder": "New Password", "id": "form-newpass"}),
     )
     new_password2 = forms.CharField(
         label="Repeat password",
-        widget=forms.PasswordInput(
-            attrs={"class": "form-control mb-3", "placeholder": "New Password", "id": "form-new-pass2"}
-        ),
+        widget=forms.PasswordInput(attrs={"placeholder": "New Password", "id": "form-new-pass2"}),
     )
