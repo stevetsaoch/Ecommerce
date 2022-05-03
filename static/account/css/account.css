@@ -1,13 +1,92 @@
-.container-fluid {
-    max-width: 100%;
+button {
+    width: 60%;
+    color: white;
+    font-weight: 500;
+    background-color: var(--seconary-color);
+    border-color: var(--seconary-color);
+    font-size: larger;
+    cursor: pointer;
 }
 
-.account-form input {
-    border: 2px solid #ccc;
-    height: calc(2em + .75rem + 2px);
+
+.subBaseContent {
+    width: 30%;
+    margin: 0 auto;
 }
 
-.account-form input:focus {
-    border-color: #1497ff;
-    box-shadow: none;
+#signin {
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem ;
+}
+
+.simpleInput{
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.simpleInput div{
+    vertical-align: center;
+}
+
+.simpleInput__label {
+    font-weight: 600;
+    
+}
+.simpleInput input {
+    width: 100%;
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+
+.simpleInput >  .simpleInput__label{
+    align-self: flex-start;
+    font-size: 1rem;
+}
+.simpleInput > .simpleInput__input {
+    justify-self: start;
+    align-self: start;
+}
+
+.login_button {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.login__otherlink {
+    text-align: center;
+}
+
+.login__otherlink div{
+    margin-top: 1rem;
+}
+
+
+.login__otherlink a{
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 1024px){
+    .subBaseContent {
+        width: 50%;
+    }
+}
+
+
+@media screen and (max-width: 768px){
+    .subBaseContent {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 425px){
+    .subBaseContent {
+        width: 100%;
+    }
 }

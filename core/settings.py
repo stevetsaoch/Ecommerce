@@ -150,7 +150,7 @@ MEDIA_ROOT = BASE_DIR / "media/"
 
 # other setting
 AUTH_USER_MODEL = "account.UserBase"
-LOGIN_REDIRECT_URL = "/account/dashboard"
+LOGIN_REDIRECT_URL = "/account/profile"
 LOGIN_URL = "/account/login/"
 BASKET_SESSION_ID = "basket"
 
