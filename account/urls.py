@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.base import TemplateView
 from django.urls import path
 from . import views
-from .views import CustomLogoutView, AccountRegisterForm, DashboardView, ProfileView, ProfileEditView, DashboardView
+from .views import CustomLogoutView, AccountRegisterForm, ProfileView, ProfileEditView
 from orders.views import OrderView
 from .forms import UserLoginForm, PwdResetForm, PwdResetConfirmForm
 from django.contrib.auth.decorators import login_required
@@ -51,13 +51,12 @@ urlpatterns = [
         ),
     ),
     # User profile
-    # path('dashboard/', login_required(DashboardView.as_view()), name='dashboard'),
     path('profile/', login_required(ProfileView.as_view()), name='profile'),
     path("profile/edit/", login_required(ProfileEditView.as_view()), name="edit_details"),
     path("profile/delete_user/", login_required(ProfileEditView.as_view()), name="delete_user"),
     path(
         "profile/delete_confirm/",
-        TemplateView.as_view(template_name="account/dashboard/delete_confirmation.html"),
+        TemplateView.as_view(template_name="account/dashboard/profile/profile_delete_confirmation.html"),
         name="delete_confirmation",
     ),
 ]

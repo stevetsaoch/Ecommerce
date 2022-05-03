@@ -174,12 +174,3 @@ class CustomLogoutView(LogoutView):
                     else:
                         pass
         super().setup(request, *args, **kwargs)
-
-
-class DashboardView(TemplateView):
-    template_name = "account/dashboard/dashboard.html"
-
-    def setup(self, request, *args, **kwargs):
-        basket = Basket(request)
-        basket.check_basket_db_and_modify_session_when_login(request)
-        super().setup(request, *args, **kwargs)

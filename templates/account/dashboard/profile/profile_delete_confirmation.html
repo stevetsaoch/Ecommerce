@@ -1,11 +1,41 @@
-{% extends "account/sub_base.html" %}
-{% block title %}Delete Account Confirmation{% endblock %}
-{% block content %}
+{% extends 'sub_base.html' %}
+{% load static %}
 
-<div class="container">
+{% block title %}
+Edit Profile
+{% endblock title %}
+
+{% block stylesheet1 %}
+{% static 'account/css/profile.css' %}
+{% endblock %}
+
+
+{% block sub_base_content %}
+<div class="deleteAccount__confirm">
     <div>
-        <h3 class="mb-4">Delete Account</h3>
-        <p>You have now deleted your account</p>
+        <div>You have now deleted your account.</div>
+        <div>Return to <a href="{% url 'account:login' %} "> Login </a>  in <span id="countmesg"></span></div>
+
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var delay = 10;
+        var url = "{% url 'orders:user_orders' %}";
+        var timer = null
+  
+        function countdown() {
+            timer = setTimeout(countdown, 1000);
+            $('#countmesg').html(delay + " seconds.");
+            delay--;
+            if (delay < 0) {
+                clearTimeout(timer);
+                window.location = url;
+                delay = 0;
+            }
+        }
+        countdown();
+    });
+  </script>
 {% endblock %}
