@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-z%ris7wyl(uwa*q^wt0g&w%qtby_oe3gj@p7vnl0dw14-4vwcv"
+SECRET_KEY = PrivateInfo.secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -137,7 +137,7 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 # static setting
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static_root"]
 STATIC_ROOT = BASE_DIR / "static_root"
 
 # Default primary key field type

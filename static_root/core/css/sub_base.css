@@ -1,0 +1,16 @@
+.subBaseContent {
+    width: 70%;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+}
+
+.subBaseContent--title {
+    width: 90%;
+    margin: 2rem auto;
+    margin-bottom: 3rem;
+}
+
+.subBaseContent--content { 
+    width: 90%;
+    margin: 0 auto;
+}

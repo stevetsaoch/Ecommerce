@@ -48,6 +48,6 @@ class ProductTools:
 
 
 def random_background_image():
-    image_list = os.listdir("static/store/images/")
+    image_list = os.listdir("/home/stevetsaoch/Ecommerce/static_root/store/images/")
     random_choose_image = random.choice(image_list)
     return "store/images/" + random_choose_image
