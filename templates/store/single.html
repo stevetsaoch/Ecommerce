@@ -317,6 +317,7 @@
     });
 
     $("#review-submit").on('click', function (e) {
+        e.preventDefault();
         let value = window.value
         let productid = window.productid
         if (isClicked) {
