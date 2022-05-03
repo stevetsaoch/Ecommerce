@@ -8,6 +8,11 @@ button {
     cursor: pointer;
 }
 
+.errorlist li {
+    width: 200%;
+    color: var(--alter-color);
+    text-align: left;
+}
 
 .subBaseContent {
     width: 30%;
@@ -71,6 +76,83 @@ button {
 .login__otherlink a{
     text-decoration: underline;
 }
+
+/* password reset */
+.resetPassword__title{
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem ;
+}
+
+.resetPassword {
+    margin: 0 auto;
+}
+
+.resetPassword div{
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.resetPassword__button {
+    text-align: center;   
+}
+
+.resetPassword__button button {
+    font-size: 1.2rem;
+}
+
+.resetPassword__login {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.resetPassword__login a {
+    font-size: 1.2rem;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.resetPassword__status div{
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    
+}
+
+.resetPassword__status a {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* reset password form */
+
+.resetPassword__form__title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+
+.resetPassword__Submitbutton {
+    text-align: center;   
+}
+
+.resetPassword__Submitbutton button {
+    font-size: 1.2rem;
+}
+
+.resetPassword__haveAccount {
+    text-align: center;
+}
+.resetPassword__haveAccount a {
+    font-size: 1.2rem;
+    text-decoration: underline;
+}
+
+.resetPassword__Submitbutton {
+    margin-bottom: 1rem;
+}
+
 
 @media screen and (max-width: 1024px){
     .subBaseContent {

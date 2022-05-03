@@ -1,8 +1,10 @@
 from re import L
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
+from django.utils.translation import gettext_lazy as _
 from .models import UserBase, Address
 from django_countries import widgets, countries
+from django.core.exceptions import ValidationError
 
 
 class RegistrationForm(forms.ModelForm):
@@ -229,11 +231,21 @@ class PwdResetForm(PasswordResetForm):
 
 
 class PwdResetConfirmForm(SetPasswordForm):
+    error_messages = {
+        "password_mismatch": _("The two password fields didn’t match."),
+    }
+
     new_password1 = forms.CharField(
         label="New password",
+        strip=False,
         widget=forms.PasswordInput(attrs={"placeholder": "New Password", "id": "form-newpass"}),
     )
     new_password2 = forms.CharField(
-        label="Repeat password",
-        widget=forms.PasswordInput(attrs={"placeholder": "New Password", "id": "form-new-pass2"}),
+        label="New password confirmation",
+        widget=forms.PasswordInput(attrs={"placeholder": "New password confirmation", "id": "form-newpass2"}),
     )
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(SetPasswordForm, self).__init__(*args, **kwargs)
+

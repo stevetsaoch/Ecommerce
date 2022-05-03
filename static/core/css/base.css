@@ -34,6 +34,8 @@ ul {
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--alter-color);
+    margin: 1rem 0;
+    text-align: center;
 }
 
 .content {
