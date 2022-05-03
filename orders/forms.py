@@ -8,15 +8,15 @@ class OrderIssue(forms.ModelForm):
         fields = ("email", "content", "orderid")
 
     email = forms.EmailField(
-        label="Your email (can not be changed)",
+        label="Your email",
         max_length=200,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "email", "id": "form-email"}),
+        widget=forms.TextInput(attrs={"placeholder": "email", "id": "form-email"}),
     )
 
     content = forms.CharField(
         label="Please report your issue, we will process it as soon as possible, thanks you.",
         max_length=1000,
-        widget=forms.Textarea(attrs={"class": "form-control", "id": "review-text", "rows": "4"}),
+        widget=forms.Textarea(attrs={"id": "review-text", "rows": "4", "type": "text"}),
     )
 
     orderid = forms.CharField(
@@ -24,7 +24,6 @@ class OrderIssue(forms.ModelForm):
         max_length=255,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control mb-3",
                 "placeholder": "orderid",
                 "id": "form-orderid",
                 "readonly": "readonly",

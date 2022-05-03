@@ -12,7 +12,7 @@ class ReviewForm(ModelForm):
         )
 
     review_text = forms.CharField(
-        max_length=1000, widget=forms.Textarea(attrs={"class": "form-control", "id": "review-text", "rows": "4"})
+        max_length=1000, widget=forms.Textarea(attrs={"type": "text", "id": "review-text", "rows": "4"})
     )
     rating = forms.IntegerField()
 

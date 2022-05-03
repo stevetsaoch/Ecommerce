@@ -1,6 +1,9 @@
+from decimal import *
 from django.template import Library
 from orders.models import Order, OrderIssue
+
 register = Library()
+
 
 @register.filter(name="orderissueexist")
 def orderissueexist(value):
@@ -10,3 +13,10 @@ def orderissueexist(value):
         return True
     else:
         return False
+
+
+@register.simple_tag(name="multiply")
+def multiply(quantity, price) -> Decimal:
+    quantity = Decimal(quantity)
+    price = Decimal(price)
+    return quantity * price

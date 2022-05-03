@@ -1,70 +1,128 @@
-{% extends "base.html" %}
+{% extends 'sub_base.html' %}
 {% load static %}
-{% block title %}Basket Summary{%endblock %}
-{% block content %}
 
-<div class="container">
-  <div class="col-12">
-    <h1 class="h2">Delivery Address</h1>
-  </div>
-  <div class="col-12">
-    <p>Please select your delivery address</p>
-  </div>
-  <hr />
+{% block title %}
+Delivery Address
+{% endblock title %}
+
+{% block stylesheet1 %}
+{% static 'checkout/css/checkout_address.css' %}
+{% endblock stylesheet1 %}
+
+{% block sub_base_title %}
+<div class="deliveryAddress__title">
+  Delivery Address
 </div>
+{% endblock %}
+{% block sub_base_content %}
 
-
-<div class="container">
-  <div class="row g-3">
+<div class="deliveryAddress">
     {% if not address %}
-    <div class="col-12">There are no delivery addresses, <a href="{% url 'account:edit_details' %}">edit your address in
-        your profile</a></div>
-    {% else %}
-    <div class="col-md-4 col-lg-4 order-md-last p-0 order-3">
-
-      <div class="d-flex bd-highlight ms-0">
-        <div class="p-2 flex-grow-1 bd-highlight">Sub Total:</div>
-        <div class="p-2 bd-highlight"><span class="fw-bold h5">$ </span><span id="sub_total"
-            class="fw-bold h5">{{basket.get_subtotal_price_after_tax}}</span></div>
-      </div>
-      <div class="d-flex bd-highlight">
-        <div class="p-2 flex-grow-1 bd-highlight">Delivery Cost:</div>
-        <div class="p-2 bd-highlight"><span class="fw-bold h5">$ </span><span id="delivery_price"
-            class="fw-bold h5">{{basket.get_delivery_price}}</span></div>
-      </div>
-      <div class="d-flex bd-highlight">
-        <div class="p-2 flex-grow-1 bd-highlight">Total:</div>
-        <div class="p-2 bd-highlight"><span class="fw-bold h5">$ </span><span id="total"
-            class="fw-bold h5">{{basket.get_total_price}}</span></div>
-      </div>
-      <a role="button" href="{% url 'checkout:payment' %}" class="btn btn-success fw-bold w-100"
-        type="button">Pay Securely</a>
+    <div class="col-12">There are no delivery addresses,
+      <a href="{% url 'account:edit_details' %}">
+        Edit your address in your profile
+      </a>
     </div>
-
-    <div class="col-md-7 col-lg-8">
-      <div class="card mb-3 border-1 rounded-0 product-item me-md-4" data-index="{{option.id}}">
-        <div class="row g-0">
-          <div class="col">
-            <div class="card pb-3 rounded-0">
-              <div class="card-header bg-white small text-muted">
-                Selected
-              </div>
-              <div class="card-body small pb-1">
-                <p class="card-text m-0"><b>Full name: </b>{{address.full_name}}</p>
-                <p class="card-text m-0"><b>Address Line 1: </b>{{address.address_line}}</p>
-                <p class="card-text m-0"><b>Address Line 2: </b>{{address.address_line2}}</p>
-                <p class="card-text m-0"><b>Town & City: </b>{{address.town_city}}</p>
-                <p class="card-text m-0"><b>Postcode: </b>{{address.postcode}}</p>
-                <p class="card-text m-0"><b>Phone number: </b>{{address.phone}}</p>
-                <div class="pt-5">
-                  <a href="{% url 'account:edit_details'%}" class="text-decoration-none">Edit</a>
-                </div>
-              </div>
-            </div>
-            </a>
+    {% else %}
+    <div data-index="{{option.id}}">
+      <div class="deliveryAddress__detail">
+        <div class="deliveryAddress__detail__content">
+          <div class="deliveryAddress__detail__content--title">
+            Full name:
+          </div>
+          <div class="deliveryAddress__detail__content--content">
+            {{address.full_name}}
           </div>
         </div>
+        <div class="deliveryAddress__detail__content">
+          <div class="deliveryAddress__detail__content--title">
+            Address Line 1:
+          </div>
+          <div class="deliveryAddress__detail__content--content">
+            {{address.address_line}}
+          </div>
+        </div>
+        <div class="deliveryAddress__detail__content">
+          <div class="deliveryAddress__detail__content--title">
+            Address Line 2:
+          </div>
+          <div class="deliveryAddress__detail__content--content">
+            {{address.address_line2}}
+          </div>
+        </div>
+        <div class="deliveryAddress__detail__content">
+          <div class="deliveryAddress__detail__content--title">
+            Town & City:
+          </div>
+          <div class="deliveryAddress__detail__content--content">
+            {{address.town_city}}
+          </div>
+        </div>
+        <div class="deliveryAddress__detail__content">
+          <div class="deliveryAddress__detail__content--title">
+            Postcode:
+          </div>
+          <div class="deliveryAddress__detail__content--content">
+            {{address.postcode}}
+          </div>
+        </div>
+        <div class="deliveryAddress__detail__content">
+          <div class="deliveryAddress__detail__content--title">
+            Country:
+          </div>
+          <div class="deliveryAddress__detail__content--content">
+            {{address.country.name}}
+          </div>
+        </div>
+        <div class="deliveryAddress__detail__content">
+          <div class="deliveryAddress__detail__content--title">
+            Phone number:
+          </div>
+          <div class="deliveryAddress__detail__content--content">
+            {{address.phone}}
+          </div>
+        </div>
+        <div class="deliveryAddress__detail__content--edit">
+          <a href="{% url 'account:edit_details'%}" class="text-decoration-none">
+            <button>
+              Edit    
+            </button>
+          </a>
+          </div>
       </div>
+    </div>
+  <div>
+    <div>
+      <div>Sub Total:</div>
+      <div>
+        <span>$ </span>
+        <span id="sub_total">
+          {{basket.get_subtotal_price_after_tax}}
+        </span>
+      </div>
+      <div>
+        <div>Delivery Cost:</div>
+        <div>
+          <span>$ </span>
+          <span id="delivery_price">
+            {{basket.get_delivery_price}}
+          </span>
+        </div>
+      </div>
+      <div>
+        <div>Total:</div>
+        <div>
+          <span>$ </span>
+          <span id="total">
+            {{basket.get_total_price}}
+          </span>
+        </div>
+      </div>
+      <a role="button" href="{% url 'checkout:payment' %}">
+        <button>
+          Pay Securely
+        </button>
+      </a>
     </div>
     {% endif %}
   </div>

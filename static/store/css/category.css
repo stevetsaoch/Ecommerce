@@ -1,0 +1,44 @@
+.promotion {
+    height: 12rem;
+    overflow: hidden;
+    background-color: none;
+}
+
+.categoryName {
+    display: flex;
+    height: 12rem;
+    padding: 0 25%;
+    align-items: center;
+    font-size: 5rem;
+    text-shadow: -2px 5px 5px rgba(0, 0, 0, 60%);
+    color: rgb(177, 177, 1);
+    font-weight: 600;
+}
+
+.indexTitle__bean {
+    display: flex;
+    flex-direction: row;
+}
+
+.indexTitle__bean div{
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 0 2rem;
+    
+}
+
+.indexTitle__bean__category {
+    border-left: thin solid var(--seconary-color);
+    font-weight: 600;
+}
+
+
+
+@media screen and (max-width: 425px) {
+    .categoryName {
+        display: flex;
+        height: 12rem;
+        padding: 0 10%;
+    }
+
+}

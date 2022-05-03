@@ -2,165 +2,284 @@
 {% load static %}
 {% load product_filter %}
 {% load author_filter %}
+
 {% block stylesheet1 %}
 {% static 'store/css/store.css' %}
 {% endblock stylesheet1 %}
 
 {% block stylesheet2 %}
-{% static 'review/css/review.css' %}
+{% static 'store/css/single.css' %}
 {% endblock stylesheet2 %}
+
+{% block stylesheet3 %}
+{% static 'review/css/review.css' %}
+{% endblock stylesheet3 %}
 
 
 {% block title %}
 {% if product %}{{ product.title }}{% else %}Products{% endif %}
 {% endblock %}
 
-{% block content %}
-<div class="container">
-    <div class="row g-3" style="display:flex">
-        <div class="col-md-7 col-lg-7 p-0 order-1" style="flex-basis:30%">
-            <div class="d-grid gap-2">
 
-                <div class="d-flex d-flex-inline justify-content-between">
-                    <div><span class="h3">$ {{ product.price }}</span>
-                        <p class="text-muted">before tax</p>
-                    </div>
-                    <div class="">
+{% block content %}
+<div class="indexTitle__bean">
+    <div class="indexTitle__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
+    </div>
+    <div class="indexTitle__bean__category">
+        <a href="{% url 'store:category_list' category_slug=product.category.slug %}"> {{ product.category.name }}
+        </a>
+    </div>
+    <div class="indexTitle__bean__product">
+        {{ product.title }}
+    </div>
+</div>
+<div class="single">
+    <div class="productSingle">
+        <div class="productSingle__info">
+            <div class="productSingle__img">
+                <div class="productSingle__img--image">
+                    <a href="{{product.get_absolute_url}}">
+                        <img alt="Responsive image" src="{{ product.image.image.url }}">
+                    </a>
+                </div>
+                <div class="productSingle__img--background">
+                </div>
+            </div>
+            <div class="productSingle__content">
+                <div class="productSingle__Title">
+                    {{ product.title }}
+                </div>
+                <div class="productSingle__Author">
+                    By
+                    {% for author in product.author.all|authorsin3 %}
+                    {{ author }}
+                    {% endfor %}
+                </div>
+                <div class="productSingle__Description">
+                    Description
+                </div>
+                <div class="productSingle__Description__content">
+                    {{ product.description }}
+                </div>
+            </div>
+            <div class="productSingle__addItem">
+                <div class="addItem__priceQuantity">
+                    <div class="addItem__price">
+                        <div class="addItem__price--price">
+                            $ {{ product.price }}
+                        </div>
+                        <div class="beforeTax">
+                            (before tax)
+                        </div>
+                    </div class="addItem__Quantity--select">
+                    <div class="quantity">
                         {% with qty=product.inventory %}
                         {% if qty == 0 %}
-                        <span>Out of stock!</span>
+                        <div>Out of stock!</div>
                         {% else %}
-                        <label for="select">Qty</label>
-                        <select id="select" class="h6 store-select-dropdown">
-                            {% if qty > 5 %}
-                            {% for value in range %}
-                            <option value="{{value}}">{{value}}</option>
-                            {% endfor %}
-                            {% else %}
-                            {% for value in range %}
-                            <option value="{{value}}">{{value}}</option>
-                            {% endfor %}
-                            {% endif %}
-                            {% endif %}
-                            {% endwith %}
-                        </select>
+                        <a class="isDisabled" id="decreaseQty_anchor">
+                            <div class="decreaseQty">
+                                <svg version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330 330"
+                                    style="enable-background:new 0 0 330 330;" xml:space="preserve">
+                                    <path id="XMLID_26_"
+                                        d="M315,0H15C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V15
+                               C330,6.716,323.284,0,315,0z M255,180H75c-8.284,0-15-6.716-15-15s6.716-15,15-15h180c8.284,0,15,6.716,15,15S263.284,180,255,180z" />
+                                </svg>
+                            </div>
+                        </a>
+                        <div class="quantity--quantity">1</div>
+                        <a>
+                            <div class="increaseQty" id="increaseQty_anchor">
+                                <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330 330"
+                                    style="enable-background:new 0 0 330 330;" xml:space="preserve">
+                                    <path id="XMLID_23_"
+                                        d="M315,0H15C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V15
+                               C330,6.716,323.284,0,315,0z M255,180h-75v75c0,8.284-6.716,15-15,15s-15-6.716-15-15v-75H75c-8.284,0-15-6.716-15-15
+                               s6.716-15,15-15h75V75c0-8.284,6.716-15,15-15s15,6.716,15,15v75h75c8.284,0,15,6.716,15,15S263.284,180,255,180z" />
+                                </svg>
+
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% endwith %}
                     </div>
                 </div>
-                <hr>
-                {% if product.inventory == 0 %}
-                <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500" disabled>Add
-                    to
-                    basket</button>
-                {% else %}
-                <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500">Add to
-                    basket</button>
-                {% endif %}
-                <button type="button" id="add-button-wishlist" value="{{product.id}}" class="btn btn-light fw500">Add to
-                    Wish List</button>
+                <div class="addItem__basketWishlist">
+                    {% if product.inventory == 0 %}
+                    <div class="addItem__addtoBasket">
+                        <button type="button" id="add-button" value="{{product.id}}" disabled>Add to basket
+                        </button>
+                    </div>
+                    {% else %}
+                    <div class="addItem__addtoBasket">
+                        <button type="button" id="add-button" value="{{product.id}}">
+                            Add to basket
+                        </button>
+                    </div>
+                    {% endif %}
+                    <div class="addItem__addtoWishlist">
+                        <button type="button" id="add-button-wishlist" value="{{product.id}}">
+                            Add to Wish List
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-7 col-lg-7 p-0" style="flex-basis:70%">
-            <div class="card mb-3 border-0">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card-body p-0" style="display:flex; padding:0px 0px 0px 0px;">
-                            <div class="" style="flex-basis:40%">
-                                <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image"
-                                    src="{{ product.image.image.url }}">
-                            </div>
-                            <div style="flex-basis:60%; display:flex; flex-direction:column">
-                                <div style="display: inline-block; text-align: left;flex-basis:10%">
-                                        <h2 class="mb-0 h2">{{ product.title }}</h1>
-                                </div>
-                                <br>
-                                <div style="flex-basis:10%;">
-                                    <h6 style="margin-bottom:0rem; color:#404040"><b>Author</b></h6>
-                                </div>
-                                <div style="flex-basis:10%; display:flex; flex-direction:row">
-                                    {% for author in product.author.all|authorsin3 %}
-                                    <div class="d-flex justify-content-between" style="flex-basis:33.33%">
-                                        <small class="text-muted">{{ author }}</small>
+    </div>
+</div>
+
+<div class="review">
+    {% if review_form %}
+    <div class="review_form">
+        <div class="reviewForm__title">Hi <span class="username">{{user.get_username}}</span>, leave a review:</div>
+        <form id="review-form" action="#" method="POST">
+            {% csrf_token %}
+            <div class="rating">
+                <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+            </div>
+            <div class="form-outline">
+                {{ review_form.review_text }}
+            </div>
+            <div class="reviewSubmit">
+                <button class="" id="review-submit">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    <br>
+    <hr>
+    <br>
+    <div class="review__title">
+        Reviews
+    </div>
+    {% if not review_all %}
+    <div class="review-empty">
+        There is no review currently.
+    </div>
+    {% endif %}
+    {% for review in review_all %}
+    <div class="review_all">
+        <div class="reviewer">
+            <div class="reviewer__image">
+                <img src="{{review.reviewer.profile_img.url}}">
+            </div>
+            <div class="reviewer__right">
+                <div class="reviewer__username">
+                    {{review.reviewer.user_name}}
+                </div>
+                <div class="reviewer__ratingtime">
+                    <div class="reviewer__rating">
+                        <div class="productAll__info__rating__stars">
+                            <div class="productAll__info__rating__stars__container"
+                                style="width:{{ review.rating|inttopercent }}%;">
+                                <div class="productAll__info__rating__stars--fill">
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
                                     </div>
-                                    {% endfor %}
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
+                                    <div class="starYellow"><img src="{% static 'core/images/star_yellow.png' %}"
+                                            alt="">
+                                    </div>
                                 </div>
-                                <div style="flex-basis:10%; color:#404040">
-                                    <h6 style="margin-bottom:0rem"><b>Description</b></h6>
+                            </div>
+                            <div class="productAll__info__rating__stars--empty">
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
                                 </div>
-                                <div style="flex-basis:60%;">
-                                    <p>
-                                        <small class="text-muted">{{ product.description }}</small>
-                                    </p>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
+                                </div>
+                                <div class="starEmpty"><img src="{% static 'core/images/star_empty.png' %}" alt="">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="reviewer__posttime">
+                        {{review.post_time|daymonthyears}}
+                    </div>
                 </div>
             </div>
+
         </div>
-    </div>
-    {% if review_form %}
-    <hr>
-    <h4>Hi <b>{{user.get_username}}</b>, please rate the product and leave a review:</h4>
-    <form id="review-form" action="#" method="POST">
-        <div class="rating">
-            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-        </div>
-        <div class="form-outline">
-            {{ review_form.review_text }}
-        </div>
-        <div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn btn-success" id="review-submit">
-                Submit
-            </button>
-        </div>
-    </form>
-    {% endif %}
-    <hr>
-    <h3>Reviews</h3>
-    {% for review in review_all %}
-    <div class="card p-3 mt-2">
-        <div id="user-profile-img">
-            <img src="{{review.reviewer.profile_img.url}}" width="30" class="user-img rounded-circle mr-2">
-            <span>{{review.reviewer.user_name}}</span>
-        </div>
-        <div class="small-ratings">
-            {% for i in review.rating|times  %}
-            <p class="fa fa-star rating-color">&#11088</p>
-            {% endfor %}
-        </div>
-        <div class="user d-flex flex-row">
-            <span>
-                <small class="text-primary">{{review.review_text}}</small>
-            </span>
-        </div>
-        <div class="post-date">
-            <small class="post-date-text">{{review.post_time}}</small>
+        <div class="review_text">
+            {{review.review_text}}
         </div>
     </div>
     {% endfor %}
-
 </div>
 
 
+
 <script>
+    $(document).on('click', '.decreaseQty', function (e) {
+        var current_quantity = $('.quantity--quantity').text();
+        current_quantity = parseInt(current_quantity);
+
+        if (current_quantity - 1 <= 1) {
+            $('.quantity--quantity').html(current_quantity - 1);
+            $('#decreaseQty_anchor').addClass("isDisabled");
+            $('#increaseQty_anchor').removeClass("isDisabled");
+            
+        } else {
+            $('.quantity--quantity').html(current_quantity - 1);
+            $('#increaseQty_anchor').removeClass("isDisabled");
+        };
+
+    })
+
+    $(document).on('click', '.increaseQty', function (e) {
+        var current_quantity = $('.quantity--quantity').text();
+        var product_inventory = "{{product.inventory}}";
+        current_quantity = parseInt(current_quantity);
+        product_inventory = parseInt(product_inventory);
+        
+         $('.quantity--quantity').html(current_quantity + 1)
+
+        if (current_quantity + 1 >= product_inventory) {
+            $('.quantity--quantity').html(current_quantity + 1);
+            $('#increaseQty_anchor').addClass("isDisabled");
+            $('#decreaseQty_anchor').removeClass("isDisabled");
+
+        } else if (current_quantity + 1 >= 2) {
+            $('.quantity--quantity').html(current_quantity + 1);
+            $('#decreaseQty_anchor').removeClass("isDisabled");
+        };
+
+    })
+
     $(document).on('click', '#add-button', function (e) {
         e.preventDefault();
-        console.log($('#select option:selected').text())
+        var current_quantity = parseInt($('.quantity--quantity').text());
         $.ajax({
             type: 'POST',
             url: '{% url "basket:basket" %}',
             data: {
                 productid: $('#add-button').val(),
-                productqty: $('#select').val(),
+                productqty: current_quantity,
                 csrfmiddlewaretoken: "{{ csrf_token }}",
                 action: 'add-product-to-basket'
             },
             success: function (json) {
-                document.getElementById('basket-qty').innerHTML = json.qty
+                document.getElementById('basket-qty').innerHTML = json.qty;
             },
             error: function (xhr, errmsg, err) {
 
@@ -190,6 +309,7 @@
         });
 
     })
+
     $(".rating input").on('click', function (e) {
         window.value = $(this).val();
         window.productid = "{{product.id}}"
@@ -202,13 +322,12 @@
         if (isClicked) {
             $.ajax({
                 type: 'POST',
-                url: '{% url "review:review"%}',
+                url: '{% url "review:post_review"%}',
                 data: {
                     productid: productid,
                     rating: value,
                     review_text: $('#review-text').val(),
                     csrfmiddlewaretoken: "{{ csrf_token }}",
-                    action: 'post'
                 },
                 success: function (json) {
                     console.log($('#review-text').val(), )

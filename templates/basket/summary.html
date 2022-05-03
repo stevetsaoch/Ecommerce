@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'sub_base.html' %}
 {% load static %}
 {% load product_filter %}
 
@@ -10,196 +10,290 @@ Basket summary
 {% static 'basket/css/basket.css' %}
 {% endblock %}
 
-{% block content %}
-
-<div class="container">
-    <div class="col-12">
-        <h1 class="h2">Your Basket</h1>
-    </div>
-    <div class="col-12">
-        <p>Manage your <b>items</b> in your basket</p>
-    </div>
-    <hr />
+{% block sub_base_title %}
+{% if basket|length == 0 %}
+<div class="basket--empty">Your Shopping Bag is empty.
+    <a href="{% url 'store:store_home' %}">
+        Shop
+    </a>
 </div>
-<div class="container">
-    <div class="row g-3">
-        {% if basket|length == 0 %}
-        <div class="col-12">Your basket is empty
-            <a href="{% url 'store:store_home' %}">
-                Shop
+{% else %}
+<div class="basket__title">
+    <div class="basket__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
+    </div>
+    <div class="basket__bean__bag">
+        Shopping Bag
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block sub_base_content %}
+<div class="basket">
+    {% if basket|length != 0 %}
+    <div class="basket__topBanner">
+        <div class="basket__topBanner__product">
+            Product
+        </div>
+        <div class="basket__topBanner__quantity">
+            Quantity
+        </div>
+        <div class="basket__topBanner__subtotal">
+            Sub Total
+        </div>
+    </div>
+    {% for item in basket %}
+    {% with product=item.product %}
+    <div class="basket__item" data-index="{{product.id}}">
+        <div class="basket__item__image">
+            <a href="{{ item.product.get_absolute_url }}">
+                <img class="" alt="Responsive image" src="{{ product.image.image.url }}" />
             </a>
         </div>
-        {% else %}
-        <div class="" style="padding-right: 10%; padding-left:0%">
-            {% for item in basket %}
-            {% with product=item.product %}
-            <div class="card mb-3 border-0 product-item" data-index="{{product.id}}">
-                <div class="row g-0 basket-item">
-                    <div class="col-md-2 d-none d-md-block first-level container-image" style="flex-basis:25%">
-                        <img class="pro-img" alt="Responsive image" src="{{ product.image.image.url }}" />
-                    </div>
-                    <div class="col-md-10 first-level container-other" style="flex-basis:37.5%">
-                        <div class="second-level box2">
-                            <a class="text-decoration-none" href="{{item.product.get_absolute_url}}">
-                                <span id="override">{{product.title}}</span>
-                            </a>
-                        </div>
-                        <div class="second-level box2">
-                            {% with pid=product.id %}
-                            {% if product.inventory == 0 %}
-                            <div style="flex-basis: 20%">
-                                <label for="select">Out of Stock!</label>
-                            </div>
-
-                            {% elif product.inventory > 5 %}
-                            <div style="flex-basis: 20%">
-                                <label for="select">Qty</label>
-                                <select id="select{{product.id}}">
-                                    {% for value in basket_range_dict|getbykey:pid %}
-                                    <option value="" selected disabled hidden>{{item.qty}}</option>
-                                    <option value="{{value}}">{{value}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            {% else %}
-                            <div style="flex-basis: 20%">
-                                <label for="select">Qty</label>
-                                <select id="select{{product.id}}">
-                                    {% for value in basket_range_dict|getbykey:pid %}
-                                    <option value="" selected disabled hidden>{{item.qty}}</option>
-                                    <option value="{{value}}">{{value}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            {% endif %}
-                            {% endwith %}
-                            {% if product.inventory == 0 %}
-                            <div>
-                                <a type="button" id="update-button" data-index="{{product.id}}"
-                                    class="isDisabled text-decoration-none small">
-                                    <span>Update</span>
-                                </a>
-                                {% else %}
-                                <div>
-                                    <a type="button" id="update-button" data-index="{{product.id}}"
-                                        class="update-button text-decoration-none small">
-                                        <span>Update</span>
-                                    </a>
-                                    {% endif %}
-                                    <a type="button" id="delete-button" data-index="{{product.id}}"
-                                        class="delete-button text-decoration-none small">
-                                        <span>Delete</span>
-                                    </a>
-                                </div>
-
-                            </div>
-                            <div class="second-level box2">
-                                <div style="flex-basis:68%">
-                                    SubTotal:
-                                </div>
-                                <div>
-                                    <span class="fw-bold">$ </span>
-                                    <span class="product-total" data-index="{{ product.id }}">{{ item.total_price }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endwith %}
-                {% endfor %}
+        <div class="basket__item__title">
+            <a class="" href="{{ item.product.get_absolute_url }}">
+                {{  product.title }}
+            </a>
+        </div>
+        <div class="basket__item__quantity">
+            {% if product.inventory == 0 %}
+            <div class="basket__item__quantity--empty">
+                Out of Stock!
             </div>
-            <div class="subtotal" style="margin:0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
-                <div style="flex-basis:22.5%">
-                </div>
-                <div style="flex-basis:22.5%; display:flex; flex-direction: column">
-                    <div class="pt-2 fw-bold h5">
-                        Subtotal(before-tax):
+            {% else %}
+            <div class="basket__item__quantity--quantity">
+                {% if item.qty > 1 %}
+                <a>
+                    <div class="decreaseQty" id="decreaseQty_anchor" data-index="{{product.id}}">
+                        <svg version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330 330"
+                            style="enable-background:new 0 0 330 330;" xml:space="preserve">
+                            <path id="XMLID_26_"
+                                d="M315,0H15C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V15
+                        C330,6.716,323.284,0,315,0z M255,180H75c-8.284,0-15-6.716-15-15s6.716-15,15-15h180c8.284,0,15,6.716,15,15S263.284,180,255,180z" />
+                        </svg>
                     </div>
-                    <div class="pt-2 fw-bold h5">
-                        Total to pay:
+                </a>
+                {% else %}
+                <a>
+                    <div class="isDisabled decreaseQty" id="decreaseQty_anchor" data-index="{{product.id}}">
+                        <svg version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330 330"
+                            style="enable-background:new 0 0 330 330;" xml:space="preserve">
+                            <path id="XMLID_26_"
+                                d="M315,0H15C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V15
+                        C330,6.716,323.284,0,315,0z M255,180H75c-8.284,0-15-6.716-15-15s6.716-15,15-15h180c8.284,0,15,6.716,15,15S263.284,180,255,180z" />
+                        </svg>
                     </div>
-                </div>
-                <div style="flex-basis:22.5%; display:flex; flex-direction: column">
-                    <div class="pt-2 fw-bold h5">
-                        <span class="fw-bold h5">$</span>
-                        <span id="subtotal-price"> {{basket.get_subtotal_price_before_tax}} </span>
+                </a>
+                {% endif %}
+
+                <div class="quantity--quantity" data-index="{{product.id}}">{{ item.qty }}</div>
+                {% if item.qty == product.inventory %}
+                <a>
+                    <div class="isDisabled increaseQty" id="increaseQty_anchor" data-index="{{product.id}}">
+                        <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330 330"
+                            style="enable-background:new 0 0 330 330;" xml:space="preserve">
+                            <path id="XMLID_23_"
+                                d="M315,0H15C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V15
+                        C330,6.716,323.284,0,315,0z M255,180h-75v75c0,8.284-6.716,15-15,15s-15-6.716-15-15v-75H75c-8.284,0-15-6.716-15-15
+                        s6.716-15,15-15h75V75c0-8.284,6.716-15,15-15s15,6.716,15,15v75h75c8.284,0,15,6.716,15,15S263.284,180,255,180z" />
+                        </svg>
                     </div>
-                    <div class="pt-2 fw-bold h5">
-                        <span class="fw-bold h5">$</span>
-                        <span> {{basket.get_subtotal_price_after_tax}} </span>
+                </a>
+                {% else %}
+                <a>
+                    <div class="increaseQty" id="increaseQty_anchor" data-index="{{product.id}}">
+                        <svg version="1.1" id="arrow-right" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 330 330"
+                            style="enable-background:new 0 0 330 330;" xml:space="preserve">
+                            <path id="XMLID_23_"
+                                d="M315,0H15C6.716,0,0,6.716,0,15v300c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V15
+                        C330,6.716,323.284,0,315,0z M255,180h-75v75c0,8.284-6.716,15-15,15s-15-6.716-15-15v-75H75c-8.284,0-15-6.716-15-15
+                        s6.716-15,15-15h75V75c0-8.284,6.716-15,15-15s15,6.716,15,15v75h75c8.284,0,15,6.716,15,15S263.284,180,255,180z" />
+                        </svg>
                     </div>
-                </div>
-                <div class="">
-                    <div>
-                        <a role="button" href="{% url 'checkout:delivery_options' %}" class="btn btn-success fw-bold" type="button">
-                            Checkout Securely
-                        </a>
-                    </div>
-                </div>
+                </a>
+                {% endif %}
             </div>
             {% endif %}
         </div>
+        <div class="basket__item__subtotal">
+            <div>$ </div>
+            <div class="basket__item__subtotal--price" data-index="{{ product.id }}">
+                {{ item.total_price }}
+            </div>
+        </div>
+        <a>
+            <div class="basket__item__delete" data-index="{{product.id}}">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 95.939 95.939"
+                    style="enable-background:new 0 0 95.939 95.939;" xml:space="preserve">
+                    <path
+                        d="M62.819,47.97l32.533-32.534c0.781-0.781,0.781-2.047,0-2.828L83.333,0.586C82.958,0.211,82.448,0,81.919,0 c-0.53,0-1.039,0.211-1.414,0.586L47.97,33.121L15.435,0.586c-0.75-0.75-2.078-0.75-2.828,0L0.587,12.608 c-0.781,0.781-0.781,2.047,0,2.828L33.121,47.97L0.587,80.504c-0.781,0.781-0.781,2.047,0,2.828l12.02,12.021 c0.375,0.375,0.884,0.586,1.414,0.586c0.53,0,1.039-0.211,1.414-0.586L47.97,62.818l32.535,32.535 c0.375,0.375,0.884,0.586,1.414,0.586c0.529,0,1.039-0.211,1.414-0.586l12.02-12.021c0.781-0.781,0.781-2.048,0-2.828L62.819,47.97 z" />
+                </svg>
+            </div>
+        </a>
     </div>
+    {% endwith %}
+    {% endfor %}
+    {% endif %}
+</div>
+{% if basket|length == 0 %}
+{% else %}
+
+<div class="totalCheckout">
+    <div class="totalCheckout__quantity">
+        {{ basket|length }}
+    </div>
+    <div class="totalCheckout__price">
+        <div class="totalCheckout__price__beforetax">
+            <div>
+                <span>$</span>
+                <span id="total-before-tax"> {{basket.get_subtotal_price_before_tax}} </span>
+            </div>
+            <div class="totalCheckout__annotation">(Before-tax)</div>
+        </div>
+        <div class="totalCheckout__price__aftertax">
+            <div>
+                <span class="">$</span>
+                <span id="total-after-tax"> {{basket.get_subtotal_price_after_tax}} </span>
+            </div>
+            <div class="totalCheckout__annotation">(After-tax)</div>
+        </div>
+    </div>
+    <div class="totalCheckout__checkoutButton">
+        <a href="{% url 'checkout:delivery_options' %}">
+            <button>
+                Checkout Securely
+            </button>
+        </a>
+    </div>
+</div>
+{% endif %}
 
 
-    <script>
-        $(document).on('click', '.delete-button', function (e) {
-            e.preventDefault();
-            var prodid = $(this).data('index');
-            $.ajax({
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}'
-                },
-                type: 'DELETE',
-                url: '{% url "basket:basket" %}',
-                data: {
-                    productid: $(this).data('index'),
-                    action: 'delete-prodcut-basket'
-                },
-                success: function (json) {
 
-                    $('.product-item[data-index="' + prodid + '"]').remove()
-                    $('#basket-qty').html(json.qty)
-                    $('#subtotal-price').html(json.basket_total_before_tax)
-                    $('#total-to-pay-price').html(json.basket_total_after_tax)
-                    if ($(".product-total[data-index]").length == 0) {
-                        $('.subtotal-section').remove();
-                        location.reload();
-                    }
-                },
-                error: function (xhr, errmsg, err) {
 
+
+
+<script>
+    $(document).on('click', '.basket__item__delete', function (e) {
+        var product_id = $(this).data('index');
+        console.log(product_id);
+        $.ajax({
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            type: 'DELETE',
+            url: '{% url "basket:basket" %}',
+            data: {
+                productid: product_id,
+                action: 'delete-prodcut-basket'
+            },
+            success: function (json) {
+
+                $('.basket__item[data-index="' + product_id + '"]').remove()
+                $('#basket-qty').html(json.qty)
+                $('.totalCheckout__quantity').html(json.qty)
+                $('#total-before-tax').html(json.basket_total_before_tax)
+                $('#total-after-tax').html(json.basket_total_after_tax)
+                if ($(".basket__item").length == 0) {
+                    $(".totalCheckout").remove();
+                    $(".basket__topBanner").remove();
+                    $(".basket__title").remove();
+                    $(".subBaseContent--title").append('<div class="basket--empty">Your Shopping Bag is empty. \
+                            <a href="{% url "store:store_home" %}"> \
+                                Home \
+                            </a> \
+                        </div>');
                 }
-            });
+            },
+            error: function (xhr, errmsg, err) {
 
-        })
+            }
+        });
 
-        $(document).on('click', '.update-button', function (e) {
-            e.preventDefault();
-            var prodid = $(this).data('index');
-            $.ajax({
-                headers: {
-                    'X-CSRFTOKEN': '{{ csrf_token }}',
-                },
-                type: 'PATCH',
-                url: '{% url "basket:basket" %}',
-                data: {
-                    productid: $(this).data('index'),
-                    productqty: $('#select' + prodid + ' option:selected').text(),
-                    action: 'update-basket-product-quantity'
-                },
-                success: function (json) {
-                    $('.product-total[data-index="' + prodid + '"]').html(json.product_total)
-                    $('#basket-qty').html(json.qty)
-                    $('#subtotal-price').html(json.basket_total_before_tax)
-                    $('#total-to-pay-price').html(json.basket_total_after_tax)
-                },
-                error: function (xhr, errmsg, err) {
+    })
 
+    $(document).on('click', '.increaseQty', function (e) {
+        var productid = $(this).data('index');
+        var current_quantity = parseInt($('.quantity--quantity[data-index="' + productid + '"]').text());
+        var post_quantity = current_quantity + 1;
+
+        $.ajax({
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            type: 'PATCH',
+            url: '{% url "basket:basket" %}',
+            data: {
+                productid: productid,
+                post_quantity: post_quantity,
+                action: 'increase-product-quantity',
+            },
+            success: function (json) {
+                $('#basket-qty').html(json.qty)
+                $('.totalCheckout__quantity').html(json.qty)
+                $('.quantity--quantity[data-index="' + productid + '"]').html(json.post_quantity)
+                $('.basket__item__subtotal--price[data-index="' + productid + '"]').html(json
+                    .product_total)
+                $('#total-before-tax').html(json.basket_total_before_tax)
+                $('#total-after-tax').html(json.basket_total_after_tax)
+                if (json.post_quantity == 2) {
+                    $('#decreaseQty_anchor[data-index="' + productid + '"]').removeClass(
+                        "isDisabled");
                 }
-            });
+                if (json.post_quantity == json.product_inventory) {
+                    $('#increaseQty_anchor[data-index="' + productid + '"]').addClass("isDisabled");
+                }
+            },
+            error: function (xhr, errmsg, err) {
 
-        })
-    </script>
-    {% endblock content %}
+            }
+        });
+    })
+
+    $(document).on('click', '.decreaseQty', function (e) {
+        var productid = $(this).data('index');
+        var current_quantity = parseInt($('.quantity--quantity[data-index="' + productid + '"]').text());
+        var post_quantity = current_quantity - 1;
+
+        $.ajax({
+            headers: {
+                'X-CSRFTOKEN': '{{ csrf_token }}'
+            },
+            type: 'PATCH',
+            url: '{% url "basket:basket" %}',
+            data: {
+                productid: productid,
+                post_quantity: post_quantity,
+                action: 'decrease-product-quantity',
+            },
+            success: function (json) {
+                $('#basket-qty').html(json.qty)
+                $('.totalCheckout__quantity').html(json.qty)
+                $('.quantity--quantity[data-index="' + productid + '"]').html(json.post_quantity)
+                $('.basket__item__subtotal--price[data-index="' + productid + '"]').html(json
+                    .product_total)
+                $('#total-before-tax').html(json.basket_total_before_tax)
+                $('#total-after-tax').html(json.basket_total_after_tax)
+
+                if (json.post_quantity <= 1) {
+                    $('#decreaseQty_anchor[data-index="' + productid + '"]').addClass("isDisabled");
+                }
+
+                if (json.post_quantity == json.product_inventory - 1) {
+                    $('#increaseQty_anchor[data-index="' + productid + '"]').removeClass(
+                        "isDisabled");
+                }
+            },
+            error: function (xhr, errmsg, err) {
+
+            }
+        });
+    })
+</script>
+{% endblock sub_base_content %}

@@ -63,7 +63,7 @@ def account_activate(request, uidb64, token):
 
             # create a address instance for user passing activation
             Address.objects.create(customer_id=user.id)
-            return redirect("account:dashboard")
+            return redirect("account:profile")
         else:
             return render(request, "account/registration/activation_invalid.html")
 
@@ -173,13 +173,4 @@ class CustomLogoutView(LogoutView):
                         product.save()
                     else:
                         pass
-        super().setup(request, *args, **kwargs)
-
-
-class DashboardView(TemplateView):
-    template_name = "account/dashboard/dashboard.html"
-
-    def setup(self, request, *args, **kwargs):
-        basket = Basket(request)
-        basket.check_basket_db_and_modify_session_when_login(request)
         super().setup(request, *args, **kwargs)

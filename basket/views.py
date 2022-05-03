@@ -34,7 +34,6 @@ class BasketView(TemplateView):
     def delete(self, request):
         product_id = int(QueryDict(request.body).get("productid"))
         self.basket.delete(product=product_id)
-
         basketqty = self.basket.__len__()
         baske_total_before_tax = self.basket.get_subtotal_price_before_tax()
         baskek_total_after_tax = self.basket.get_subtotal_price_after_tax()
@@ -50,8 +49,36 @@ class BasketView(TemplateView):
     def patch(self, request):
         # update quantity of product in the basket
         product_id = int(QueryDict(request.body).get("productid"))
-        product_qty = int(QueryDict(request.body).get("productqty"))
-        self.basket.update(product=product_id, qty=product_qty)
+        post_quantity = int(QueryDict(request.body).get("post_quantity"))
+        action = QueryDict(request.body).get("action")
+
+        # get product inventory
+        product_inventory = Product.objects.get(id=product_id).inventory
+
+        if action == "increase-product-quantity":
+            # check whether quantity after increasing will higher than product quantity
+            if post_quantity == product_inventory:
+                post_quantity = post_quantity
+
+            elif post_quantity > product_inventory:
+                post_quantity -= 1
+
+            else:
+                post_quantity = post_quantity
+
+        if action == "decrease-product-quantity":
+            # check whether quantity after decreasing will less than 1
+            if post_quantity < 1:
+                post_quantity += 1
+
+            else:
+                if post_quantity + 1 == product_inventory:
+                    post_quantity = post_quantity
+
+                post_quantity = post_quantity
+
+
+        self.basket.update(product=product_id, qty=post_quantity)
 
         basketqty = self.basket.__len__()
         basket_product_subtotal = self.basket.get_product_total_before_tax(product_id)
@@ -60,6 +87,8 @@ class BasketView(TemplateView):
         response = JsonResponse(
             {
                 "qty": basketqty,
+                "product_inventory": product_inventory,
+                "post_quantity": post_quantity,
                 "product_total": basket_product_subtotal,
                 "basket_total_before_tax": basket_total_before_tax,
                 "basket_total_after_tax": baskek_total_after_tax,

@@ -1,76 +1,93 @@
-{% extends "account/sub_base.html" %}
+{% extends 'sub_base.html' %}
+{% load static %}
 {% load product_filter %}
-{% block title %}Wish List{% endblock %}
 
-{% block sub_content %}
+{% block title %}
+Wish List
+{% endblock title %}
 
-<div class="col-12">
-    <h1 class="h2">Your Wish List</h1>
+{% block stylesheet1 %}
+{% static 'basket/css/basket.css' %}
+{% endblock %}
+
+{% block stylesheet2 %}
+{% static 'account/css/wishlist.css' %}
+{% endblock stylesheet2 %}
+
+{% block sub_base_title %}
+{% if not user_wishlist %}
+<div class="basket--empty">Your Wish List is empty.
+    <a href="{% url 'store:store_home' %}">
+        Shop
+    </a>
 </div>
-<div class="col-12 d-flex justify-content-between">
-    <div>Manage your <b>Wish List</b></div>
-</div>
-<hr />
-<div class="container-fluid">
-    {% if user_wishlist|length == 0 %}
-    <div class="col-12">Your wish list is empty
-        <a href="{% url 'store:store_home' %}">
-            Shop
-        </a>
+{% else %}
+<div class="basket__title">
+    <div class="basket__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
     </div>
-    {% else %}
-    {% for product in user_wishlist %}
-    <div class="product-item" data-index="{{product.id}}">
-        <div class="row g-3">
-            <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
-                <div class=" d-grid gap-2">
-                    <div>
-                        <span class="h3" style="text-align:center">Price: £{{ product.price }}</span>
-                    </div>
-                    {% if product.inventory == 0 %}
-                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500" disabled>Add
-                        to
-                        basket</button>
-                    {% else %}
-                    <button type="button" id="add-button-wishlist" value="{{product.id}}" class="btn btn-success fw500">Add
-                        to
-                        basket</button>
-                    {% endif %}
-                    <button type="button" id="delete-button" value="{{product.id}}" class="btn btn-success fw500"
-                        data-index="{{product.id}}">
-                        Delete
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-7 col-lg-8 p-0">
-                <div class="card mb-3 border-0">
-                    <div class="row g-0">
-                        <div class="col-md-2 d-none d-md-block">
-                            <img class="img-fluid" style="width:90px" src="{{product.image.image.url}}" />
-                            <div style="text-align:center">Writing by: </div>
-                            {% for author in product.author.all %}
-                            <div style="text-align:center">{{ author.full_name }}</div>
-                            {% endfor %}
-                        </div>
-                        <div class="col-md-10">
-                            <div class="card-body p3">
-                                <a class="text-decoration-none" href="{{ product.get_absolute_url }}">
-                                    <p class="card-text" style="text-align:left; padding:0rem 0rem;">{{product|title}}</p>
-                                </a>
-                            </div>
-                            <div class="card-body" style="padding:0.1rem 1rem;">
-                                <p style="text-align:left">{{ product.description }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="basket__bean__bag">
+        Wish List
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block sub_base_content %}
+<div class="basket">
+    {% if user_wishlist %}
+    <div class="wishlist__topBanner">
+        <div class="wishlist__topBanner__product">
+            Product
         </div>
-        <hr>
+        <div class="wishlist__topBanner__price">
+            Price
+        </div>
+    </div>
+    {% for product in user_wishlist %}
+    <div class="basket__item" data-index="{{product.id}}">
+        <div class="basket__item__image">
+            <a href="{{ product.get_absolute_url }}">
+                <img class="" alt="Responsive image" src="{{ product.image.image.url }}" />
+            </a>
+        </div>
+        <div class="basket__item__title">
+            <a class="" href="{{ product.get_absolute_url }}">
+                {{ product.title }}
+            </a>
+        </div>
+        <div class="wishlist__item__price">
+            $ {{ product.price }}
+        </div>
+        <div class="addItem__addtoBasketDelete">
+            {% if product.inventory == 0 %}
+            <div class="addItem__addtoBasket">
+                <button type="button" id="add-button" value="{{product.id}}" disabled>Add to basket
+                </button>
+            </div>
+            {% else %}
+            <div class="addItem__addtoBasket">
+                <button type="button" id="add-button" value="{{product.id}}">
+                    Add to basket
+                </button>
+            </div>
+            {% endif %}
+            <a>
+                <div class="basket__item__delete" data-index="{{product.id}}">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 95.939 95.939"
+                        style="enable-background:new 0 0 95.939 95.939;" xml:space="preserve">
+                        <path
+                            d="M62.819,47.97l32.533-32.534c0.781-0.781,0.781-2.047,0-2.828L83.333,0.586C82.958,0.211,82.448,0,81.919,0 c-0.53,0-1.039,0.211-1.414,0.586L47.97,33.121L15.435,0.586c-0.75-0.75-2.078-0.75-2.828,0L0.587,12.608 c-0.781,0.781-0.781,2.047,0,2.828L33.121,47.97L0.587,80.504c-0.781,0.781-0.781,2.047,0,2.828l12.02,12.021 c0.375,0.375,0.884,0.586,1.414,0.586c0.53,0,1.039-0.211,1.414-0.586L47.97,62.818l32.535,32.535 c0.375,0.375,0.884,0.586,1.414,0.586c0.529,0,1.039-0.211,1.414-0.586l12.02-12.021c0.781-0.781,0.781-2.048,0-2.828L62.819,47.97 z" />
+                    </svg>
+                </div>
+            </a>
+        </div>
     </div>
     {% endfor %}
     {% endif %}
 </div>
+
 
 <script>
     $(document).on('click', '#add-button', function (e) {
@@ -94,7 +111,7 @@
 
     })
 
-    $(document).on('click', '#delete-button', function (e) {
+    $(document).on('click', '.basket__item__delete', function (e) {
         e.preventDefault();
         var prodid = $(this).data('index');
         $.ajax({
@@ -108,12 +125,20 @@
                 action: 'delete-from-wishlist'
             },
             success: function (json) {
-                $('.product-item[data-index="' + prodid + '"]').remove()
-                location.reload();
+                $('.basket__item[data-index="' + prodid + '"]').remove()
+                if ($(".basket__item").length == 0) {
+                    $('.basket__title').remove()
+                    $('.wishlist__topBanner').remove()
+                    $(".subBaseContent--title").append('<div class="basket--empty">Your Wish List is empty. \
+                    <a href="{% url "store:store_home" %}"> \
+                        Home \
+                    </a> \
+                </div>')
+                }
             },
             error: function (xhr, errmsg, err) {
 
-            }
+            },
         });
 
     })

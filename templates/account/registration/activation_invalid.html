@@ -1,11 +1,17 @@
-{% extends 'account/sub_base.html' %}
-{% block title %}Invalide Activation {% endblock title %}
+{% extends 'sub_base.html' %}
+{% load static %}
 
-{% block content %}
-<div class="container">
-    <div>
-        <h3 class="mb-4">Errors</h3>
-        <p>Please contact our support group.</p>
-    </div>
+{% block title %}
+Activation Fail
+{% endblock title %}
+
+{% block stylesheet1 %}
+{% static 'account/css/account.css' %}
+{% endblock %}
+
+{% block sub_base_content %}
+<div class="activation__fail">
+    <div>Activation Fail!</div>
+    <div>Please contact our support group.</d>
 </div>
 {% endblock %}

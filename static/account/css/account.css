@@ -1,13 +1,214 @@
-.container-fluid {
-    max-width: 100%;
+button {
+    width: 60%;
+    color: white;
+    font-weight: 500;
+    background-color: var(--seconary-color);
+    border-color: var(--seconary-color);
+    font-size: larger;
+    cursor: pointer;
 }
 
-.account-form input {
-    border: 2px solid #ccc;
-    height: calc(2em + .75rem + 2px);
+.errorlist li {
+    width: 200%;
+    color: var(--alter-color);
+    text-align: left;
 }
 
-.account-form input:focus {
-    border-color: #1497ff;
-    box-shadow: none;
+.subBaseContent {
+    width: 100%;
+    margin: 0 auto;
+}
+
+form {
+    width: 40%;
+    margin: 0 auto;
+}
+
+.register__button {
+    margin-top: 2rem;
+    text-align: center;    
+}
+
+.register__haveAccount {
+    margin-top: 1rem;
+    text-align: center;
+}
+.register__haveAccount a {
+    text-decoration: underline;
+}
+
+#signin {
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem ;
+}
+
+.simpleInput{
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.simpleInput div{
+    vertical-align: center;
+}
+
+.simpleInput__label {
+    font-weight: 600;
+    
+}
+.simpleInput input {
+    width: 100%;
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+
+.simpleInput >  .simpleInput__label{
+    align-self: flex-start;
+    font-size: 1rem;
+}
+.simpleInput > .simpleInput__input {
+    justify-self: start;
+    align-self: start;
+}
+
+.login_button {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.login__otherlink {
+    text-align: center;
+}
+
+.login__otherlink div{
+    margin-top: 1rem;
+}
+
+
+.login__otherlink a{
+    text-decoration: underline;
+}
+
+/* password reset */
+.resetPassword__title{
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem ;
+}
+
+.resetPassword {
+    margin: 0 auto;
+}
+
+.resetPassword div{
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.resetPassword__button {
+    text-align: center;   
+}
+
+.resetPassword__button button {
+    font-size: 1.2rem;
+}
+
+.resetPassword__login {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.resetPassword__login a {
+    font-size: 1.2rem;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.resetPassword__status, .activateAccount, .activation__fail {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.activation__fail div {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.resetPassword__status div{
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    
+}
+
+.resetPassword__status a {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* reset password form */
+
+.resetPassword__form__title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+
+.resetPassword__Submitbutton {
+    text-align: center;   
+}
+
+.resetPassword__Submitbutton button {
+    font-size: 1.2rem;
+}
+
+.resetPassword__haveAccount {
+    text-align: center;
+}
+.resetPassword__haveAccount a {
+    font-size: 1.2rem;
+    text-decoration: underline;
+}
+
+.resetPassword__Submitbutton {
+    margin-bottom: 1rem;
+}
+
+.activateAccount div{
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.activateAccount__redirect a {
+    font-weight: 600;
+    text-decoration: underline;
+}
+.activateAccount__redirect span {
+    font-weight: 600;
+}
+    
+@media screen and (max-width: 1024px){
+    .subBaseContent {
+        width: 50%;
+    }
+}
+
+
+@media screen and (max-width: 768px){
+    .subBaseContent {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 425px){
+    .subBaseContent {
+        width: 100%;
+    }
 }

@@ -1,17 +1,26 @@
-{% extends "account/sub_base.html" %}
-{% block title %}Reset Status{% endblock %}
+{% extends 'sub_base.html' %}
+{% load static %}
 
-{% block content %}
-<div class="container">
+{% block title %}
+Reset Password
+{% endblock title %}
+
+{% block stylesheet1 %}
+{% static 'account/css/account.css' %}
+{% endblock %}
+
+{% block sub_base_content %}
+<div class="resetPassword__status">
     <div>
         {% if 'email' in request.get_full_path %}
-        <h3 class="mb-4">Password Reset Success</h3>
-        <p>Check your email for instructions</p>
-        {% endif%}
-        {% if 'complete' in request.get_full_path %}
-        <h3 class="mb-4">Password Reset Success</h3>
-        <a href="{% url "account:login" %}">Login</a>
-        {% endif%}
+        <div>Password Reset Success</div>
+        <div>Check your email for instructions</d>
+            {% endif%}
+            {% if 'complete' in request.get_full_path %}
+            <div>Password Reset Success!</div>
+            <a href="{% url "account:login" %}">Login</a>
+            {% endif%}
+        </div>
     </div>
 </div>
-{% endblock %}
+{% endblock sub_base_content %}

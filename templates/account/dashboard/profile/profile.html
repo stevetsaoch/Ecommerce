@@ -1,84 +1,126 @@
-{% extends 'account/sub_base.html' %}
+{% extends 'sub_base.html' %}
 {% load static %}
-{% block stylesheet2 %}
-{% static "account/css/profile.css" %}
-{% endblock stylesheet2 %}
 
+{% block title %}
+Profile
+{% endblock title %}
 
-{% block sub_content %}
+{% block stylesheet1 %}
+{% static 'account/css/profile.css' %}
+{% endblock %}
+
+{% block sub_base_title %}
+<div class="profile__bean">
+    <div class="profile__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
+    </div>
+    <div class="profile__bean__orders">
+        Profile
+    </div>
+</div>
+{% endblock %}
+
+{% block sub_base_content %}
 {% if user.is_authenticated %}
-<div class="col-12 d-flex justify-content-between">
-    <h1><b>Profile</b></h1>
-</div>
-<hr />
-<div class="container-profile">
-    <div class="level-one-pic" style="flex-basis:35%">
-            <img class="rounded-circle" width="150px" src={{ profile.profile_img.url}}>
-            <span class="font-weight-bold">{{profile.last_name}} {{ profile.first_name }}</span>
-            <span class="text-black-50">{{profile.email}}</span>
+<div class="profile">
+    <div class="profile__img">
+        <img src={{ profile.profile_img.url}}>
     </div>
-    <div class="level-one" style="flex-basis:65%">
-        <div class="first-last-name-phone">
-            <div class="row mt-2">
-                <label class="labels"><b>First Name:</b></label>
-                <span>{{profile.first_name}}</span>
+    <div class="profile__profile">
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                First Name:
             </div>
-
-            <div class="row mt-2">
-                <label class="labels"><b>Last Name:</b></label>
-                <span>{{profile.last_name}}</span>
+            <div class="profile__profile__content__content">
+                {{profile.first_name}}
             </div>
-
-            <div class="row mt-2">
-                <label class="labels"><b>Phone:</b></label>
-                <span>{{address.phone}}</span>
+        </div>
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                Last Name:
+            </div>
+            <div class="profile__profile__content__content">
+                {{profile.last_name}}
+            </div>
+        </div>
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                Email:
+            </div>
+            <div class="profile__profile__content__content">
+                {{profile.email}}
+            </div>
+        </div>
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                Phone:
+            </div>
+            <div class="profile__profile__content__content">
+                {{address.phone}}
             </div>
         </div>
 
-        <div class="conuntry-city-postcode">
-            <div class="row mt-2">
-                <label class="labels"><b>Country:</b></label>
-                <span>{{address.country}}</span>
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                Country:
             </div>
-            <div class="row mt-2">
-                <label class="labels"><b>Town & City:</b></label>
-                <span>{{address.town_city}}</span>
-            </div>
-
-            <div class="row mt-2">
-                <label class="labels"><b>Post code:</b></label>
-                <span>{{address.postcode}}</span>
+            <div class="profile__profile__content__content">
+                {{address.country.name}}
             </div>
         </div>
-        <div class="address-line-12">
-            <div class="row mt-2">
-                    <label class="labels"><b>Address Line 1:</b></label>
-                <span>{{address.address_line}}</span>
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                Town & City:
             </div>
-            <div class="row mt-2">
-                    <label class="labels"><b>Address Line 2:</b></label>
-                <span>{{address.address_line2}}</span>
+            <div class="profile__profile__content__content">
+                {{address.town_city}}
             </div>
         </div>
-        <div class="row mt-2">
-            <div class="col-md-6">
-                <label class="labels"><b>About:</b></label></div>
-            <p style="word-break: break-all;">{{profile.about}}</p>
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                Post code:
+            </div>
+            <div class="profile__profile__content__content">
+                {{address.postcode}}
+            </div>
+        </div>
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                Address Line 1:
+            </div>
+            <div class="profile__profile__content__content">
+                {{address.address_line}}
+            </div>
+        </div>
+        <div class="profile__profile__content">
+            <div class="profile__profile__content__title">
+                Address Line 2:
+            </div>
+            <div class="profile__profile__content__content">
+                {{address.address_line2}}
+            </div>
+        </div>
+        <div class="profile__profile__about">
+            <div class="profile__profile__about--title">
+                About:
+            </div>
+            <div class="profile__profile__about--content">
+                {{profile.about}}
+            </div>
         </div>
     </div>
 </div>
-
-<div>
-    <a href="{% url 'account:edit_details'%}" class="text-reset text-decoration-none" role="button"
-        style="max-width: 540px;">
-        <button type="submit" role="button" class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">Edit
-            profile</button>
+<div class="editButton">
+    <a href="{% url 'account:edit_details'%}">
+        <button type="submit">Edit</button>
     </a>
 </div>
+
+
 {% else %}
 <script>
     window.location.href = '{% url "account:login" %}';
 </script>
 {% endif %}
 
-{% endblock sub_content %}
+{% endblock sub_base_content %}

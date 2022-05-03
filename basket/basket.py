@@ -29,9 +29,9 @@ class Basket:
             self.session.modified = True
 
     def add(self, product, qty):
-        product_id = product.id
+        product_id = str(product.id)
 
-        if product_id in self.basket:
+        if product_id in self.basket.keys():
             self.basket[product_id]["qty"] = qty
         else:
             self.basket[product_id] = {

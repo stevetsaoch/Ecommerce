@@ -1,18 +1,26 @@
-{% extends "base.html" %}
+{% extends 'sub_base.html' %}
 {% load static %}
-{% block title %}Issue Reported{%endblock %}
-{% block content %}
+{% load product_filter %}
+{% load orderissue_filter %}
 
-<div class="container">
-    <div class="col-12">
-        <h1 class="h2">Issue Reported</h1>
+{% block title %}
+Issue Reported
+{% endblock title %}
+
+{% block stylesheet1 %}
+{% static 'orders/css/orders.css' %}
+{% endblock %}
+{% block sub_base_content %}
+<div class="issue__reported">
+    <div class="issue__reported__title">
+        Issue Reported
     </div>
-    <div class="col-12">
-        <p>We will process your issue as soon as possible, thanks for your patience.</p>
-        <p>
-            Redirect to 
-            <a href="{% url 'store:store_home' %}">home page</a> in <span id="countmesg"></span>
-        </p>
+    <div class="issue__reported__content">
+        <div>We will process your issue as soon as possible, thanks for your patience.</div>
+        <div>
+            Redirect to
+            <a href="{% url 'store:store_home' %}">Home page</a> in <span id="countmesg"></span>
+        </div>
     </div>
 </div>
 

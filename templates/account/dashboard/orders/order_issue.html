@@ -1,79 +1,110 @@
-{% extends 'account/sub_base.html' %}
+{% extends 'sub_base.html' %}
 {% load static %}
+{% load product_filter %}
+{% load orderissue_filter %}
+
+{% block title %}
+Order Issue
+{% endblock title %}
+
 {% block stylesheet1 %}
-{% static 'store/css/store.css' %}
-{% endblock stylesheet1 %}
+{% static 'orders/css/orders.css' %}
+{% endblock %}
 
-{% block stylesheet2 %}
-{% static 'review/css/review.css' %}
-{% endblock stylesheet2 %}
-
-{% block sub_content %}
-<div class="col-12">
-    <h1 class="h2">Order Issue</h1>
+{% block sub_base_title %}
+<div class="orders__bean">
+    <div class="orders__bean__home">
+        <a href="{% url 'store:store_home' %}"> Home </a>
+    </div>
+    <div class="orders__bean__orders">
+        Order Issue
+    </div>
 </div>
-<hr />
-<h4>Order Information</h4>
-<hr />
-<div class="container-fluid">
-    <div class="row g-3 bg-light">
-        <div class="col-12 bg-light p-3">
-            <div class="pe-3" style="display:flex; flex-direction:row;">
-                <div style="flex-basis:40.00%">
-                    <span><b>Checkout Time: </b></span>
-                    <span>{{ order.created }}</span>
+{% endblock %}
+
+{% block sub_base_content %}
+<div class="orders">
+    <div class="order__infomation">
+        <div class="order__infomation__title">
+            <div>
+                {{ order.created }}
+            </div>
+            <div>
+                {{ order.order_key }}
+            </div>
+        </div>
+        <div class="order__infomation__content">
+            <div>
+                <div>
+                    Payment Method:
                 </div>
-                <div style="flex-basis:30%">
-                    <span><b>Total Paid: </b></span>
-                    <span> $ {{ order.total_paid }} </span>
-                </div>
-                <div style="flex-basis:30%">
-                    <span> <b>Name: </b> </span>
-                    <span> {{order.address.full_name}} </span>
+                <div>
+                    {{ order.payment_option.name }}
                 </div>
             </div>
             <div>
-                <b>Dispatch to: </b>
-                <span>{{order.address.address_line}} {{order.address.address_line2}},</span>
-                <span>{{order.address.city}}, {{order.address.postcode}}</span>
-                <span>{{order.address.country}}</span>
+                <div>
+                    Shipped to:
+                </div>
+                <div>
+                    {{order.address.address_line2}} {{order.address.address_line}} {{order.address.postcode}}
+                    {{order.address.town_city}}, {{order.address.country}}.
+                    {{order.address.full_name}}, {{order.address.phone}}
+                </div>
+            </div>
+            <div>
+                <div>
+                    Delivery cost:
+                </div>
+                <div>
+                    $ {{ order.delivery_option.delivery_price }}
+                </div>
+            </div>
+            <div>
+                <div>
+                    Total paid:
+                </div>
+                <div>
+                    $ {{ order.total_paid }}
+                </div>
             </div>
         </div>
     </div>
-</div>
-<br>
-<h4>Products </h4>
-<hr>
-<div class="row g-3 bg-light">
-    {% for item in order.items.all %}
-    <div class="card mb-3 border-0 bg-light">
-        <div class="" style="display:flex; align-items: center;">
-            <div class="col-md-2 d-none d-md-block">
-                <img class="img-fluid" style="width:90px" src="{{item.product.image.image.url}}" />
+    <div class="order__issue__form">
+        <div class="order__issue__form__title">Report form</div>
+        <form id="order__issue__form__form" action="#" method="POST">
+            {% csrf_token %}
+            <div>
+                <div class="order__issue__form__label">
+                    {{ order_issue_form.orderid.label}}
+                </div>
+                <div class="order__issue__form__input" disabled>
+                    {{ order_issue_form.orderid}}
+                </div>
             </div>
-            <div class="">
-                {{item.product|title}}
+            <div>
+                <div class="order__issue__form__label">
+                    {{ order_issue_form.email.label}}
+                </div>
+                <div class="order__issue__form__input" disabled>
+                    {{ order_issue_form.email}}
+                </div>
             </div>
-        </div>
+            <div>
+                <div class="order__issue__form__label">
+                    {{ order_issue_form.content.label}}
+                </div>
+                <div>
+                    {{ order_issue_form.content}}
+                </div>
+            </div>
+            <div>
+                <button type="submit" formaction="{% url 'orders:order_issue' order_key=order.order_key %}"
+                    role="button">
+                    Submit
+                </button>
+            </div>
+        </form>
     </div>
-    {% endfor %}
 </div>
-<br>
-<div>
-    <h4>Report form</h4>
-    <hr />
-    <form id="review-form" action="#" method="POST">
-        {% csrf_token %}
-        {{ order_issue_form.orderid.label}}
-        {{ order_issue_form.orderid}}
-        {{ order_issue_form.email.label}}
-        {{ order_issue_form.email}}
-        {{ order_issue_form.content.label}}
-        {{ order_issue_form.content}}
-        <button type="submit" formaction="{% url 'orders:order_issue' order_key=order.order_key %}" role="button"
-            class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">
-            Submit
-        </button>
-    </form>
-</div>
-{% endblock sub_content %}
+{% endblock sub_base_content %}
