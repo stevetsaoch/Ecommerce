@@ -1,15 +1,20 @@
-{% extends 'account/sub_base.html' %}
-{% block title %}Account Email Sent{% endblock title %}
+{% extends 'sub_base.html' %}
+{% load static %}
 
-{% block content %}
-<div class="container">
-    <div>
-        <h3 class="mb-4">Activation email sent</h3>
-        <p>Check your email to activate your account</p>
-    </div>
-    <div>
-            Redirect to 
-            <a href="{% url 'account:login' %}">Login page</a> in <span id="countmesg"></span>
+{% block title %}
+Activation
+{% endblock title %}
+
+{% block stylesheet1 %}
+{% static 'account/css/account.css' %}
+{% endblock %}
+
+{% block sub_base_content %}
+<div class="activateAccount">
+    <div>Activation email sent.</div>
+    <div>Check your email to activate your account.</div>
+    <div class="activateAccount__redirect">
+        Redirect to <a href="{% url 'account:login' %}">Login</a> in <span id="countmesg"></span>
     </div>
 </div>
 

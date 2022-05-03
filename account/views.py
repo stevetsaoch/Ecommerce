@@ -63,7 +63,7 @@ def account_activate(request, uidb64, token):
 
             # create a address instance for user passing activation
             Address.objects.create(customer_id=user.id)
-            return redirect("account:dashboard")
+            return redirect("account:profile")
         else:
             return render(request, "account/registration/activation_invalid.html")
 

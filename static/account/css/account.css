@@ -15,8 +15,26 @@ button {
 }
 
 .subBaseContent {
-    width: 30%;
+    width: 100%;
     margin: 0 auto;
+}
+
+form {
+    width: 40%;
+    margin: 0 auto;
+}
+
+.register__button {
+    margin-top: 2rem;
+    text-align: center;    
+}
+
+.register__haveAccount {
+    margin-top: 1rem;
+    text-align: center;
+}
+.register__haveAccount a {
+    text-decoration: underline;
 }
 
 #signin {
@@ -113,6 +131,16 @@ button {
     text-decoration: underline;
 }
 
+.resetPassword__status, .activateAccount, .activation__fail {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.activation__fail div {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
 .resetPassword__status div{
     font-size: 1.5rem;
     margin-bottom: 1rem;
@@ -153,7 +181,19 @@ button {
     margin-bottom: 1rem;
 }
 
+.activateAccount div{
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
 
+.activateAccount__redirect a {
+    font-weight: 600;
+    text-decoration: underline;
+}
+.activateAccount__redirect span {
+    font-weight: 600;
+}
+    
 @media screen and (max-width: 1024px){
     .subBaseContent {
         width: 50%;
