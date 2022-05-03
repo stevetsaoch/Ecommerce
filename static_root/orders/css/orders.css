@@ -211,6 +211,7 @@ textarea {
 
 .issue__reported__content a{ 
     font-weight: 600;
+    text-decoration: underline;
 }
 
 #countmesg {
