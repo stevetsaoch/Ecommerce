@@ -10,13 +10,6 @@ Payment Selection
 {% static 'checkout/css/payment.css' %}
 {% endblock stylesheet1 %}
 
-{% block sub_base_title %}
-<div class="basket__title">
-    <div class="payment__bean__home">
-        <a href="{% url 'store:store_home' %}"> Home </a>
-    </div>
-</div>
-{% endblock %}
 
 {% block sub_base_content %}
 
@@ -25,7 +18,7 @@ Payment Selection
     Thank you for choosing Tsao Books!
   </div>
   <div class="paymentSuccess__redirect">
-    Redirect to <a href="{% url 'orders:user_orders' %}">orders</a> in <span id="countmesg"></span>
+    Redirect to <a href="{% url 'orders:user_orders' %}">Orders</a> in <span id="countmesg"></span>
   </div>
 </div>
 

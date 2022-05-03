@@ -110,7 +110,7 @@
                 <div class="addItem__basketWishlist">
                     {% if product.inventory == 0 %}
                     <div class="addItem__addtoBasket">
-                        <button type="button" id="add-button" value="{{product.id}}" disabled>Add to basket
+                        <button class="isDisabled" type="button" id="add-button" value="{{product.id}}">Add to basket
                         </button>
                     </div>
                     {% else %}
