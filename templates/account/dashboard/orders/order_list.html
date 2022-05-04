@@ -23,6 +23,13 @@ Order List
 {% endblock %}
 
 {% block sub_base_content %}
+{% if not orders %}
+<div class="orders--empty">You have not place any order. 
+    <a href="{% url 'store:store_home' %}">
+        Home
+    </a>
+</div>
+{% endif %}
 <div class="orders">
     {% for order in orders %}
     <div class="order__infomation">

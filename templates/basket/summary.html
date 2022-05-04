@@ -11,13 +11,7 @@ Basket summary
 {% endblock %}
 
 {% block sub_base_title %}
-{% if basket|length == 0 %}
-<div class="basket--empty">Your Shopping Bag is empty.
-    <a href="{% url 'store:store_home' %}">
-        Shop
-    </a>
-</div>
-{% else %}
+
 <div class="basket__title">
     <div class="basket__bean__home">
         <a href="{% url 'store:store_home' %}"> Home </a>
@@ -26,10 +20,16 @@ Basket summary
         Shopping Bag
     </div>
 </div>
-{% endif %}
 {% endblock %}
 
 {% block sub_base_content %}
+{% if basket|length == 0 %}
+<div class="basket--empty">Your Shopping Bag is empty. 
+    <a href="{% url 'store:store_home' %}">
+        Home
+    </a>
+</div>
+{% endif %}
 <div class="basket">
     {% if basket|length != 0 %}
     <div class="basket__topBanner">

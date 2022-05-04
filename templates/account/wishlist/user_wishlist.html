@@ -15,13 +15,6 @@ Wish List
 {% endblock stylesheet2 %}
 
 {% block sub_base_title %}
-{% if not user_wishlist %}
-<div class="basket--empty">Your Wish List is empty.
-    <a href="{% url 'store:store_home' %}">
-        Shop
-    </a>
-</div>
-{% else %}
 <div class="basket__title">
     <div class="basket__bean__home">
         <a href="{% url 'store:store_home' %}"> Home </a>
@@ -30,10 +23,16 @@ Wish List
         Wish List
     </div>
 </div>
-{% endif %}
 {% endblock %}
 
 {% block sub_base_content %}
+{% if not user_wishlist %}
+<div class="basket--empty">Your Wish List is empty.
+    <a href="{% url 'store:store_home' %}">
+        Home
+    </a>
+</div>
+{% endif %}
 <div class="basket">
     {% if user_wishlist %}
     <div class="wishlist__topBanner">
