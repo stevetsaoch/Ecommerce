@@ -277,6 +277,10 @@
 }
 
 @media screen and (max-width: 425px) {
+    .subBaseContent {
+        width: 90%;
+    }
+    
     .basket__topBanner div {
         font-size: 0.8rem;
     }

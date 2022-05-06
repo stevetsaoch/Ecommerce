@@ -246,6 +246,7 @@ footer {
 
     footer {
         padding: 0 4rem;
+        padding-top: 1rem;
     }
 
     .footer__content h2{
@@ -288,9 +289,19 @@ footer {
     .nav__user__dropdown:hover .nav__user__dropdown--content{
         display:none;
     }
-
+    
     footer {
         padding: 0 2rem;
+        padding-top: 1rem;
+    }
+
+    .footer__content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        justify-items: center;
+        align-items: center;
+        font-size: var(--font-size-small);
     }
 
     .footer__content h2{
@@ -300,12 +311,17 @@ footer {
     }
 
     .footer__content a{
-        font-size: 8px;
+        font-size: 0.5rem;
     }
 
     .footer__content li{
         line-height: 1.2;
     }
+
+    .footer__content div {
+        text-align: center;
+    }
+
 
     .footer__copyright {
         font-size: 8px;

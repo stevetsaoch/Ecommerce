@@ -337,7 +337,7 @@ class Command(BaseCommand):
                 }
                 user = UserBase(**userinfo)
                 user.set_password("qazxcv123")
-                user.save()
+                user.save() 
 
                 # create fake user address
                 addressinfo = {
