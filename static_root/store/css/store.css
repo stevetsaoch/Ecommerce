@@ -372,6 +372,16 @@
 }
 
 @media screen and (max-width: 768px) {
+    .promotion {
+        height: 26rem;
+        overflow: hidden;
+    }
+
+    .promotion__content img {
+        height: 22rem;
+        object-fit: contain;
+    }
+
     .productPopular{
         margin-left: 0rem;
         margin-right: 0rem; 
