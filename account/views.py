@@ -23,7 +23,6 @@ from store.models import Product
 
 # Views
 
-
 class AccountRegisterForm(CreateView):
     template_name = "account/registration/register.html"
     form_class = RegistrationForm
