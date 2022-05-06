@@ -333,11 +333,11 @@ class Command(BaseCommand):
                     "first_name": first_name,
                     "last_name": last_name,
                     "is_active": 1,
-                    "profile_img": "images/fakedata/profile" + str(random.randint(0, 9)) + ".png",
+                    "profile_img": "images/fakedata/profile" + str(random.randint(1, 9)) + ".png",
                 }
                 user = UserBase(**userinfo)
                 user.set_password("qazxcv123")
-                user.save()
+                user.save() 
 
                 # create fake user address
                 addressinfo = {
