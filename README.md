@@ -176,7 +176,9 @@ flowchart TB
         UB[(User Base)]
         Ad[(Address)]
     end
+    subgraph ShoppingBag
         B[Shopping Bag]
+    end
     subgraph Profile
         PF[Profile]
         PFE[Profile Edit Form]
