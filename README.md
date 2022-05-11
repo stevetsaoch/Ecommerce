@@ -1,19 +1,31 @@
 # Tsao Books 網路書店
 
+![Website tour](readme_figures/Website_tour.gif)
+
+## 簡介
+
+---
 此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based views</b> 為主輔以 <b>Function-based views</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與排版。
 <br>
 <br>
+
+## 網頁Demo
+
+<https://stevetsaoch.pythonanywhere.com/>
+
 <br>
 
-## 資料庫架構與路線圖
+## 資料庫架構
 
 ---
 
-### 資料庫架構
-
 ![Database Diagram](readme_figures/Databases_diagram.png)
 
-### 網站架構
+<br>
+
+## 網站架構
+
+---
 
 ```mermaid
 flowchart LR
@@ -44,17 +56,81 @@ flowchart LR
     end    
 ```
 
-<small>__*備註：*__</small>
+<div style="font-size:10px; text-decoration:underline; font-style:italic;">
+備註: 實線箭頭：預設路線; 虛線箭頭：替代路線
+</div>
+<br>
 
-<small>__*實線箭頭：預設路線*__</small>
+## 主要練習
 
-<small>__*虛線箭頭：替代路線*__</small>
+---
 
-基本功能:
+- Django
+  - Class-based views
+    - 重寫方法以符合業務需求
+    - 嘗試以 REST 風格撰寫
+  - Function-based views
+  - Model, Form
+  - Eamil function
+  - Session (購物袋管理)
+  - Custom Template tags
+  - Custom commands (生產假資料)
+  - Use Token for authentication
+- MySQL
+  - 資料庫正規化(Normalization)
+- 串接 Paypal 金流支付 API
+- Jquery
+  - Ajax
+    - 首頁翻頁、更新商品數量與刪除商品
+    - 即時顯示評論
+    - 紀錄商品點擊數 (用於找出Bestsellers)
+- CSS
+  - 製作簡易動畫(指向選項時改變背景，選取後產生陰影等)
+  - Responsive Web Design
+<br>
 
-1. 註冊
-2. 登入
-3. 登出
+## 網頁功能介紹
+
+---
+
+### 使用者功能
+
+- 註冊帳號
+
+```mermaid
+flowchart
+    subgraph Register
+        direction TB
+        U[User] --"1. 申請帳號"--> R[Register] --"2. 建立用戶 (尚未啟用)"--> UB[(UserBase)]
+        
+        R --"2. 寄出帳號啟用信"--> M[Mail] --> A[Activate] --"3. 用戶啟用"--> UB --"4. 用戶登入"--> L[Login] --> P[Profile page]
+    end
+
+    subgraph Address
+        A --"3. 建立用戶地址"--> Ad[(Address)]
+    end
+```
+
+- 更改密碼、刪除用戶、更新資訊
+
+```mermaid
+flowchart
+    subgraph ResetPassword
+        direction TB
+        U[User] --"R1. 申請帳號"--> PR[Password reset]
+        PR --"R2. 寄出密碼更改信"--> M[Mail] --> A[Activate] --"R3. 建立新密碼"--> UB[(UserBase)]
+    end
+    subgraph UserProfile
+        U --> P[Profile]
+    end
+    P  --"D1. 用戶變更為非啟用狀態"--> UB 
+    P --"E1. 更新用戶資訊"--> Ad[(Address)]
+    P --"E1. 更新用戶資訊"--> UB
+
+
+```
+
+- 購物袋
 
 購物袋:
 
@@ -78,3 +154,7 @@ flowchart LR
 1. 付款完成後會建立訂單，可以在訂單頁面查詢訂單
 2. 回報訂單問題
 3. 連結並評價商品
+
+## 需求
+
+---
