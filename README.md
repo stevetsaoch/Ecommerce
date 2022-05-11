@@ -4,7 +4,6 @@
 
 ## 簡介
 
----
 此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based views</b> 為主輔以 <b>Function-based views</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與排版。
 <br>
 <br>
@@ -17,15 +16,11 @@
 
 ## 資料庫架構
 
----
-
 ![Database Diagram](readme_figures/Databases_diagram.png)
 
 <br>
 
 ## 網站架構
-
----
 
 ```mermaid
 flowchart LR
@@ -91,8 +86,6 @@ flowchart LR
 
 ## 網頁功能介紹
 
----
-
 ### 使用者功能
 
 - 註冊帳號
@@ -130,7 +123,7 @@ flowchart
 
 ```
 
-- 購物袋
+### 購物袋
 
 購物袋:
 
