@@ -188,8 +188,8 @@ flowchart TB
         D --"2. 確認/編輯寄送資訊"--> C{Delivery Information Checking Page}
         C --"U1. 更新資訊"--> PFE
         C --"A1. 更新資訊"--> PFE
-        C --"4. 登入Paypal"--> P[Paypal]
-        P -."5. 結帳，前往訂單頁面".-> O[(Orders)]
+        C --"3. 登入Paypal"--> P[Paypal]
+        P -."4. 結帳，前往訂單頁面".-> O[(Orders)]
     end
         PFE -."U2. 更新資料庫".-> UB
         PFE -."A2. 更新資料庫".-> Ad
