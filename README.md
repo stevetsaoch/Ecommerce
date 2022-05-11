@@ -32,7 +32,7 @@ flowchart LR
     end
     subgraph Bag
         direction RL
-        S --> B[Bag]
+        S --> B[Shopping Bag]
         S -.-> W[Wishlist] 
         W -.-> B
     end
@@ -51,9 +51,7 @@ flowchart LR
     end    
 ```
 
-<div style="font-size:10px; text-decoration:underline; font-style:italic;">
-備註: 實線箭頭：預設路線; 虛線箭頭：替代路線
-</div>
+__*備註: 實線箭頭：預設流程; 虛線箭頭：替代流程*__
 <br>
 
 ## 主要練習
@@ -87,6 +85,8 @@ flowchart LR
 
 ## 網頁功能介紹
 
+__*備註: 實線箭頭：流程; 虛線箭頭：流程中包含更新資料庫*__
+
 ### 使用者功能
 
 - 註冊帳號
@@ -95,13 +95,13 @@ flowchart LR
 flowchart
     subgraph Register
         direction TB
-        U[User] --"1. 申請帳號"--> R[Register] --"2. 建立用戶 (尚未啟用)"--> UB[(UserBase)]
+        U[User] --"1. 申請帳號"--> R[Register] -."2. 建立用戶 (尚未啟用)".-> UB[(UserBase)]
         
-        R --"2. 寄出帳號啟用信"--> M[Mail] --> A[Activate] --"3. 用戶啟用"--> UB --"4. 用戶登入"--> L[Login] --> P[Profile page]
+        R --"2. 寄出帳號啟用信"--> M[Mail] --> A[Activate] -."3. 用戶啟用".-> UB --"4. 用戶登入"--> L[Login] --> P[Profile page]
     end
 
     subgraph Address
-        A --"3. 建立用戶地址"--> Ad[(Address)]
+        A -."3. 建立用戶地址".-> Ad[(Address)]
     end
 ```
 
@@ -115,16 +115,29 @@ flowchart
         PR --"R2. 寄出密碼更改信"--> M[Mail] --> A[Activate] --"R3. 建立新密碼"--> UB[(UserBase)]
     end
     subgraph UserProfile
-        U --> P[Profile]
+        U --"更新資訊(E)、刪除帳號(D)"--> P[Profile]
     end
     P  --"D1. 用戶變更為非啟用狀態"--> UB 
     P --"E1. 更新用戶資訊"--> Ad[(Address)]
     P --"E1. 更新用戶資訊"--> UB
-
-
 ```
 
 ### 購物袋
+
+```mermaid
+    flowchart
+    subgraph Store
+        P[Prodcut] 
+    end
+    subgraph ShoppingBag
+        B[Shopping Bag] --"在Session 中寫入購物袋訊息"--> B
+        P --"1. 加入購物袋" --> B --> LS{Login Status}
+        LS --"Yes"--> LO[Logout] -."將Session中資料更新至Database".-> BD[(Shopping Bag)]
+        LS --"No"--> LE[Leave] --> R[Clean Data in Session]
+    end
+
+
+```
 
 購物袋:
 
