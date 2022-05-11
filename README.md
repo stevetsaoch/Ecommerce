@@ -58,8 +58,6 @@ flowchart LR
 
 ## 主要練習
 
----
-
 - Django
   - Class-based views
     - 重寫方法以符合業務需求
@@ -71,14 +69,17 @@ flowchart LR
   - Custom Template tags
   - Custom commands (生產假資料)
   - Use Token for authentication
+
 - MySQL
   - 資料庫正規化(Normalization)
+
 - 串接 Paypal 金流支付 API
-- Jquery
-  - Ajax
-    - 首頁翻頁、更新商品數量與刪除商品
-    - 即時顯示評論
-    - 紀錄商品點擊數 (用於找出Bestsellers)
+
+- Jquery(Ajax)
+  - 首頁翻頁、更新商品數量與刪除商品
+  - 即時顯示評論
+  - 紀錄商品點擊數 (用於找出Bestsellers)
+
 - CSS
   - 製作簡易動畫(指向選項時改變背景，選取後產生陰影等)
   - Responsive Web Design
