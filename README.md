@@ -18,6 +18,8 @@
 
 ![Database Diagram](readme_figures/Databases_diagram.png)
 
+連結: <https://dbdiagram.io/d/6253befa2514c979030773a2>
+
 <br>
 
 ## 網站架構
@@ -51,15 +53,15 @@ flowchart LR
     end    
 ```
 
-__*備註: 實線箭頭：預設流程; 虛線箭頭：選擇流程*__
+__*備註: 實線箭頭：預設流程; 虛線箭頭：可選擇流程*__
 <br>
 
 ## 主要練習
 
 - Django
   - Class-based views
-    - 重寫方法以符合業務需求
-    - 嘗試以 REST 風格撰寫對應功能
+    - Override method以符合業務需求
+    - 以 REST 風格撰寫部分功能(購物袋、願望清單)
   - Function-based views
   - Models, Forms
   - Eamil function
@@ -73,7 +75,7 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：選擇流程*__
 
 - 串接 Paypal 金流支付 API
 
-- Jquery(Ajax)
+- Jquery
   - 首頁翻頁、更新商品數量與刪除商品
   - 即時顯示評論
   - 紀錄商品點擊數 (用於找出Bestsellers)
@@ -146,37 +148,56 @@ flowchart
     P --"E1. 更新用戶資訊"--> UB
 ```
 
-### 購物袋
+### 購物袋與願望清單
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph Store
         P[Prodcut] 
     end
     subgraph WishList
         W[Wish List]
+        P --"加入願望清單"--> W
     end
     subgraph ShoppingBag
-        B[Shopping Bag] --"2. 在Session 中寫入購物袋訊息"--> B
-        W --"1. 加入購物袋"--> B
-        P --"1. 加入購物袋" --> B --> LS{Login Status}
-        LS --"Yes"--> LO[Logout] -."3. 將Session中資料更新至Database".-> BD[(Shopping Bag)]
-        LS --"No"--> LE[Leave] --> R[Clean Data in Session when user leave]
+        B[Shopping Bag] --"2. 在Session 更新購物袋訊息"--> B
+        W --"W1. 加入購物袋"--> B
+        P --"P1. 加入購物袋" --> B --> LS{Login Status}
+        LS --"Login"--> LO[Logout] -."3. 將Session中資料更新至Database".-> BD[(Shopping Bag)]
+        LS --"Anonymous user"--> LE[Leave] --> R[Clean Data in Session when user leave]
     end
-
-
 ```
 
-願望清單:
+### 結帳
 
-1. 新增更新願望清單
-2. 將願望清單商品加入購物袋(數量為1)
-
-結帳:
-
-1. 選取寄送方式
-2. 更新寄送地址
-3. Paypal 付款
+```mermaid
+    flowchart RL
+    subgraph UserInformation
+        UB[(User Base)]
+        Ad[(Address)]
+    end
+    subgraph ShoppingBag
+        B[Shopping Bag]
+    end
+    subgraph Profile
+        PF[Profile]
+        PFE[Profile Edit Form]
+    end
+    subgraph ShoppingRoute
+        B --"1. 選取寄送方法"--> D[Delivery Method]
+        D --"2. 確認/編輯寄送資訊"--> C{Delivery Information Checking Page}
+        C --"U1. 更新資訊"--> PFE
+        C --"A1. 更新資訊"--> PFE
+        C --"4. 登入Paypal"--> P[Paypal]
+        P -."5. 結帳，前往訂單頁面".-> O[(Orders)]
+    end
+        PFE -."U2. 更新資料庫".-> UB
+        PFE -."A2. 更新資料庫".-> Ad
+        UB --"U3. 回到個人資訊頁面"--> PF 
+        Ad --"A3. 回到個人資訊頁面"--> PF
+        PF --"UA4. 前往購物袋結帳"--> B
+    
+```
 
 訂單與評價
 
