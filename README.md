@@ -28,30 +28,30 @@ flowchart LR
         direction TB
         I[Index] -.-> C[Category]
         C -.-> S
-        I --> S[Single]
+        I --1--> S[Single]
     end
     subgraph Bag
         direction RL
-        S --> B[Shopping Bag]
+        S --2--> B[Shopping Bag]
         S -.-> W[Wishlist] 
         W -.-> B
     end
 
     subgraph Checkout
-        B --> DS[Delivery Option]
-        DS --> CA[Check Address]
-        CA --> P[Paypal]
+        B --3--> DS[Delivery Option]
+        DS --4--> CA[Check Address]
+        CA --5--> P[Paypal]
     end
     subgraph Orders
-        P --> O[Order]
-        O --> OI[Order issue]
+        P --6--> O[Order]
+        O -.-> OI[Order issue]
     end
     subgraph Reviews
-        O --> S --> R[Review]
+        O --7--> S -.-> R[Review]
     end    
 ```
 
-__*備註: 實線箭頭：預設流程; 虛線箭頭：替代流程*__
+__*備註: 實線箭頭：預設流程; 虛線箭頭：選擇流程*__
 <br>
 
 ## 主要練習
