@@ -14,7 +14,7 @@ Reset Password
     <div>
         {% if 'email' in request.get_full_path %}
         <div>Password Reset Success</div>
-        <div>Check your email for instructions</d>
+        <div>Check your email for instructions. <a href="{% url "store:store_home" %}">Home</a></div>
             {% endif%}
             {% if 'complete' in request.get_full_path %}
             <div>Password Reset Success!</div>
@@ -23,4 +23,6 @@ Reset Password
         </div>
     </div>
 </div>
+
 {% endblock sub_base_content %}
+

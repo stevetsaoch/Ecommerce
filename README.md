@@ -1,6 +1,6 @@
-# Ecommerce Project
+# Tsao Books 網路書店
 
-這是一個由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店專案。後端由 <b>Class-based views</b> 為主輔以 <b>Function-based views</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與排版。
+此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based views</b> 為主輔以 <b>Function-based views</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與排版。
 <br>
 <br>
 <br>
@@ -13,7 +13,7 @@
 
 ![Database Diagram](readme_figures/Databases_diagram.png)
 
-### 網站路線
+### 網站架構
 
 ```mermaid
 flowchart LR
