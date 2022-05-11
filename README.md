@@ -61,12 +61,12 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：替代流程*__
     - 重寫方法以符合業務需求
     - 嘗試以 REST 風格撰寫對應功能
   - Function-based views
-  - Model, Form
+  - Models, Forms
   - Eamil function
   - Session (購物袋管理)
   - Custom Template tags
   - Custom commands (生產假資料)
-  - Use Token for authentication
+  - Token for authentication
 
 - MySQL
   - 資料庫正規化(Normalization)
@@ -107,7 +107,7 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：替代流程*__
   - 檢視訂單
   - 回報訂單問題
 
-## 網頁功能流程圖與展示
+## 網頁功能流程圖
 
 __*備註: 實線箭頭：流程; 虛線箭頭：流程中包含更新資料庫*__
 
@@ -116,7 +116,7 @@ __*備註: 實線箭頭：流程; 虛線箭頭：流程中包含更新資料庫*
 - 註冊帳號
 
 ```mermaid
-flowchart
+flowchart TB
     subgraph Register
         direction TB
         U[User] --"1. 申請帳號"--> R[Register] -."2. 建立用戶 (尚未啟用)".-> UB[(UserBase)]
@@ -149,15 +149,19 @@ flowchart
 ### 購物袋
 
 ```mermaid
-    flowchart
+flowchart LR
     subgraph Store
         P[Prodcut] 
     end
+    subgraph WishList
+        W[Wish List]
+    end
     subgraph ShoppingBag
-        B[Shopping Bag] --"在Session 中寫入購物袋訊息"--> B
+        B[Shopping Bag] --"2. 在Session 中寫入購物袋訊息"--> B
+        W --"1. 加入購物袋"--> B
         P --"1. 加入購物袋" --> B --> LS{Login Status}
-        LS --"Yes"--> LO[Logout] -."將Session中資料更新至Database".-> BD[(Shopping Bag)]
-        LS --"No"--> LE[Leave] --> R[Clean Data in Session]
+        LS --"Yes"--> LO[Logout] -."3. 將Session中資料更新至Database".-> BD[(Shopping Bag)]
+        LS --"No"--> LE[Leave] --> R[Clean Data in Session when user leave]
     end
 
 
