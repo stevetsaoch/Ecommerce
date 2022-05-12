@@ -239,7 +239,7 @@ flowchart TB
     end
     RL{Have Leave Review yet}
     subgraph Review
-      P --> RL -."No, P2. 評分與評價".-> R[(Review)]
-      RL --"Yes, P2. 檢視頁面"--> P
+      P --"P2. 確認是否留過評價"--> RL -."No, P3. 評分與評價".-> R[(Review)]
+      RL --"Yes, P3. 檢視頁面"--> P
     end
 ```
