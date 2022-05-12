@@ -16,7 +16,7 @@
 
 <https://stevetsaoch.pythonanywhere.com/>
 
-*若你想獲得完整體驗，可以用下列帳戶可測試*
+*若你想獲得完整體驗，可以用下列帳戶測試。*
 
 ### 測試帳號
 
@@ -24,19 +24,11 @@
   - User name: AllenDanvers
   - Password: qazxcv123
 
+### 付款帳戶
+
 - Paypal
   - Account: paypalpublic@paypal.com
   - Password: paypalpublic1
-
-### 付款帳戶
-
-<br>
-
-## 資料庫架構
-
-![Database Diagram](readme_figures/Databases_diagram.png)
-
-連結: <https://dbdiagram.io/d/6253befa2514c979030773a2>
 
 <br>
 
@@ -72,6 +64,14 @@ flowchart LR
 ```
 
 __*備註: 實線箭頭：預設流程; 虛線箭頭：可選擇流程*__
+<br>
+
+## 資料庫架構
+
+![Database Diagram](readme_figures/Databases_diagram.png)
+
+連結: <https://dbdiagram.io/d/6253befa2514c979030773a2>
+
 <br>
 
 ## 主要練習
@@ -149,6 +149,8 @@ flowchart TB
     end
 ```
 
+---
+
 #### 更改密碼、刪除用戶、更新資訊
 
 ```mermaid
@@ -165,6 +167,8 @@ flowchart
     P --"E1. 更新用戶資訊"--> Ad[(Address)]
     P --"E1. 更新用戶資訊"--> UB
 ```
+
+---
 
 ### 購物袋與願望清單
 
@@ -185,6 +189,8 @@ flowchart TB
         LS --"Anonymous user"--> LE[Leave] --> R[Clean Data in Session when user leave]
     end
 ```
+
+---
 
 ### 結帳
 
@@ -216,6 +222,8 @@ flowchart TB
         PF --"UA4. 前往購物袋結帳"--> B
     
 ```
+
+---
 
 ### 訂單管理與商品評價
 
