@@ -229,7 +229,7 @@ flowchart TB
 
 ```mermaid
     flowchart RL
-    subgraph Product
+    subgraph Products
       direction TB
         P[Product]
     end
@@ -238,7 +238,7 @@ flowchart TB
       O -."O1. 儲存訂單問題".-> OS[(Order Issue Report)]
     end
     RL{Have Leave Review yet}
-    subgraph Review
+    subgraph Reviews
       P --"P2. 確認是否留過評價"--> RL -."No, P3. 評分與評價".-> R[(Review)]
       RL --"Yes, P3. 檢視頁面"--> P
     end
