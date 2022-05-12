@@ -242,3 +242,13 @@ flowchart TB
       RL --"Yes, P3. 檢視頁面"--> P
     end
 ```
+
+---
+
+## 未來計畫
+
+- 前後端分離
+- 應用容器化
+- 加入單元測試(Unit Test)
+- 實作CI/CD
+- 建立推薦系統(Machine Learning)
