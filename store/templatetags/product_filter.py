@@ -68,7 +68,7 @@ def ratingaverage(value):
     if not reviews_rating:
         return "0.0"
     else:
-        reviews_rating_average = round(sum(reviews_rating) / len(reviews), 2)
+        reviews_rating_average = round(sum(reviews_rating) / len(reviews), 1)
         return reviews_rating_average
 
 
