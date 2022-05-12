@@ -4,7 +4,7 @@
 
 ## 簡介
 
-此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based view</b> 為主輔以 <b>Function-based view</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與Responsive Web Design。
+此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based view</b> 為主輔以 <b>Function-based view</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與響應式網頁(RWD)。
 <br>
 <br>
 
@@ -84,10 +84,11 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：可選擇流程*__
   - Model, Form, Eamil
   - Session (購物袋管理)
   - Custom Template tags
-  - Custom commands (生產假資料)
+  - Custom commands (生產測試資料)
   - Token for authentication
 
 - MySQL
+  - 資料庫設計
   - 資料庫正規化(Normalization)
 
 - 串接 Paypal 金流支付 API
@@ -99,7 +100,7 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：可選擇流程*__
 
 - CSS
   - 製作簡易動畫(指向選項時改變背景，選取後產生陰影特效等)
-  - Responsive Web Design
+  - 響應式網頁(RWD)
 <br>
 
 ## 網頁內容介紹
@@ -243,12 +244,10 @@ flowchart TB
     end
 ```
 
----
-
 ## 未來計畫
 
 - 前後端分離
 - 應用容器化
 - 加入單元測試(Unit Test)
 - 實作CI/CD
-- 建立推薦系統(Machine Learning)
+- 利用機器學習模型建立推薦系統
