@@ -8,9 +8,27 @@
 <br>
 <br>
 
+## 套件
+
+![Python](https://img.shields.io/badge/Python-3.8.5-blue) ![Django](https://img.shields.io/badge/Django-4.0.3-blue) ![mysql](https://img.shields.io/badge/mysqlclient-2.1.0-green) ![Paypal](https://img.shields.io/badge/paypalcheckoutserversdk-1.0.1-green) ![Pillow](https://img.shields.io/badge/Pillow-9.1.0-green) ![shortuuid](https://img.shields.io/badge/shortuuid-1.0.8-green)
+
 ## 網頁Demo
 
 <https://stevetsaoch.pythonanywhere.com/>
+
+*若你想獲得完整體驗，可以用下列帳戶可測試*
+
+### 測試帳號
+
+- 用戶：
+  - User name: AllenDanvers
+  - Password: qazxcv123
+
+- Paypal
+  - Account: paypalpublic@paypal.com
+  - Password: paypalpublic1
+
+### 付款帳戶
 
 <br>
 
@@ -81,7 +99,7 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：可選擇流程*__
   - 紀錄商品點擊數 (用於找出Bestsellers)
 
 - CSS
-  - 製作簡易動畫(指向選項時改變背景，選取後產生陰影等)
+  - 製作簡易動畫(指向選項時改變背景，選取後產生陰影特效等)
   - Responsive Web Design
 <br>
 
@@ -199,12 +217,21 @@ flowchart TB
     
 ```
 
-訂單與評價
+### 訂單管理與商品評價
 
-1. 付款完成後會建立訂單，可以在訂單頁面查詢訂單
-2. 回報訂單問題
-3. 連結並評價商品
-
-## 需求
-
----
+```mermaid
+    flowchart RL
+    subgraph Product
+      direction TB
+        P[Product]
+    end
+    subgraph Orders
+      O[Order] --"P1. 前往商品頁面"--> P
+      O -."O1. 儲存訂單問題".-> OS[(Order Issue Report)]
+    end
+    RL{Have Leave Review yet}
+    subgraph Review
+      P --> RL -."No, P2. 評分與評價".-> R[(Review)]
+      RL --"Yes, P2. 檢視頁面"--> P
+    end
+```
