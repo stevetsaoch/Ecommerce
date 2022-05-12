@@ -21,14 +21,14 @@
 ### 測試帳號
 
 - 用戶：
-  - User name: AllenDanvers
-  - Password: qazxcv123
+  - User name： AllenDanvers
+  - Password： qazxcv123
 
 ### 付款帳戶
 
 - Paypal
-  - Account: paypalpublic@paypal.com
-  - Password: paypalpublic1
+  - Account： paypalpublic@paypal.com
+  - Password： paypalpublic1
 
 <br>
 
