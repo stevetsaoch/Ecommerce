@@ -4,7 +4,7 @@
 
 ## 簡介
 
-此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based views</b> 為主輔以 <b>Function-based views</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與排版。
+此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based view</b> 為主輔以 <b>Function-based view</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與Responsive Web Design。
 <br>
 <br>
 
@@ -77,12 +77,11 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：可選擇流程*__
 ## 主要練習
 
 - Django
-  - Class-based views
+  - Class-based view
     - Override method以符合業務需求
     - 以 REST 風格撰寫部分功能(購物袋、願望清單)
-  - Function-based views
-  - Models, Forms
-  - Eamil function
+  - Function-based view
+  - Model, Form, Eamil
   - Session (購物袋管理)
   - Custom Template tags
   - Custom commands (生產假資料)
