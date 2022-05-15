@@ -27,6 +27,7 @@ urlpatterns = [
     path("orders/", include("orders.urls", namespace="orders")),
     path("wishlist/", include("wishlist.urls", namespace="wishlist")),
     path("review/", include("review.urls", namespace="review")),
+    path("CICD/", include("CICD.urls", namespace="CICD")),
 ]
 
 if settings.DEBUG:
