@@ -11,7 +11,7 @@
 
 ## 套件
 
-![Python](https://img.shields.io/badge/Python-3.8.5-blue) ![Django](https://img.shields.io/badge/Django-4.0.3-blue) ![mysql](https://img.shields.io/badge/mysqlclient-2.1.0-green) ![Paypal](https://img.shields.io/badge/paypalcheckoutserversdk-1.0.1-green) ![Pillow](https://img.shields.io/badge/Pillow-9.1.0-green) ![shortuuid](https://img.shields.io/badge/shortuuid-1.0.8-green)
+![Python](https://img.shields.io/badge/Python-3.8.5-blue) ![Django](https://img.shields.io/badge/Django-4.0.3-blue) ![mysql](https://img.shields.io/badge/mysqlclient-2.1.0-green) ![Paypal](https://img.shields.io/badge/paypalcheckoutserversdk-1.0.1-green) ![Pillow](https://img.shields.io/badge/Pillow-9.1.0-green) ![shortuuid](https://img.shields.io/badge/shortuuid-1.0.8-green) ![uuid](https://img.shields.io/badge/uuid-1.30-green)
 
 ## 網頁Demo
 
@@ -230,7 +230,7 @@ flowchart TB
 
 ```mermaid
     flowchart RL
-    subgraph Product
+    subgraph Products
       direction TB
         P[Product]
     end
@@ -239,7 +239,7 @@ flowchart TB
       O -."O1. 儲存訂單問題".-> OS[(Order Issue Report)]
     end
     RL{Have Leave Review yet}
-    subgraph Review
+    subgraph Reviews
       P --"P2. 確認是否留過評價"--> RL -."No, P3. 評分與評價".-> R[(Review)]
       RL --"Yes, P3. 檢視頁面"--> P
     end
@@ -251,4 +251,3 @@ flowchart TB
 - 應用容器化
 - 加入單元測試(Unit Test)
 - 實作CI/CD
-- 利用機器學習模型建立推薦系統
