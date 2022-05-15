@@ -10,7 +10,7 @@
 
 ## 套件
 
-![Python](https://img.shields.io/badge/Python-3.8.5-blue) ![Django](https://img.shields.io/badge/Django-4.0.3-blue) ![mysql](https://img.shields.io/badge/mysqlclient-2.1.0-green) ![Paypal](https://img.shields.io/badge/paypalcheckoutserversdk-1.0.1-green) ![Pillow](https://img.shields.io/badge/Pillow-9.1.0-green) ![shortuuid](https://img.shields.io/badge/shortuuid-1.0.8-green)
+![Python](https://img.shields.io/badge/Python-3.8.5-blue) ![Django](https://img.shields.io/badge/Django-4.0.3-blue) ![mysql](https://img.shields.io/badge/mysqlclient-2.1.0-green) ![Paypal](https://img.shields.io/badge/paypalcheckoutserversdk-1.0.1-green) ![Pillow](https://img.shields.io/badge/Pillow-9.1.0-green) ![shortuuid](https://img.shields.io/badge/shortuuid-1.0.8-green) ![uuid](https://img.shields.io/badge/uuid-1.30-green)
 
 ## 網頁Demo
 
