@@ -1,0 +1,17 @@
+name: SimpleCD
+on: 
+  push:
+    branches: 
+      - main
+jobs:
+  request_to_pythonanywhere:
+    runs-on: ubuntu-latest
+    steps:
+    - name: request to pythonanywhere
+      uses: satak/webrequest-action@master
+      with:
+        url: ${{secrets.PULL_URL}}
+        method: GET
+    
+
+
