@@ -4,11 +4,14 @@ on:
     branches: 
       - main
 jobs:
-  my_job:
-    uses: Satak/webrequest-action@v1.2.3
-    with:
-      url: https://stevetsaoch.pythonanywhere.com/{{secret.PULL_URL}}
-      method: GET
+  request_to_pythonanywhere:
+    runs-on: ubuntu-latest
+    steps:
+    - name: request to pythonanywhere
+      uses: satak/webrequest-action@master
+      with:
+        url: https://stevetsaoch.pythonanywhere.com/{{secret.PULL_URL}}
+        method: GET
     
 
 
