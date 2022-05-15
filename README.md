@@ -250,4 +250,3 @@ flowchart TB
 - 應用容器化
 - 加入單元測試(Unit Test)
 - 實作CI/CD
-- 利用機器學習模型建立推薦系統
