@@ -101,6 +101,9 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：可選擇流程*__
 - CSS
   - 製作簡易動畫(指向選項時改變背景，選取後產生陰影特效等)
   - 響應式網頁(RWD)
+
+- CD(Continuous Deployment)
+  - 利用GitHub Actions搭配gitpython建立簡易自動化部署流程
 <br>
 
 ## 網頁內容介紹
