@@ -10,7 +10,7 @@ jobs:
     - name: request to pythonanywhere
       uses: satak/webrequest-action@master
       with:
-        url: https://stevetsaoch.pythonanywhere.com/${{secrets.PULL_URL}}
+        url: ${{secrets.PULL_URL}}
         method: GET
     
 
