@@ -4,7 +4,7 @@
 
 ## 簡介
 
-此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based view</b> 為主輔以 <b>Function-based view</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>Jquery(ajax)</b> 與 <b>CSS</b> 實作互動功能與響應式網頁(RWD)。
+此網站是後端練習網站，由 <b>Django</b> 框架開發的 <b>MTV</b> 架構網路書店。後端由 <b>Class-based view</b> 為主輔以 <b>Function-based view</b> 作為業務邏輯層(V)，搭配 <b>MySQL</b> 作為資料庫(M)；前端頁面(T)則以原生 <b>Django template</b> 為主，搭配 <b>jQuery(ajax)</b> 與 <b>CSS</b> 實作互動功能與響應式網頁(RWD)。
 <br>
 <br>
 
@@ -93,8 +93,8 @@ __*備註: 實線箭頭：預設流程; 虛線箭頭：可選擇流程*__
 
 - 串接 Paypal 金流支付 API
 
-- Jquery
-  - 首頁翻頁、更新商品數量與刪除商品
+- jQuery
+  - 翻頁、更新商品數量與刪除商品
   - 即時顯示評論
   - 紀錄商品點擊數 (用於找出Bestsellers)
 
